@@ -40,7 +40,6 @@ const financialData = [
   { month: "2024-12", revenue: 69876.54, cogs: 25432.10, gross_profit: 44444.44, operating_expenses: 27123.45, marketing_expenses: 6543.21, net_income: 10777.78, cash_flow: 11234.56}
   
 ];
-
 const kpis = {
   revenue_growth: 15.2,
   gross_margin: 58.3,
@@ -54,10 +53,12 @@ const kpis = {
   debt_to_equity: 0.65,
 };
 
+type AlertPriority = "high" | "medium" | "low";
+
 const alerts = [
-  { id: 1, type: "warning", title: "Cash Flow Alert", message: "Cash flow projection shows potential shortage in Q2 2025", priority: "high", date: "2024-12-20T10:30:00Z" },
-  { id: 2, type: "info", title: "Revenue Growth", message: "Monthly revenue exceeded target by 8%", priority: "medium", date: "2024-12-18T14:15:00Z" },
-  { id: 3, type: "success", title: "Cost Optimization", message: "Operating expenses reduced by 5% compared to last quarter", priority: "low", date: "2024-12-15T09:45:00Z" }
+  { id: 1, type: "warning", title: "Cash Flow Alert", message: "Cash flow projection shows potential shortage in Q2 2025", priority: "high" as AlertPriority, date: "2024-12-20T10:30:00Z" },
+  { id: 2, type: "info", title: "Revenue Growth", message: "Monthly revenue exceeded target by 8%", priority: "medium" as AlertPriority, date: "2024-12-18T14:15:00Z" },
+  { id: 3, type: "success", title: "Cost Optimization", message: "Operating expenses reduced by 5% compared to last quarter", priority: "low" as AlertPriority, date: "2024-12-15T09:45:00Z" }
 ];
 
 const customers = [
@@ -67,11 +68,11 @@ const customers = [
 ];
 
 // Utility to format currency
-const formatCurrency = (val) =>
+const formatCurrency = (val: number) =>
   "$" + val.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
 // Priority color mapping for alerts
-const priorityColors = {
+const priorityColors: Record<AlertPriority, string> = {
   high: '#c0152f',
   medium: '#e69361',
   low: '#229556'
@@ -84,14 +85,13 @@ function App() {
   const months = financialData.map(d => d.month);
   const revenue = financialData.map(d => d.revenue);
   const expenses = financialData.map(d => d.operating_expenses + d.marketing_expenses + d.cogs);
-  const profitMargins = financialData.map(d => ((d.gross_profit / d.revenue) * 100).toFixed(2));
+  const profitMargins = financialData.map(d => Number(((d.gross_profit / d.revenue) * 100).toFixed(2)));
   const cashFlows = financialData.map(d => d.cash_flow);
 
-  // Chart options
   const commonOptions = {
     responsive: true,
     plugins: {
-      legend: { position: 'top' }
+      legend: { position: 'top' as const } // must be a string literal, not a variable string
     }
   };
 
