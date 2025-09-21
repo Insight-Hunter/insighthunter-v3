@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+
 import {
   Chart as ChartJS,
   LineElement,
@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
 import './App.css';
+import { useState } from 'react';
 
 ChartJS.register(
   LineElement,
@@ -209,11 +210,11 @@ function App() {
                 </div>
               </div>
               <div className="charts-row">
-                <Line data={revenueExpensesData} options={commonOptions} />
-                <Line data={profitMarginData} options={commonOptions} />
-              </div>
-              <div className="charts-row">
-                <Bar data={cashFlowData} options={{ ...commonOptions, plugins: { legend: { display: false } } }} />
+                <Line data = {revenueExpensesData} options={commonOptions} />
+                <Line data ={profitMarginData} options={commonOptions} />
+                <Bar data={cashFlowData}
+                options={{ ...commonOptions, plugins: { legend: { display: false } } }} />
+                <div/>
                 <div className="customers-table-container">
                   <h3>Top Customers</h3>
                   <table>
