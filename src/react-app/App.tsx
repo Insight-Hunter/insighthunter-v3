@@ -10,9 +10,12 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
-import { Line, Bar } from 'react-chartjs-2';
 import './App.css';
 import { useState } from 'react';
+
+import RevenueExpensesChart from '/workspaces/insighthunter-v3/src/components/RevenueExpensesChart';
+import CashFlowChart from '/workspaces/insighthunter-v3/src/components/CashFlowChart';
+import ProfitMarginChart from "/workspaces/insighthunter-v3/src/components/ProfitMarginChart";
 
 ChartJS.register(
   LineElement,
@@ -210,11 +213,11 @@ function App() {
                 </div>
               </div>
               <div className="charts-row">
-                <Line data = {revenueExpensesData} options={commonOptions} />
-                <Line data ={profitMarginData} options={commonOptions} />
-                <Bar data={cashFlowData}
-                options={{ ...commonOptions, plugins: { legend: { display: false } } }} />
-                <div/>
+               <RevenueExpensesChart data={revenueExpensesData} options={commonOptions} />
+               <ProfitMarginChart data={profitMarginData} options={commonOptions} />
+               <CashFlowChart data={cashFlowData} options={{ ...commonOptions, plugins: { legend: { display: false } }}} />
+              </div>
+              
                 <div className="customers-table-container">
                   <h3>Top Customers</h3>
                   <table>
@@ -238,7 +241,7 @@ function App() {
                     </tbody>
                   </table>
                 </div>
-              </div>
+              
             </>
           )}
 
