@@ -1,45 +1,106 @@
-.onboarding-container {
-  max-width: 420px;
-  margin: 4rem auto;
-  background: #191B24;
-  color: white;
-  border-radius: 1.2em;
-  padding: 2rem 2.5rem;
-  text-align: center;
-  font-family: 'Inter', sans-serif;
+.onboarding-welcome-bg {
+  background: #14181D;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.onboarding-container h1 {
-  color: #FF5C35;
-  margin-bottom: 0.5rem;
-}
-.step-list label {
-  display: block;
-  margin: 1.2rem 0;
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-input[type="checkbox"] {
-  margin-right: 1em;
-  transform: scale(1.3);
-  cursor: pointer;
-}
-.onboarding-container button {
-  margin-top: 2rem;
-  padding: 1rem 0;
+
+.onboarding-welcome-container {
   width: 100%;
-  border-radius: 1rem;
-  border: none;
+  max-width: 385px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.welcome-logo-row {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 1.3em;
+}
+
+.logo-text {
+  color: #FF5C35;
+  font-weight: 700;
+  font-size: 1.2em;
+  letter-spacing: 0.10em;
+  background: none;
+}
+
+.welcome-title {
+  text-align: center;
+  font-size: 2.2em;
+  font-weight: 800;
+  margin-bottom: 0.32em;
+  line-height: 1.05em;
+}
+
+.welcome-desc {
+  color: #b1b8c5;
+  text-align: center;
+  margin-bottom: 2.1em;
+  font-size: 1.1em;
+}
+
+.welcome-wallet-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, #238B76 0%, #081b23 100%);
+  margin-bottom: 2.2em;
+  box-shadow: 0 8px 32px rgba(0,0,0,.22);
+}
+
+.welcome-steps-list {
+  width: 100%;
+  margin-bottom: 2.3em;
+}
+
+.welcome-step {
+  background: #181b22;
+  color: #eaf7f3;
+  font-weight: 500;
+  font-size: 1.13em;
+  border-radius: 0.85em;
+  margin-bottom: 1.08em;
+  padding: 0.98em 1.35em;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(20,20,20,0.06);
+}
+
+.welcome-step-check {
+  color: #13dcaf;
+  font-size: 1.3em;
+  font-weight: 700;
+  margin-right: 1em;
+  line-height: 1;
+}
+
+.welcome-continue-btn {
   background: #222733;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: 700;
+  border: none;
+  border-radius: 1.3em;
+  width: 100%;
+  padding: 1.17em 0;
+  margin-top: 0.45em;
+  box-shadow: 0 2px 24px rgba(10,16,20,0.02);
+  transition: background 0.18s;
+}
+
+.welcome-continue-btn:hover, .welcome-continue-btn:focus {
+  background: #125550;
+  color: #FFEAC2;
   cursor: pointer;
-}
-.onboarding-container button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.onboarding-container button:not(:disabled):hover {
-  background: #FF5C35;
-  color: white;
 }
