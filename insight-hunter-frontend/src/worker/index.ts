@@ -1,6 +1,6 @@
 // src/worker/index.ts
 
-import { Env } from './env';  // Env interface linking to D1 or KV bindings
+import { Env } from './env';
 
 export default {
   async fetch(request: Request, env: Env) {
@@ -8,7 +8,7 @@ export default {
 
     // Example API route to fetch KPIs
     if (url.pathname === '/api/kpis' && request.method === 'GET') {
-      const result = await env.DB.prepare('SELECT * FROM kpis').all();
+      const result = await env.USERS_DB.prepare('SELECT * FROM kpis').all();
       return new Response(JSON.stringify(result.results), {
         headers: { 'Content-Type': 'application/json' },
       });
