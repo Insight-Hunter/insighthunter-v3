@@ -2,45 +2,48 @@ import React, { useState } from 'react';
 import './BusinessSetup.css';
 
 interface BusinessSetupProps {
-  onComplete: (businessName: string, industry: string) => void;
+  onSubmit: (businessName: string, industry: string) => void;
 }
 
-const BusinessSetup: React.FC<BusinessSetupProps> = ({ onComplete }) => {
+const BusinessSetup: React.FC<BusinessSetupProps> = ({ onSubmit }) => {
   const [businessName, setBusinessName] = useState('');
   const [industry, setIndustry] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
-    if (!businessName || !industry) {
-      setError('Fill out all fields.');
+    if (!businessName.trim() || !industry.trim()) {
+      setError('Please enter both business name and industry.');
       return;
     }
-    // Call backend API to save business info if needed
-    onComplete(businessName, industry);
+    onSubmit(businessName.trim(), industry.trim());
   };
 
   return (
     <div className="business-setup-container">
-      <h2>Set up Your Business</h2>
+      <h2>Set Up Your Business</h2>
       <form onSubmit={handleSubmit}>
+        <label htmlFor="businessName">Business Name</label>
         <input
+          id="businessName"
           type="text"
-          placeholder="Business Name"
+          placeholder="Enter business name"
           value={businessName}
           onChange={e => setBusinessName(e.target.value)}
           required
         />
+        <label htmlFor="industry">Industry</label>
         <input
+          id="industry"
           type="text"
-          placeholder="Industry"
+          placeholder="Enter industry"
           value={industry}
           onChange={e => setIndustry(e.target.value)}
           required
         />
-        {error && <p className="business-error">{error}</p>}
-        <button type="submit">Continue</button>
+        {error && <p className="error-message">{error}</p>}
+        <button type="submit">Save Business Info</button>
       </form>
     </div>
   );

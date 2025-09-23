@@ -1,9 +1,9 @@
 {
   "name": "insighthunter-v3",
-  "description": "A template for building a React application with Vite, Hono, and Cloudflare Workers",
+  "description": "Financial Assistant",
   "private": true,
   "cloudflare": {
-    "label": "Vite React Template",
+    "label": "insight-hunter",
     "products": [
       "Workers"
     ],

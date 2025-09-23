@@ -1,7 +1,16 @@
 name = "insight-hunter-api"
-main = "src/index.html"
+main = "src/index.ts"
 compatibility_date = "2025-09-23"
 type = "javascript"
+
+[vars]
+JWT_SECRET = "env.JWT_SECRET"
+
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "service-worker"
 
 [env.production]
 workers_dev = false
@@ -12,3 +21,4 @@ zone_id = "hunterturner.com"
 binding = "USERS_DB"
 database_name = "insight-hunter-v2"
 
+ 

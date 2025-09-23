@@ -18,6 +18,7 @@ import OnboardingWelcome from '../components/OnboardingWelcome';
 import RevenueExpensesChart from '../components/RevenueExpensesChart';
 import CashFlowChart from '../components/CashFlowChart';
 import ProfitMarginChart from "../components/ProfitMarginChart";
+import { saveBusinessInfo } from '../apiClient';
 
 ChartJS.register(
   LineElement,
@@ -43,8 +44,8 @@ const financialData = [
   { month: "2024-10", revenue: 72345.67, cogs: 27890.12, gross_profit: 44455.55, operating_expenses: 25678.90, marketing_expenses: 6789.12, net_income: 11987.53, cash_flow: 12456.78},
   { month: "2024-11", revenue: 78901.23, cogs: 29876.54, gross_profit: 49024.69, operating_expenses: 26789.01, marketing_expenses: 7234.56, net_income: 15001.12, cash_flow: 14567.89},
   { month: "2024-12", revenue: 69876.54, cogs: 25432.10, gross_profit: 44444.44, operating_expenses: 27123.45, marketing_expenses: 6543.21, net_income: 10777.78, cash_flow: 11234.56}
-  
 ];
+
 const kpis = {
   revenue_growth: 15.2,
   gross_margin: 58.3,
@@ -76,7 +77,6 @@ const customers = [
 const formatCurrency = (val: number) =>
   "$" + val.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
-// Priority color mapping for alerts
 const priorityColors: Record<AlertPriority, string> = {
   high: '#c0152f',
   medium: '#e69361',
@@ -88,9 +88,22 @@ function App() {
   const [businessInfo, setBusinessInfo] = useState<{ name: string; industry: string } | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [step, setStep] = useState<'business'|'done'>('business');
+
+  const handleBusinessSubmit = async (businessName: string, industry: string) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) throw new Error('Not authenticated');
+      await saveBusinessInfo(token, businessName, industry);
+      setBusinessInfo({ name: businessName, industry });
+      setStep('done');
+      setShowOnboarding(true);
+    } catch (err) {
+      alert('Error saving business info');
+    }
+  };
 
   useEffect(() => {
-    // Show onboarding if not previously completed
     const onboarded = localStorage.getItem('insightHunterOnboarded');
     setShowOnboarding(!onboarded);
   }, []);
@@ -99,18 +112,15 @@ function App() {
     return <AuthForm onAuthSuccess={email => setUserEmail(email)} />;
   }
 
-  if (!businessInfo) {
-    return <BusinessSetup onComplete={(name, industry) => {
-      setBusinessInfo({ name, industry });
-      setShowOnboarding(true);
-    }} />;
+  if (step === 'business') {
+    return <BusinessSetup onSubmit={handleBusinessSubmit} />;
   }
 
   if (showOnboarding) {
     return <OnboardingWelcome onComplete={() => setShowOnboarding(false)} />;
   }
 
-  // Chart data prepared here
+  // Chart data preparation
   const months = financialData.map(d => d.month);
   const revenue = financialData.map(d => d.revenue);
   const expenses = financialData.map(d => d.operating_expenses + d.marketing_expenses + d.cogs);
@@ -175,8 +185,8 @@ function App() {
   };
 
   return (
-    <div className="app">   
-    <div>Welcome, {userEmail}! Your business: {businessInfo.name} ({businessInfo.industry})</div>
+    <div className="app">
+      <div>Welcome, {userEmail}! Your business: {businessInfo?.name} ({businessInfo?.industry})</div>
       <header className="header">
         <div className="header-left">
           <i className="fas fa-chart-line"></i>
@@ -243,7 +253,7 @@ function App() {
                <ProfitMarginChart data={profitMarginData} options={commonOptions} />
                <CashFlowChart data={cashFlowData} options={{ ...commonOptions, plugins: { legend: { display: false } }}} />
               </div>
-              
+
               <div className="customers-table-container">
                 <h3>Top Customers</h3>
                 <table>
