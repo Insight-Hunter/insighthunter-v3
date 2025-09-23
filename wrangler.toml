@@ -1,0 +1,14 @@
+name = "insight-hunter-api"
+main = "src/index.html"
+compatibility_date = "2025-09-23"
+type = "javascript"
+
+[env.production]
+workers_dev = false
+route = "insight.hunterturner.com/*"
+zone_id = "hunterturner.com"
+
+[[d1_databases]]
+binding = "USERS_DB"
+database_name = "insight-hunter-v2"
+

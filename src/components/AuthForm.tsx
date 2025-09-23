@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './AuthForm.css';
 
 interface AuthFormProps {
   onAuthSuccess: (email: string) => void;
@@ -10,31 +11,42 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    // Basic validation
     if (!email.includes('@') || password.length < 6) {
-      setError('Please enter a valid email and a password with at least 6 characters.');
+      setError('Invalid email or password (min 6 characters).');
       return;
     }
 
-    // TODO: Integrate with auth backend or 3rd party service here
-
-    onAuthSuccess(email); // Fake success callback; replace with real API response
+    try {
+      // Call backend auth API here: sign-up or sign-in endpoint
+      // Example: await fetch('/api/auth', { method: 'POST', body: JSON.stringify({ email, password, isSigningUp }) });
+      // On success:
+      onAuthSuccess(email);
+    } catch {
+      setError('Authentication failed. Try again.');
+    }
   };
 
   return (
-    <div className="auth-form-container">
+    <div className="auth-container">
       <h2>{isSigningUp ? 'Sign Up' : 'Sign In'}</h2>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email address" value={email} onChange={e => setEmail(e.target.value)} required autoComplete="email" />
-        <input type="password" placeholder="Password (min 6 chars)" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} autoComplete={isSigningUp ? 'new-password' : 'current-password'} />
-        {error && <p className="error-msg">{error}</p>}
+        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          minLength={6}
+          required
+        />
+        {error && <p className="auth-error">{error}</p>}
         <button type="submit">{isSigningUp ? 'Sign Up' : 'Sign In'}</button>
       </form>
-      <p className="toggle-link" onClick={() => { setIsSigningUp(!isSigningUp); setError(''); }}>
+      <p className="auth-toggle" onClick={() => { setIsSigningUp(!isSigningUp); setError(''); }}>
         {isSigningUp ? 'Already have an account? Sign In' : 'New user? Sign Up'}
       </p>
     </div>

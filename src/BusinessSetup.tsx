@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './BusinessSetup.css';
+
 interface BusinessSetupProps {
   onComplete: (businessName: string, industry: string) => void;
 }
@@ -12,14 +13,11 @@ const BusinessSetup: React.FC<BusinessSetupProps> = ({ onComplete }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
     if (!businessName || !industry) {
-      setError('Please fill out all fields');
+      setError('Fill out all fields.');
       return;
     }
-
-    // TODO: Save business info to backend or global app state
-
+    // Call backend API to save business info if needed
     onComplete(businessName, industry);
   };
 
@@ -27,9 +25,21 @@ const BusinessSetup: React.FC<BusinessSetupProps> = ({ onComplete }) => {
     <div className="business-setup-container">
       <h2>Set up Your Business</h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Business Name" value={businessName} onChange={e => setBusinessName(e.target.value)} required />
-        <input type="text" placeholder="Industry" value={industry} onChange={e => setIndustry(e.target.value)} required />
-        {error && <p className="error-msg">{error}</p>}
+        <input
+          type="text"
+          placeholder="Business Name"
+          value={businessName}
+          onChange={e => setBusinessName(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Industry"
+          value={industry}
+          onChange={e => setIndustry(e.target.value)}
+          required
+        />
+        {error && <p className="business-error">{error}</p>}
         <button type="submit">Continue</button>
       </form>
     </div>
