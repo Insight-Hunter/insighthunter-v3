@@ -10,8 +10,9 @@ import {
   Filler,
 } from 'chart.js';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
+import OnboardingWelcome from '../components/OnboardingWelcome';
 import RevenueExpensesChart from '../components/RevenueExpensesChart';
 import CashFlowChart from '../components/CashFlowChart';
 import ProfitMarginChart from "../components/ProfitMarginChart";
@@ -27,7 +28,6 @@ ChartJS.register(
   Filler
 );
 
-// Sample app data (abbreviated for brevity)
 const financialData = [
   { month: "2024-01", revenue: 42483.57, cogs: 17477.35, gross_profit: 25006.22, operating_expenses: 23366.85, marketing_expenses: 4457.22, net_income: -2817.85, cash_flow: -2130.62 },
   { month: "2024-02", revenue: 44308.68, cogs: 13896.91, gross_profit: 30411.77, operating_expenses: 25332.77, marketing_expenses: 2471.20, net_income: 2607.80, cash_flow: -918.28 },
@@ -82,9 +82,21 @@ const priorityColors: Record<AlertPriority, string> = {
 };
 
 function App() {
+  // Hooks must be called inside function body, not inside return/JSX
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  // Data for charts
+  useEffect(() => {
+    // Show onboarding if not previously completed
+    const onboarded = localStorage.getItem('insightHunterOnboarded');
+    setShowOnboarding(!onboarded);
+  }, []);
+
+  if (showOnboarding) {
+    return <OnboardingWelcome onComplete={() => setShowOnboarding(false)} />;
+  }
+
+  // Chart data prepared here
   const months = financialData.map(d => d.month);
   const revenue = financialData.map(d => d.revenue);
   const expenses = financialData.map(d => d.operating_expenses + d.marketing_expenses + d.cogs);
@@ -94,7 +106,7 @@ function App() {
   const commonOptions = {
     responsive: true,
     plugins: {
-      legend: { position: 'top' as const } // must be a string literal, not a variable string
+      legend: { position: 'top' as const }
     }
   };
 
@@ -217,30 +229,29 @@ function App() {
                <CashFlowChart data={cashFlowData} options={{ ...commonOptions, plugins: { legend: { display: false } }}} />
               </div>
               
-                <div className="customers-table-container">
-                  <h3>Top Customers</h3>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Monthly Value</th>
-                        <th>Status</th>
+              <div className="customers-table-container">
+                <h3>Top Customers</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Monthly Value</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {customers.map(c => (
+                      <tr key={c.id}>
+                        <td>{c.name}</td>
+                        <td>{formatCurrency(c.monthly_value)}</td>
+                        <td className={c.status === 'active' ? 'status-active' : c.status === 'churned' ? 'status-churned' : 'status-at_risk'}>
+                          {c.status.replace('_', ' ')}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {customers.map(c => (
-                        <tr key={c.id}>
-                          <td>{c.name}</td>
-                          <td>{formatCurrency(c.monthly_value)}</td>
-                          <td className={c.status === 'active' ? 'status-active' : c.status === 'churned' ? 'status-churned' : 'status-at_risk'}>
-                            {c.status.replace('_', ' ')}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </>
           )}
 
