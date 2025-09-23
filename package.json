@@ -1,0 +1,13 @@
+
+  "name": "insight-hunter-monorepo",
+  "private": true,
+  "workspaces": ["insight-hunter-frontend", "insight-hunter-backend"],
+  "scripts": {
+    "setup:env": "cp .env.example .env",
+    "build:backend": "npm run build --workspace=insight-hunter-backend",
+    "build:frontend": "npm run build --workspace=insight-hunter-frontend",
+    "install:all": "npm install",
+    "dev:backend": "npm run dev --workspace=insight-hunter-backend",
+    "dev:frontend": "npm run dev --workspace=insight-hunter-frontend"
+  }
+}
