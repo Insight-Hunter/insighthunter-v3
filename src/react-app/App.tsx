@@ -12,9 +12,9 @@ import {
 import './App.css';
 import { useState } from 'react';
 
-import RevenueExpensesChart from '/workspaces/insighthunter-v3/src/components/RevenueExpensesChart';
-import CashFlowChart from '/workspaces/insighthunter-v3/src/components/CashFlowChart';
-import ProfitMarginChart from "/workspaces/insighthunter-v3/src/components/ProfitMarginChart";
+import RevenueExpensesChart from '../components/RevenueExpensesChart';
+import CashFlowChart from '../components/CashFlowChart';
+import ProfitMarginChart from "../components/ProfitMarginChart";
 
 ChartJS.register(
   LineElement,
