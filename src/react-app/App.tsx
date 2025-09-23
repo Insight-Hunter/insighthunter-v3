@@ -12,6 +12,8 @@ import {
 import './App.css';
 import { useState, useEffect } from 'react';
 
+import AuthForm from '../components/AuthForm';
+import BusinessSetup from '../components/BusinessSetup';
 import OnboardingWelcome from '../components/OnboardingWelcome';
 import RevenueExpensesChart from '../components/RevenueExpensesChart';
 import CashFlowChart from '../components/CashFlowChart';
@@ -82,7 +84,8 @@ const priorityColors: Record<AlertPriority, string> = {
 };
 
 function App() {
-  // Hooks must be called inside function body, not inside return/JSX
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [businessInfo, setBusinessInfo] = useState<{ name: string; industry: string } | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
 
@@ -91,6 +94,17 @@ function App() {
     const onboarded = localStorage.getItem('insightHunterOnboarded');
     setShowOnboarding(!onboarded);
   }, []);
+
+  if (!userEmail) {
+    return <AuthForm onAuthSuccess={email => setUserEmail(email)} />;
+  }
+
+  if (!businessInfo) {
+    return <BusinessSetup onComplete={(name, industry) => {
+      setBusinessInfo({ name, industry });
+      setShowOnboarding(true);
+    }} />;
+  }
 
   if (showOnboarding) {
     return <OnboardingWelcome onComplete={() => setShowOnboarding(false)} />;
@@ -161,7 +175,8 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <div className="app">   
+    <div>Welcome, {userEmail}! Your business: {businessInfo.name} ({businessInfo.industry})</div>
       <header className="header">
         <div className="header-left">
           <i className="fas fa-chart-line"></i>
