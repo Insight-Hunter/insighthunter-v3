@@ -1,4 +1,4 @@
-
+{
   "name": "insight-hunter-monorepo",
   "private": true,
   "workspaces": ["insight-hunter-frontend", "insight-hunter-backend"],
