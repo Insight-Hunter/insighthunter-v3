@@ -1,21 +1,19 @@
-name = "insight-hunter-v3"
-main = "index.html"
-compatibility_date = "2025-09-23"
-type = "javascript"
+name = "insight-hunter-backend"
+main = "./insight-hunter-backend/dist/index.js"
+compatibility_date = "2025-09-24"
 
-[vars]
-JWT_SECRET = "{$env.JWT_SECRET}"
-
+# Default build config
 [build]
-command = "npm run build"
+command = "npm run build:backend"
 
-[build.upload]
-format = "service-worker"
+# Environments
+[env.dev]
+name = "insight-hunter-backend-dev"
+main = "./insight-hunter-backend/dist/index.js"
 
-[env.production]
-workers_dev = false
-route = "insight.hunterturner.com/*"
-zone_id = "hunterturner.com"
+[env.prod]
+name = "insight-hunter-backend-prod"
+main = "./insight-hunter-backend/dist/index.js"
 
 [[d1_databases]]
 binding = "USERS_DB"
