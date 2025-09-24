@@ -1,5 +1,5 @@
 name = "insight-hunter-backend"
-main = "./insight-hunter-backend/dist/index.js"
+main = "./insight-hunter-backend/dist/insighthunter_v3/index.js"
 compatibility_date = "2025-09-24"
 
 # Default build config
@@ -9,11 +9,11 @@ command = "npm run build:backend"
 # Environments
 [env.dev]
 name = "insight-hunter-backend-dev"
-main = "./insight-hunter-backend/dist/index.js"
+main = "./insight-hunter-backend/dist/insighthunter_3/index.js"
 
 [env.prod]
 name = "insight-hunter-backend-prod"
-main = "./insight-hunter-backend/dist/index.js"
+main = "./insight-hunter-backend/dist/insighthunter_v3/index.js"
 
 [[d1_databases]]
 binding = "USERS_DB"
