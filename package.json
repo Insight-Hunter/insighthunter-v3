@@ -8,24 +8,29 @@
   "scripts": {
     "setup:env": "cp .env.example .env",
     "install:all": "npm install",
-
     "build:backend": "npm run build --workspace=insight-hunter-backend",
     "build:frontend": "npm run build --workspace=insight-hunter-frontend",
     "build": "npm run build:backend && npm run build:frontend",
-
     "dev:backend": "npm run dev --workspace=insight-hunter-backend",
     "dev:frontend": "npm run dev --workspace=insight-hunter-frontend",
     "dev": "npm run dev:backend && npm run dev:frontend",
-
     "deploy:backend:dev": "npm run build:backend && wrangler deploy --config insight-hunter-backend/wrangler.toml --env=dev",
     "deploy:backend:prod": "npm run build:backend && wrangler deploy --config insight-hunter-backend/wrangler.toml --env=prod",
     "deploy:frontend:dev": "npm run build:frontend && wrangler pages deploy insight-hunter-frontend/dist --project-name insight-hunter-frontend-dev",
     "deploy:frontend:prod": "npm run build:frontend && wrangler pages deploy insight-hunter-frontend/dist --project-name insight-hunter-frontend-prod",
-
     "deploy:dev": "npm run deploy:backend:dev && npm run deploy:frontend:dev",
     "deploy:prod": "npm run deploy:backend:prod && npm run deploy:frontend:prod"
   },
   "devDependencies": {
     "wrangler": "^4.39.0"
+  },
+  "dependencies": {
+    "@cloudflare/vite-plugin": "^1.13.4",
+    "build": "^0.1.4",
+    "jsx-runtime": "^1.2.0",
+    "jxLoader": "^0.1.1",
+    "timespan": "^2.3.0",
+    "uglify-js": "^3.19.3",
+    "vite": "^7.1.7"
   }
 }
