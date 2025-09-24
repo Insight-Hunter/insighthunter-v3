@@ -14,8 +14,8 @@
     "dev:frontend": "npm run dev --workspace=insight-hunter-frontend",
     "build": "npm run build:backend && npm run build:frontend",
     "dev": "npm run dev:backend && npm run dev:frontend",
-    "deploy:backend": "npx wrangler publish ./insight-hunter-backend/dist",
-    "deploy:frontend": "npx wrangler pages publish ./insight-hunter-frontend/dist --insighthunter-v3 insight-hunter-frontend",
+    "deploy:backend": "npx wrangler deploy ./insight-hunter-backend/dist",
+    "deploy:frontend": "npx wrangler pages deploy insight-hunter-frontend/dist --insighthunter-v3 insight-hunter-frontend",
     "deploy": "npm run deploy:backend && npm run deploy:frontend"
   },
   "devDependencies": {
