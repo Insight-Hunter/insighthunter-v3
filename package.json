@@ -17,7 +17,7 @@
     "dev:frontend": "npm run dev --workspace=insight-hunter-frontend",
     "dev": "npm run dev:backend && npm run dev:frontend",
 
-    "deploy:backend": "npm run build:backend && wrangler deploy ./insight-hunter-backend/dist/index.js --name insight-hunter-backend",
+    "deploy:backend": "npm run build:backend && wrangler deploy --config insight-hunter-backend/wrangler.toml",
     "deploy:frontend": "npm run build:frontend && wrangler pages deploy insight-hunter-frontend/dist --project-name insight-hunter-frontend",
     "deploy": "npm run deploy:backend && npm run deploy:frontend"
   },
