@@ -1,0 +1,8 @@
+name = "insight-hunter-frontend"
+type = "javascript"
+project_name = "insight-hunter-frontend"
+account_id = "<YOUR_CLOUDFLARE_ACCOUNT_ID>"
+
+[build]
+command = "npm run build"
+directory = "dist"
