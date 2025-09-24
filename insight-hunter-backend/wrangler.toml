@@ -20,5 +20,5 @@ zone_id = "hunterturner.com"
 [[d1_databases]]
 binding = "USERS_DB"
 database_name = "insight-hunter-v2"
-
+database_id = "708836ad-602f-4f95-a6b5-cd31a7cd188d"
  
