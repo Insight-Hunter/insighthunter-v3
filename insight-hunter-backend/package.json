@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=neutral --target=es2020",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && npx wrangler deploy"
   },
   "dependencies": {
     "@tsndr/cloudflare-worker-jwt": "^3.2.0",
