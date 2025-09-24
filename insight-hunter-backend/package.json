@@ -1,9 +1,11 @@
 {
-  "name": "insighthuter-v3",
+  "name": "insight-hunter-backend",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=neutral --target=es2020",
-    "publish": "wrangler publish"
+    "dev": "node src/index.ts",
+    "deploy": "npm run build && wrangler deploy --config wrangler.toml"
   },
   "dependencies": {
     "@tsndr/cloudflare-worker-jwt": "^3.2.0",
@@ -11,6 +13,6 @@
   },
   "devDependencies": {
     "esbuild": "^0.25.10",
-    "wrangler": "^4.38.0"
+    "wrangler": "^4.39.0"
   }
 }
