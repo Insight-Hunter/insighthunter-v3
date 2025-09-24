@@ -1,7 +1,10 @@
 {
   "name": "insight-hunter-monorepo",
   "private": true,
-  "workspaces": ["insight-hunter-frontend", "insight-hunter-backend"],
+  "workspaces": [
+    "insight-hunter-frontend",
+    "insight-hunter-backend"
+  ],
   "scripts": {
     "setup:env": "cp .env.example .env",
     "build:backend": "npm run build --workspace=insight-hunter-backend",
@@ -11,8 +14,11 @@
     "dev:frontend": "npm run dev --workspace=insight-hunter-frontend",
     "build": "npm run build:backend && npm run build:frontend",
     "dev": "npm run dev:backend && npm run dev:frontend",
-    "deploy:backend": "wrangler publish ./insight-hunter-backend/dist",
-    "deploy:frontend": "wrangler pages publish ./insight-hunter-frontend/dist --insighthunter-v3 insight-hunter-frontend",
+    "deploy:backend": "npx wrangler publish ./insight-hunter-backend/dist",
+    "deploy:frontend": "npx wrangler pages publish ./insight-hunter-frontend/dist --insighthunter-v3 insight-hunter-frontend",
     "deploy": "npm run deploy:backend && npm run deploy:frontend"
+  },
+  "devDependencies": {
+    "wrangler": "^4.39.0"
   }
 }
