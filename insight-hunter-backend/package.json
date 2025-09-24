@@ -1,5 +1,5 @@
 {
-  "name": "insight-hunter-api",
+  "name": "insighthuter-v3",
   "type": "module",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=neutral --target=es2020",
