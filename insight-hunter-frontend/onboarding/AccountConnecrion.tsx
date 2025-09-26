@@ -12,6 +12,7 @@ const AccountConnection = () => {
   return (
     <div>
       <h2>Connect Your Financial Accounts</h2>
+      <button onClick={connectPlaid}>Connect Your Bank</button>
       <button onClick={connectQuickBooks}>Connect QuickBooks</button>
       <button onClick={connectXero}>Connect Xero</button>
       <button onClick={() => alert('Skipping account connection may limit features.')}>Skip for Now</button>
