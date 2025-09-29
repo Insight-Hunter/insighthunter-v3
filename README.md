@@ -26,17 +26,23 @@ Insight Hunter is building the **next generation of financial intelligence**—a
 
 ## We provide solutions for common small business needs
 
+<p align="center">
+  <img src="./docs/images/solution.png" alt="Solution Graphic" width="600"/>
+</p>  
+
 Insight Hunter delivers **Auto-CFO capabilities** through an intuitive dashboard:  
 - Upload CSVs or connect accounts → get **instant AI-powered reports**  
 - Real-time **forecasting & cash flow predictions**  
 - Automated **alerts for risks and opportunities**  
-- A **client portal** for CFOs to deliver reports effortlessly  esses
-
-> We turn raw financial data into **actionable insights**, saving hours of work and enabling smarter decisions.  
+- A **client portal** for CFOs to deliver reports effortlessly  
 
 ---
 
 ## 🌟 Key Features  
+
+<p align="center">
+  <img src="./docs/images/dashboard_mockup.png" alt="Dashboard Mockup" width="700"/>
+</p>  
 
 ✅ **AI-Generated Financial Reports** – P&L, balance sheets, expense summaries  
 ✅ **Forecasting Engine** – Predict revenue, expenses, and cash flow trends  
@@ -46,7 +52,11 @@ Insight Hunter delivers **Auto-CFO capabilities** through an intuitive dashboard
 
 ---
 
-## 🛠️ Tech Stack  
+## 🛠️ Tech Architecture  
+
+<p align="center">
+  <img src="./docs/images/architecture.png" alt="System Architecture Diagram" width="750"/>
+</p>  
 
 - **Frontend:** Vite + React + Chart.js + Noodl  
 - **Backend:** FastAPI (Python)  
@@ -56,7 +66,7 @@ Insight Hunter delivers **Auto-CFO capabilities** through an intuitive dashboard
 
 ---
 
-## 📂 Project Structure  go
+## 📂 Project Structure  
 
 ```bash
 insighthunter_v3/
@@ -64,6 +74,7 @@ insighthunter_v3/
 │── backend/            # FastAPI server (AI insights, forecasting, APIs)
 │── shared/             # Shared code (types, utils, constants)
 │── scripts/            # Automation and deployment scripts
+│── docs/images/        # Visuals (mockups, diagrams, pitch graphics)
 │── .env.example        # Example environment variables
 │── wrangler.toml       # Cloudflare configuration
-│── README.md           # Project documentation
+│── README.md           # Project documentatio
