@@ -16,19 +16,21 @@
     "dev": "npm run dev:backend && npm run dev:frontend",
     "deploy:backend:dev": "npm run build:backend && wrangler deploy --config insight-hunter-backend/wrangler.toml --env=dev",
     "deploy:backend:prod": "npm run build:backend && wrangler deploy --config insight-hunter-backend/wrangler.toml --env=prod",
-    "deploy:frontend:dev": "npm run build:frontend && wrangler pages deploy insight-hunter-frontend/dist --project-name insight-hunter-frontend-dev",
-    "deploy:frontend:prod": "npm run build:frontend && wrangler pages deploy insight-hunter-frontend/dist --project-name insight-hunter-frontend-prod",
+    "deploy:frontend:dev": "npm run build:frontend && wrangler pages deploy insight-hunter-frontend/dist --insighthunter_v3 insight-hunter-frontend-dev",
+    "deploy:frontend:prod": "npm run build:frontend && wrangler pages deploy insight-hunter-frontend/dist --insighthunter_v3insight-hunter-frontend-prod",
     "deploy:dev": "npm run deploy:backend:dev && npm run deploy:frontend:dev",
     "deploy:prod": "npm run deploy:backend:prod && npm run deploy:frontend:prod"
   },
   "devDependencies": {
-    "wrangler": "^4.39.0"
+    "wrangler": "^4.40.2"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.13.4",
+    "@types/chart.js": "^2.9.35",
     "build": "^0.1.4",
     "jsx-runtime": "^1.2.0",
     "jxLoader": "^0.1.1",
+    "react": "^19.1.1",
     "timespan": "^2.3.0",
     "uglify-js": "^3.19.3",
     "vite": "^7.1.7"
