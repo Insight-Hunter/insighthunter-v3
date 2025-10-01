@@ -25,9 +25,44 @@ async function apiPost(path: string,  any, isMultipart = false) {
 
   if (!res.ok) {
     const errorText = await res.text();
+
     throw new Error(errorText || 'API request failed');
   }
   return res.json();
+    throw new Error(errorText || 'API POST request failed');
+  }
+  return res.json();
+}
+
+export async function connectAccount(accountType: string) {
+  // This function initiates account linking (OAuth typically starts here)
+  return apiPost('/accounts/connect', { accountType });
+}
+
+export async function uploadInvoiceFile(file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+  return apiPost('/invoices/upload', formData, true);
+}
+
+export async function connectWallet(walletType: string) {
+  return apiPost('/wallets/connect', { walletType });
+}
+
+export async function savePreferences(preferences: { alertsEnabled: boolean }) {
+  return apiPost('/user/profile', { preferences });
+}
+
+export async function saveBusinessInfo(token: string, businessName: string, industry: string) {
+  // Example API for saving business info - adjust API path as needed
+  const res = await fetch(`${API_BASE}/business/info`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ businessName, industry })
+  });
+  if (!res.ok) throw new Error('Failed to save business info');
+  return res.json();
+
 }
 
 export async function connectAccount(accountType: string) {

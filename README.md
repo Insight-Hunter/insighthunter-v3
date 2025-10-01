@@ -1,90 +1,80 @@
-# React + Vite + Hono + Cloudflare Workers
+# 🚀 Insight Hunter v3  
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/vite-react-template)
+**AI-Powered Auto-CFO Platform for Freelancers, Small Firms, and Fractional CFOs**  
 
-This template provides a minimal setup for building a React application with TypeScript and Vite, designed to run on Cloudflare Workers. It features hot module replacement, ESLint integration, and the flexibility of Workers deployments.
+Insight Hunter is building the **next generation of financial intelligence**—a platform that automates CFO tasks such as reporting, forecasting, and cash flow management.  Insight Hunter is an **Auto-CFO SaaS platform** that automates core financial management tasks for freelancers, small firms, and fractional CFOs. It delivers **AI-powered dashboards, reports, and forecasting tools** that make enterprise-grade insights accessible and affordable.
 
-![React + TypeScript + Vite + Cloudflare Workers](https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/fc7b4b62-442b-4769-641b-ad4422d74300/public)
+---
 
-<!-- dash-content-start -->
+## 🚀 Features
 
-🚀 Supercharge your web development with this powerful stack:
+- **AI-Generated Financial Reports**  
+  Upload CSVs (bank transactions, P&L, balance sheets) and generate automated insights.
 
-- [**React**](https://react.dev/) - A modern UI library for building interactive interfaces
-- [**Vite**](https://vite.dev/) - Lightning-fast build tooling and development server
-- [**Hono**](https://hono.dev/) - Ultralight, modern backend framework
-- [**Cloudflare Workers**](https://developers.cloudflare.com/workers/) - Edge computing platform for global deployment
+- **Forecasting Engine**  
+  Predict cash flow, revenues, and expenses with machine learning models.
 
-### ✨ Key Features
+- **Dashboard & Visualization**  
+  Real-time KPIs, charts, and graphs powered by Chart.js.
 
-- 🔥 Hot Module Replacement (HMR) for rapid development
-- 📦 TypeScript support out of the box
-- 🛠️ ESLint configuration included
-- ⚡ Zero-config deployment to Cloudflare's global network
-- 🎯 API routes with Hono's elegant routing
-- 🔄 Full-stack development setup
-- 🔎 Built-in Observability to monitor your Worker
+- **Client Portal**  
+  Simple P&L visualization and reporting for end clients.
 
-Get started in minutes with local development or deploy directly via the Cloudflare dashboard. Perfect for building modern, performant web applications at the edge.
+- **Alerts & Notifications**  
+  Automated reminders for cash flow risks, expense spikes, and revenue changesny 
 
-<!-- dash-content-end -->
 
-## Getting Started
+## We provide solutions for common small business needs
 
-To start a new project with this template, run:
+<p align="center">
+  <img src="./docs/images/solution.png" alt="Solution Graphic" width="600"/>
+</p>  
 
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/vite-react-template
-```
+Insight Hunter delivers **Auto-CFO capabilities** through an intuitive dashboard:  
+- Upload CSVs or connect accounts → get **instant AI-powered reports**  
+- Real-time **forecasting & cash flow predictions**  
+- Automated **alerts for risks and opportunities**  
+- A **client portal** for CFOs to deliver reports effortlessly  
 
-A live deployment of this template is available at:
-[https://react-vite-template.templates.workers.dev](https://react-vite-template.templates.workers.dev)
+---
 
-## Development
+## 🌟 Key Features  
 
-Install dependencies:
+<p align="center">
+  <img src="./docs/images/dashboard_mockup.png" alt="Dashboard Mockup" width="700"/>
+</p>  
 
-```bash
-npm install
-```
+✅ **AI-Generated Financial Reports** – P&L, balance sheets, expense summaries  
+✅ **Forecasting Engine** – Predict revenue, expenses, and cash flow trends  
+✅ **KPI Dashboard** – Interactive charts and performance metrics  
+✅ **Client Portal** – Simple financial reporting for end clients  
+✅ **PDF & Export Tools** – Professional, shareable reports  
 
-Start the development server with:
+---
 
-```bash
-npm run dev
-```
+## 🛠️ Tech Architecture  
 
-Your application will be available at [http://localhost:5173](http://localhost:5173).
+<p align="center">
+  <img src="./docs/images/architecture.png" alt="System Architecture Diagram" width="750"/>
+</p>  
 
-## Production
+- **Frontend:** Vite + React + Chart.js + Noodl  
+- **Backend:** FastAPI (Python)  
+- **Database & Storage:** Supabase + Cloudflare R2  
+- **Exporting:** jsPDF (report automation)  
+- **Deployment:** Cloudflare Workers & Pages  
 
-Build your project for production:
+---
 
-```bash
-npm run build
-```
-
-Preview your build locally:
-
-```bash
-npm run preview
-```
-
-Deploy your project to Cloudflare Workers:
+## 📂 Project Structure  
 
 ```bash
-npm run build && npm run deploy
-```
-
-Monitor your workers:
-
-```bash
-npx wrangler tail
-```
-
-## Additional Resources
-
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [Vite Documentation](https://vitejs.dev/guide/)
-- [React Documentation](https://reactjs.org/)
-- [Hono Documentation](https://hono.dev/)
+insighthunter_v3/
+│── frontend/           # React + Vite client (dashboard, charts, reports)
+│── backend/            # FastAPI server (AI insights, forecasting, APIs)
+│── shared/             # Shared code (types, utils, constants)
+│── scripts/            # Automation and deployment scripts
+│── docs/images/        # Visuals (mockups, diagrams, pitch graphics)
+│── .env.example        # Example environment variables
+│── wrangler.toml       # Cloudflare configuration
+│── README.md           # Project documentatio
