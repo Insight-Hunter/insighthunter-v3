@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   LineElement,
@@ -7,11 +8,10 @@ import {
   PointElement,
   Tooltip,
   Legend,
-  Filler,
+  Filler,m
 } from 'chart.js';
-import './App.css';
-import { useState, useEffect } from 'react';
 
+import './App.css';
 import AuthForm from '../components/AuthForm';
 import BusinessSetup from '../components/BusinessSetup';
 import OnboardingWelcome from '../components/OnboardingWelcome';
@@ -69,11 +69,9 @@ const alerts = [
 
 const customers = [
   { id: "CUST_001", name: "TechCorp Inc", monthly_value: 4500.50, lifetime_value: 18200.75, status: "active" },
-  { id: "CUST_002", name: "Digital Solutions LLC", monthly_value: 3200.25, lifetime_value: 12800.99, status: "active" },
-  // ... more customers
+  { id: "CUST_002", name: "Digital Solutions LLC", monthly_value: 3200.25, lifetime_value: 12800.99, status: "active" }
 ];
 
-// Utility to format currency
 const formatCurrency = (val: number) =>
   "$" + val.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
@@ -88,7 +86,17 @@ function App() {
   const [businessInfo, setBusinessInfo] = useState<{ name: string; industry: string } | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [step, setStep] = useState<'business'|'done'>('business');
+  const [step, setStep] = useState<'auth' | 'business' | 'onboarding' | 'dashboard'>('auth');
+
+  const handleAuthSuccess = (email: string) => {
+    setUserEmail(email);
+    const onboarded = localStorage.getItem('insightHunterOnboarded');
+    if (!onboarded) {
+      setStep('business');
+    } else {
+      setStep('dashboard');
+    }
+  };
 
   const handleBusinessSubmit = async (businessName: string, industry: string) => {
     try {
@@ -96,20 +104,28 @@ function App() {
       if (!token) throw new Error('Not authenticated');
       await saveBusinessInfo(token, businessName, industry);
       setBusinessInfo({ name: businessName, industry });
-      setStep('done');
-      setShowOnboarding(true);
+      setStep('onboarding');
     } catch (err) {
       alert('Error saving business info');
     }
   };
 
-  useEffect(() => {
-    const onboarded = localStorage.getItem('insightHunterOnboarded');
-    setShowOnboarding(!onboarded);
-  }, []);
+  const completeOnboarding = () => {
+    localStorage.setItem('insightHunterOnboarded', 'true');
+    setShowOnboarding(false);
+    setStep('dashboard');
+  };
 
-  if (!userEmail) {
-    return <AuthForm onAuthSuccess={email => setUserEmail(email)} />;
+  useEffect(() => {
+    if (step === 'onboarding') {
+      setShowOnboarding(true);
+    } else {
+      setShowOnboarding(false);
+    }
+  }, [step]);
+
+  if (step === 'auth') {
+    return <AuthForm onAuthSuccess={handleAuthSuccess} />;
   }
 
   if (step === 'business') {
@@ -117,10 +133,9 @@ function App() {
   }
 
   if (showOnboarding) {
-    return <OnboardingWelcome onComplete={() => setShowOnboarding(false)} />;
+    return <OnboardingWelcome onComplete={completeOnboarding} />;
   }
 
-  // Chart data preparation
   const months = financialData.map(d => d.month);
   const revenue = financialData.map(d => d.revenue);
   const expenses = financialData.map(d => d.operating_expenses + d.marketing_expenses + d.cogs);

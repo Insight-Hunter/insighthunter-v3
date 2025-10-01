@@ -1,112 +1,157 @@
-const express = require('express');
-const router = express.Router();
+import { Hono } from 'hono';
+ import bcrypt from 'bcryptjs';
+import jwt from '.ENV';
 
-// User Signup
-router.post('/api/signup', (req, res) => {
-  const { email, password, name } = req.body;
-  // Hash password, create user in DB, return token and user info
-  res.json({ userId: '123', email, token: 'jwt-token' });
+const JWT_SECRET = process.env.JWT_SECRET || 'ENV.JWT_SECRET';
+
+// Simple multipart parser for demo purposes
+async function parseMultipartFormData(rawBuffer: ArrayBuffer, contentType: string) {
+  const CRLF = '\r\n';
+  const parts: { name: string; filename?: string;  Uint8Array }[] = [];
+
+  const boundaryMatch = contentType.match(/boundary=(.+)$/);
+  if (!boundaryMatch) return parts;
+  const boundary = '--' + boundaryMatch[1];
+
+  const decoder = new TextDecoder('utf-8');
+  const text = decoder.decode(rawBuffer);
+
+  const rawParts = text.split(boundary).filter(p => p && p !== '--\r\n');
+  for (const part of rawParts) {
+    const [headerPart, ...rest] = part.split(`${CRLF}${CRLF}`);
+    if (!headerPart || !rest.length) continue;
+    const bodyPart = rest.join(`${CRLF}${CRLF}`).trimEnd();
+    const nameMatch = headerPart.match(/name="([^"]+)"/);
+    const filenameMatch = headerPart.match(/filename="([^"]+)"/);
+    if (!nameMatch) continue;
+    const name = nameMatch[1];
+    const filename = filenameMatch ? filenameMatch[1] : undefined;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(bodyPart); // Simplified UTF-8 text only
+
+    parts.push({ name, filename, data });
+  }
+
+  return parts;
+}
+
+const onboarding = new Hono();
+
+// ----- User Signup -----
+onboarding.post('/signup', async (c) => {
+  const { email, password, name } = await c.req.json();
+
+  
+  return c.json({ userId: '123', email, token: 'jwt-token' });
+}); 
+
+// ----- User Login -----
+onboarding.post('/login', async (c) => {
+  const { email, password } = await c.req.json();
+  // TODO: Authenticate user and issue JWT token
+  return c.json({ token: 'jwt-token', userInfo: { email, name: 'User' } });
 });
 
-// User Login
-router.post('/api/login', (req, res) => {
-  const { email, password } = req.body;
-  // Authenticate, return JWT token & user info
-  res.json({ token: 'jwt-token', userInfo: { email, name: 'User' } });
-});
-
-// Get User Profile
-router.get('/api/user/profile', (req, res) => {
-  // Auth middleware obtains user ID
-  res.json({
+// ----- Get User Profile -----
+onboarding.get('/user/profile', (c) => {
+  // TODO: Fetch user profile & preferences using auth user ID
+  return c.json({
     email: 'user@example.com',
     name: 'User',
     preferences: { alertsEnabled: true, reportFrequency: 'weekly' },
-    accounts: [{ type: 'quickbooks', status: 'connected' }],
+    accounts: [{ type: 'quickbooks', status: 'connected' }]
   });
 });
 
-// Update User Profile
-router.put('/api/user/profile', (req, res) => {
-  const preferences = req.body.preferences;
-  // Update DB preferences for user
-  res.json({ success: true });
+// ----- Update User Profile -----
+onboarding.put('/user/profile', async (c) => {
+  const { preferences } = await c.req.json();
+  // TODO: Save updated user preferences
+  return c.json({ success: true });
 });
 
-// Account Connect
-router.post('/api/accounts/connect', (req, res) => {
-  const { accountType } = req.body;
-  // Start OAuth flow or direct connection process
-  res.json({ connectionId: 'abc123', status: 'pending' });
+// ----- Account Connect -----
+onboarding.post('/accounts/connect', async (c) => {
+  const { accountType } = await c.req.json();
+  // TODO: Initiate OAuth flow, return redirect URL or status
+  return c.json({ connectionId: 'abc123', status: 'pending', redirectUrl: 'https://oauth-link.example.com' });
 });
 
-// Account Status
-router.get('/api/accounts/status', (req, res) => {
-  res.json({ accounts: [{ type: 'quickbooks', status: 'connected' }] });
+// ----- Account Status -----
+onboarding.get('/accounts/status', (c) => {
+  // TODO: Return linked accounts for user
+  return c.json({ accounts: [{ type: 'quickbooks', status: 'connected' }] });
 });
 
-// Account Disconnect
-router.delete('/api/accounts/disconnect', (req, res) => {
-  const { accountId } = req.body;
-  // Remove linked account
-  res.json({ success: true });
+// ----- Account Disconnect -----
+onboarding.delete('/accounts/disconnect', async (c) => {
+  const { accountId } = await c.req.json();
+  // TODO: Remove linked account
+  return c.json({ success: true });
 });
 
-// Invoice Upload
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-router.post('/api/invoices/upload', upload.single('file'), (req, res) => {
-  const file = req.file; // Process and parse file
-  res.json({ uploadId: 'invoice123', status: 'uploaded' });
+// ----- Wallet Connect -----
+onboarding.post('/wallets/connect', async (c) => {
+  const { walletType } = await c.req.json();
+  // TODO: Initiate wallet sync, OAuth flow
+  return c.json({ walletId: 'wallet123', status: 'connected', redirectUrl: 'https://wallet-oauth.example.com' });
 });
 
-// Get Invoices
-router.get('/api/invoices', (req, res) => {
-  res.json([{ invoiceId: '1', details: { amount: 100, dueDate: '2025-10-01' } }]);
+// ----- Wallet Status -----
+onboarding.get('/wallets/status', (c) => {
+  // TODO: Return wallet connection status
+  return c.json({ wallets: [{ walletType: 'paypal', status: 'connected' }] });
 });
 
-// Update Invoice Settings
-router.put('/api/invoices/settings', (req, res) => {
-  const { categories, reminders } = req.body;
-  // Save invoice preferences
-  res.json({ success: true });
+// ----- Wallet Disconnect -----
+onboarding.delete('/wallets/disconnect', async (c) => {
+  const { walletId } = await c.req.json();
+  // TODO: Remove wallet link
+  return c.json({ success: true });
 });
 
-// Wallet Connect
-router.post('/api/wallets/connect', (req, res) => {
-  const { walletType } = req.body;
-  // Handle wallet connection
-  res.json({ walletId: 'wallet123', status: 'connected' });
+// ----- Notifications Preferences (Get) -----
+onboarding.get('/notifications/preferences', (c) => {
+  // TODO: Fetch notification preferences
+  return c.json({ alertsEnabled: true, types: ['cashflow', 'kpi'] });
 });
 
-// Wallet Status
-router.get('/api/wallets/status', (req, res) => {
-  res.json({ wallets: [{ walletType: 'paypal', status: 'connected' }] });
+// ----- Notifications Preferences (Update) -----
+onboarding.put('/notifications/preferences', async (c) => {
+  const prefs = await c.req.json();
+  // TODO: Update notification preferences
+  return c.json({ success: true });
 });
 
-// Wallet Disconnect
-router.delete('/api/wallets/disconnect', (req, res) => {
-  const { walletId } = req.body;
-  // Remove wallet link
-  res.json({ success: true });
+// ----- Onboarding Status -----
+onboarding.get('/onboarding/status', (c) => {
+  // TODO: Return onboarding step/status
+  return c.json({ step: 'invoice_setup' });
 });
 
-// Notifications Preferences
-router.get('/api/notifications/preferences', (req, res) => {
-  res.json({ alertsEnabled: true, types: ['cashflow', 'kpi'] });
+// ----- Onboarding Complete -----
+onboarding.post('/onboarding/complete', (c) => {
+  // TODO: Mark onboarding complete for user
+  return c.json({ success: true });
 });
 
-router.put('/api/notifications/preferences', (req, res) => {
-  res.json({ success: true });
+// ----- Invoice Upload (Multipart) -----
+onboarding.post('/invoices/upload', async (c) => {
+  const contentType = c.req.headers.get('content-type') || '';
+  if (!contentType.includes('multipart/form-data')) {
+    return c.text('Invalid content type', 400);
+  }
+
+  const rawBody = await c.req.arrayBuffer();
+  const parts = await parseMultipartFormData(rawBody, contentType);
+  const filePart = parts.find(p => p.name === 'file');
+  if (!filePart) {
+    return c.text('File part missing', 400);
+  }
+
+  // TODO: Store filePart.data securely in Durable Object, KV or external storage
+
+  return c.json({ uploadId: 'invoice123', status: 'uploaded' });
 });
 
-// Onboarding Status
-router.get('/api/onboarding/status', (req, res) => {
-  res.json({ step: 'invoice_setup' });
-});
-
-router.post('/api/onboarding/complete', (req, res) => {
-  res.json({ success: true });
-});
-
-module.exports = router;
+export default onboarding;
