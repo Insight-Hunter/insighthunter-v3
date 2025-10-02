@@ -10,9 +10,23 @@ const AccountConnection: React.FC<{ onNext: () => void; onBack: () => void }> = 
   const handleConnect = async () => {
     setError('');
     setLoading(true);
-    try {
+    try { 
       if (accountType === 'quickbooks') {
-        // Redirect to backend QuickBooks OAuth link endpoint to start OAuth flow
+        const handleQuickBooksOAuth = async () => {
+          try {
+            const res = await fetch('/api/onboarding/quickbooks-auth-link', {
+              headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+              });
+      
+              if (!res.ok) throw new Error('Failed to get QuickBooks auth URL');
+              const data = await res.json();
+              window.location.href = data.authUrl;
+            } catch (e) {
+              setError(e instanceof Error ? e.message : 'Unknown OAuth error');
+            }
+      };
+
+        
         window.location.href = '/api/onboarding/quickbooks-auth-link';
         return;
       }
@@ -55,6 +69,7 @@ const AccountConnection: React.FC<{ onNext: () => void; onBack: () => void }> = 
     setLoading(false);
   };
 
+
   return (
     <div style={{ padding: '2rem' }}>
       <h2>Connect your Financial Accounts</h2>
@@ -86,3 +101,13 @@ const AccountConnection: React.FC<{ onNext: () => void; onBack: () => void }> = 
 };
 
 export default AccountConnection;
+
+export async function analyzeFinancialData(records: Array<Record<string, string>>): Promise<any> {
+  // Placeholder - integrate your AI or ML processing here
+
+  // Example: Return a simple summary
+  return {
+    totalRecords: records.length,
+    insights: 'Financial analysis coming soon.'
+  };
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 type SummaryData = {
+  personalizedInsights: string;
   businessInfo: { companyName: string; industry: string } | null;
   accountConnections: Array<{ accountType: string; accountDetails: string }>;
   invoiceSetup: { invoicePrefix: string; dueDays: number } | null;
@@ -52,6 +53,15 @@ const Summary: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       <h3>Preferences</h3>
       <p>Email Notifications: {summary.preferences?.notifyEmail ? 'Yes' : 'No'}</p>
       <p>Report Frequency: {summary.preferences?.reportFrequency || 'N/A'}</p>
+
+      <div style={{ padding: '2rem' }}>
+    {/* Existing summary content */}
+
+    <h3>Personalized Insights</h3>
+    <p>{summary.personalizedInsights || 'No insights yet.'}</p>
+
+    <button onClick={onBack} style={{ marginTop: '1rem' }}>Back</button>
+      </div>
 
       <button onClick={onBack} style={{ marginTop: '1rem' }}>Back</button>
     </div>

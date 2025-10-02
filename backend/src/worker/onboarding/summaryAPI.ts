@@ -1,5 +1,6 @@
 import { getUserId } from '../auth';
-import { Env } from '../../types/env;
+import { Env } from '../../types/env';
+import { generatePersonalizedInsights } from '../ai/onboardingAI';
 
 export async function onRequestGet({ request, env }: { request: Request; env: Env }) {
   const userId = getUserId(request);
@@ -11,8 +12,11 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
   const walletSync = JSON.parse(await env.ONBOARDING_KV.get(`${userId}:walletSync`) || '{}');
   const preferences = JSON.parse(await env.ONBOARDING_KV.get(`${userId}:preferences`) || '{}');
 
+  const onboardingData = { businessInfo, accountConnections, invoiceSetup, walletSync, preferences };
+  const aiMessage = await generatePersonalizedInsights(onboardingData);
+
   return new Response(
-    JSON.stringify({ businessInfo, accountConnections, invoiceSetup, walletSync, preferences }),
+    JSON.stringify({ businessInfo, accountConnections, invoiceSetup, walletSync, preferences, onboardingData, personalizedInsights: aiMessage }),
     { status: 200, headers: { 'Content-Type': 'application/json' } }
   );
 }
