@@ -1,5 +1,5 @@
 {
-  "name": "insight-hunter",
+  "name": "insighthunter-v3",
   "private": true,
   "workspaces": [
     "frontend",
@@ -7,7 +7,11 @@
   ],
   "scripts": {
     "install:all": "npm install",
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspaces && yarn workspace backend build && yarn workspace frontend build",
+    "start": "yarn workspace backend start & yarn workspace frontend start",
     "dev": "npm run dev --workspace backend & npm run dev --workspace frontend"
-  }
+  },
+   "devDependencies": {
+    "typescript": "^5.0.0"
+   }
 }
