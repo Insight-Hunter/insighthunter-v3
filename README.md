@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 # 🚀 Insight Hunter v3  
 
 **AI-Powered Auto-CFO Platform for Freelancers, Small Firms, and Fractional CFOs**  
@@ -78,3 +80,4 @@ insighthunter_v3/
 │── .env.example        # Example environment variables
 │── wrangler.toml       # Cloudflare configuration
 │── README.md           # Project documentatio
+>>>>>>> 7ae18bcac6c9bf41fc0ad1517a62aea32cf53afa
