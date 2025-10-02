@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+
 # 🚀 Insight Hunter v3  
 
 **AI-Powered Auto-CFO Platform for Freelancers, Small Firms, and Fractional CFOs**  
