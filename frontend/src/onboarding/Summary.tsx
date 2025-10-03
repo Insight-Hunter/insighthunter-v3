@@ -11,26 +11,45 @@ type SummaryData = {
 
 const Summary: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [summary, setSummary] = useState<SummaryData | null>(null);
+  const [aiMessage, setAiMessage] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
-    (async () => {
+    async function fetchSummary() {
       try {
-        const res = await fetch('/api/onboarding/summary');
+        const res = await fetch('/api/onboarding/summary', {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+        });
         if (!res.ok) throw new Error('Failed to load summary');
         const data = await res.json();
         setSummary(data);
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Unknown error');
       }
-    })();
+    }
+
+    async function fetchAIMessage() {
+      try {
+        const res = await fetch('/api/onboarding/onboarding-ai', {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+        });
+        if (!res.ok) throw new Error('AI personalization failed');
+        const data = await res.json();
+        setAiMessage(data.aiMessage);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Unknown AI error');
+      }
+    }
+
+    fetchSummary();
+    fetchAIMessage();
   }, []);
+      if (error) return <p style={{ color: 'red' }}>{error}</p>;
+      if (!summary) return <p>Loading...</p>;
 
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
-  if (!summary) return <p>Loading...</p>;
-
-  return (
-    <div style={{ padding: '2rem' }}>
+      return (
+      <div style={{ padding: '2rem' }}>
+   
       <h2>Summary</h2>
       <h3>Business Info</h3>
       <p>Company: {summary.businessInfo?.companyName || 'N/A'}</p>
@@ -59,6 +78,7 @@ const Summary: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
     <h3>Personalized Insights</h3>
     <p>{summary.personalizedInsights || 'No insights yet.'}</p>
+    <p>{aiMessage}</p>
 
     <button onClick={onBack} style={{ marginTop: '1rem' }}>Back</button>
       </div>

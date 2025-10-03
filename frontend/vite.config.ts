@@ -5,9 +5,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // Proxy API requests to local backend during development
+      // Proxy API requests to backend Worker during development
       '/api': {
-        target: 'http://127.0.0.1:8787',
+        target: 'http://localhost:8787',
         changeOrigin: true,
         secure: false,
       },
@@ -18,7 +18,6 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // Optional: setup path aliases if needed
       '@': '/src',
     },
   },
