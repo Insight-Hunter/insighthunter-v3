@@ -1,6 +1,3 @@
-# wrangler.toml at the root of your project
-# This file defines all your Workers and how they're routed
-
 # Authentication Worker
 [[services]]
 name = "insighthunter-auth"
