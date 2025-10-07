@@ -1,0 +1,88 @@
+# wrangler.toml at the root of your project
+# This file defines all your Workers and how they're routed
+
+# Authentication Worker
+[[services]]
+name = "insighthunter-auth"
+main = "workers/auth/index.js"
+compatibility_date = "2024-01-01"
+
+# Route all /auth/* requests to this Worker
+routes = [
+  { pattern = "app.insighthunter.com/auth/*", zone_name = "insighthunter.com" }
+]
+
+[[services.d1_databases]]
+binding = "DB"
+database_name = "insighthunter-production"
+database_id = "your-database-id"
+
+[services.vars]
+JWT_SECRET = "your-jwt-secret"
+
+# Data Ingestion Worker
+[[services]]
+name = "insighthunter-ingest"
+main = "workers/ingest/index.js"
+compatibility_date = "2024-01-01"
+
+routes = [
+  { pattern = "app.insighthunter.com/api/upload/*", zone_name = "insighthunter.com" },
+  { pattern = "app.insighthunter.com/api/transactions/*", zone_name = "insighthunter.com" }
+]
+
+[[services.d1_databases]]
+binding = "DB"
+database_name = "insighthunter-production"
+database_id = "your-database-id"
+
+[[services.r2_buckets]]
+binding = "STORAGE"
+bucket_name = "insighthunter-uploads"
+
+[[services.ai]]
+binding = "AI"
+
+# Analytics Worker
+[[services]]
+name = "insighthunter-analytics"
+main = "workers/analytics/index.js"
+compatibility_date = "2024-01-01"
+
+routes = [
+  { pattern = "app.insighthunter.com/api/forecast/*", zone_name = "insighthunter.com" },
+  { pattern = "app.insighthunter.com/api/insights/*", zone_name = "insighthunter.com" }
+]
+
+[[services.d1_databases]]
+binding = "DB"
+database_name = "insighthunter-production"
+database_id = "your-database-id"
+
+[[services.kv_namespaces]]
+binding = "CACHE"
+id = "your-kv-namespace-id"
+
+[[services.ai]]
+binding = "AI"
+
+# Management Worker
+[[services]]
+name = "insighthunter-management"
+main = "workers/management/index.js"
+compatibility_date = "2024-01-01"
+
+routes = [
+  { pattern = "app.insighthunter.com/api/clients/*", zone_name = "insighthunter.com" },
+  { pattern = "app.insighthunter.com/api/alerts/*", zone_name = "insighthunter.com" },
+  { pattern = "app.insighthunter.com/api/user/*", zone_name = "insighthunter.com" }
+]
+
+[[services.d1_databases]]
+binding = "DB"
+database_name = "insighthunter-production"
+database_id = "your-database-id"
+
+[[services.kv_namespaces]]
+binding = "CACHE"
+id = "your-kv-namespace-id"
