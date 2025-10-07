@@ -1,85 +1,128 @@
+# wrangler.toml
+# Complete Cloudflare Workers configuration for Insight Hunter
+
 # Authentication Worker
+# Handles all user authentication: registration, login, password resets, token verification
+# Routes all /auth/* requests to this Worker
 [[services]]
 name = "insighthunter-auth"
 main = "workers/auth/index.js"
 compatibility_date = "2024-01-01"
 
-# Route all /auth/* requests to this Worker
+# This Worker handles authentication endpoints
+# Everything under /auth goes here, like /auth/login, /auth/register, /auth/verify
 routes = [
-  { pattern = "app.insighthunter.com/auth/*", zone_name = "insighthunter.com" }
+  { pattern = "api.insighthunter.app/auth/*", zone_name = "insighthunter.app" }
 ]
 
+# Bindings give this Worker access to resources it needs
+# The database binding lets it query and update the users table
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id"
+database_id = "your-database-id-here"
 
+# Environment variables this Worker needs
+# JWT_SECRET must be a long random string for security
+# Never commit the actual secret to your git repository
 [services.vars]
-JWT_SECRET = "your-jwt-secret"
+JWT_SECRET = "your-jwt-secret-change-this-to-random-string"
+CORS_ORIGIN = "https://app.insighthunter.app"
 
 # Data Ingestion Worker
+# Handles CSV uploads, file parsing, and inserting transactions into the database
+# This Worker needs more resources because it processes large files
 [[services]]
 name = "insighthunter-ingest"
 main = "workers/ingest/index.js"
 compatibility_date = "2024-01-01"
 
+# Routes for upload operations and transaction queries
+# /api/upload for POST requests with CSV files
+# /api/transactions for GET requests to retrieve transaction data
 routes = [
-  { pattern = "app.insighthunter.com/api/upload/*", zone_name = "insighthunter.com" },
-  { pattern = "app.insighthunter.com/api/transactions/*", zone_name = "insighthunter.com" }
+  { pattern = "api.insighthunter.app/api/upload", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/transactions/*", zone_name = "insighthunter.app" }
 ]
 
+# This Worker needs database access to store transactions
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id"
+database_id = "your-database-id-here"
 
+# R2 bucket for storing the original CSV files
+# This gives you an audit trail and lets users re-download their uploads
 [[services.r2_buckets]]
 binding = "STORAGE"
 bucket_name = "insighthunter-uploads"
 
+# Workers AI binding for categorizing transactions
+# The AI can analyze transaction descriptions and suggest categories
 [[services.ai]]
 binding = "AI"
 
+[services.vars]
+JWT_SECRET = "your-jwt-secret-change-this-to-random-string"
+MAX_FILE_SIZE = "10485760"  # 10MB limit for CSV uploads
+
 # Analytics Worker
+# Generates forecasts, calculates insights, and powers the dashboard charts
+# This is computationally intensive so it gets its own Worker
 [[services]]
 name = "insighthunter-analytics"
 main = "workers/analytics/index.js"
 compatibility_date = "2024-01-01"
 
+# Routes for all analytics and forecasting operations
 routes = [
-  { pattern = "app.insighthunter.com/api/forecast/*", zone_name = "insighthunter.com" },
-  { pattern = "app.insighthunter.com/api/insights/*", zone_name = "insighthunter.com" }
+  { pattern = "api.insighthunter.app/api/forecast/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/insights/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/dashboard/*", zone_name = "insighthunter.app" }
 ]
 
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id"
+database_id = "your-database-id-here"
 
+# KV for caching forecast results so we don't recompute them constantly
+# Forecasts are expensive to generate but don't change frequently
 [[services.kv_namespaces]]
 binding = "CACHE"
-id = "your-kv-namespace-id"
+id = "your-kv-namespace-id-here"
 
+# Workers AI for generating natural language insights
 [[services.ai]]
 binding = "AI"
 
-# Management Worker
+[services.vars]
+JWT_SECRET = "your-jwt-secret-change-this-to-random-string"
+
+# Management Worker  
+# Handles clients, user settings, alerts, and general CRUD operations
+# This is the catch-all for operations that don't fit other specialized Workers
 [[services]]
 name = "insighthunter-management"
 main = "workers/management/index.js"
 compatibility_date = "2024-01-01"
 
+# Routes for client management, alerts, and user profile operations
 routes = [
-  { pattern = "app.insighthunter.com/api/clients/*", zone_name = "insighthunter.com" },
-  { pattern = "app.insighthunter.com/api/alerts/*", zone_name = "insighthunter.com" },
-  { pattern = "app.insighthunter.com/api/user/*", zone_name = "insighthunter.com" }
+  { pattern = "api.insighthunter.app/api/clients/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/alerts/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/user/*", zone_name = "insighthunter.app" }
 ]
 
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id"
+database_id = "your-database-id-here"
 
+# KV for caching user preferences and client lists
 [[services.kv_namespaces]]
 binding = "CACHE"
-id = "your-kv-namespace-id"
+id = "your-kv-namespace-id-here"
+
+[services.vars]
+JWT_SECRET = "your-jwt-secret-change-this-to-random-string"
