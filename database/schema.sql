@@ -12,6 +12,19 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TEXT
 );
 
+-- Updated users table with your three-tier pricing structure
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  name TEXT NOT NULL,
+  plan_type TEXT DEFAULT 'free' CHECK(plan_type IN ('free', 'professional', 'enterprise')),
+  plan_started_at TEXT,
+  plan_expires_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT
+);
+
 -- Create an index on email for faster login queries
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 
