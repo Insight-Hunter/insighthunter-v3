@@ -1,3 +1,4 @@
+import { env } from /src/dev.vars
 # wrangler.toml
 # Complete Cloudflare Workers configuration for Insight Hunter
 
@@ -20,7 +21,7 @@ routes = [
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
+database_id = "env.D1DATABASE_ID"
 
 # Environment variables this Worker needs
 # JWT_SECRET must be a long random string for security
@@ -44,7 +45,7 @@ routes = [
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
+database_id = "env.D1DATABASE_ID"
 
 [[services.r2_buckets]]
 binding = "STORAGE"
@@ -81,11 +82,11 @@ routes = [
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
+database_id = "env.D1DATABASE_ID"
 
 [[services.kv_namespaces]]
 binding = "CACHE"
-id = "af7391791e95423b82c1cd877c0992e3"
+id = "env.KV_NAMESPACE_ID"
 
 [[services.ai]]
 binding = "AI"
@@ -111,12 +112,12 @@ routes = [
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
+database_id = "env.D1DATABASE_ID"
 
 # KV for caching user preferences and client lists
 [[services.kv_namespaces]]
 binding = "CACHE"
-id = "your-kv-namespace-id-here"
+id = "env.KV_NAMESPACE_ID"
 
 [services.vars]
 JWT_SECRET = "env.JWT_SECRET"
