@@ -30,69 +30,63 @@ JWT_SECRET = "your-jwt-secret-change-this-to-random-string"
 CORS_ORIGIN = "https://app.insighthunter.app"
 
 # Data Ingestion Worker
-# Handles CSV uploads, file parsing, and inserting transactions into the database
-# This Worker needs more resources because it processes large files
+# Now includes Vectorize for intelligent transaction categorization
 [[services]]
 name = "insighthunter-ingest"
 main = "workers/ingest/index.js"
 compatibility_date = "2024-01-01"
 
-# Routes for upload operations and transaction queries
-# /api/upload for POST requests with CSV files
-# /api/transactions for GET requests to retrieve transaction data
 routes = [
   { pattern = "api.insighthunter.app/api/upload", zone_name = "insighthunter.app" },
   { pattern = "api.insighthunter.app/api/transactions/*", zone_name = "insighthunter.app" }
 ]
 
-# This Worker needs database access to store transactions
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id-here"
+database_id = "your-database-id"
 
-# R2 bucket for storing the original CSV files
-# This gives you an audit trail and lets users re-download their uploads
 [[services.r2_buckets]]
 binding = "STORAGE"
 bucket_name = "insighthunter-uploads"
 
-# Workers AI binding for categorizing transactions
-# The AI can analyze transaction descriptions and suggest categories
 [[services.ai]]
 binding = "AI"
 
+# Vectorize binding for semantic transaction categorization
+[[services.vectorize]]
+binding = "VECTORIZE"
+index_name = "transaction-categories"
+
 [services.vars]
-JWT_SECRET = "your-jwt-secret-change-this-to-random-string"
-MAX_FILE_SIZE = "10485760"  # 10MB limit for CSV uploads
+JWT_SECRET = "your-jwt-secret"
+MAX_FILE_SIZE = "10485760"
 
 # Analytics Worker
 # Generates forecasts, calculates insights, and powers the dashboard charts
 # This is computationally intensive so it gets its own Worker
+# Now includes Vectorize for finding similar patterns and generating insights
 [[services]]
 name = "insighthunter-analytics"
 main = "workers/analytics/index.js"
 compatibility_date = "2024-01-01"
 
-# Routes for all analytics and forecasting operations
 routes = [
   { pattern = "api.insighthunter.app/api/forecast/*", zone_name = "insighthunter.app" },
   { pattern = "api.insighthunter.app/api/insights/*", zone_name = "insighthunter.app" },
-  { pattern = "api.insighthunter.app/api/dashboard/*", zone_name = "insighthunter.app" }
+  { pattern = "api.insighthunter.app/api/dashboard/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/search/*", zone_name = "insighthunter.app" }
 ]
 
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id-here"
+database_id = "your-database-id"
 
-# KV for caching forecast results so we don't recompute them constantly
-# Forecasts are expensive to generate but don't change frequently
 [[services.kv_namespaces]]
 binding = "CACHE"
-id = "your-kv-namespace-id-here"
+id = "your-kv-namespace-id"
 
-# Workers AI for generating natural language insights
 [[services.ai]]
 binding = "AI"
 
@@ -126,3 +120,11 @@ id = "your-kv-namespace-id-here"
 
 [services.vars]
 JWT_SECRET = "your-jwt-secret-change-this-to-random-string"
+
+# Vectorize binding for semantic search and pattern matching
+[[services.vectorize]]
+binding = "VECTORIZE"
+index_name = "transaction-categories"
+
+[services.vars]
+JWT_SECRET = "your-jwt-secret"
