@@ -20,7 +20,7 @@ routes = [
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id-here"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
 
 # Environment variables this Worker needs
 # JWT_SECRET must be a long random string for security
@@ -44,7 +44,7 @@ routes = [
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
 
 [[services.r2_buckets]]
 binding = "STORAGE"
@@ -81,11 +81,11 @@ routes = [
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
 
 [[services.kv_namespaces]]
 binding = "CACHE"
-id = "your-kv-namespace-id"
+id = "af7391791e95423b82c1cd877c0992e3"
 
 [[services.ai]]
 binding = "AI"
@@ -111,7 +111,7 @@ routes = [
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "your-database-id-here"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
 
 # KV for caching user preferences and client lists
 [[services.kv_namespaces]]
