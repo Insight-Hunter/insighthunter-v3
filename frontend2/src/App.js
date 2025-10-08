@@ -36,6 +36,117 @@ const generateExpenseBreakdown = () => [
 { category: ‘Other’, amount: 4000, color: ‘#f59e0b’ }
 ];
 
+class AuthService {
+  constructor(apiUrl) {
+    this.apiUrl = apiUrl;
+    this.token = localStorage.getItem('authToken');
+  }
+  
+  async register(email, password, name) {
+    const response = await fetch(`${this.apiUrl}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password, name })
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      // Store the token in localStorage so it persists across page reloads
+      localStorage.setItem('authToken', data.token);
+      this.token = data.token;
+      return data.user;
+    } else {
+      throw new Error(data.error);
+    }
+  }
+  
+  async login(email, password) {
+    const response = await fetch(`${this.apiUrl}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      localStorage.setItem('authToken', data.token);
+      this.token = data.token;
+      return data.user;
+    } else {
+      throw new Error(data.error);
+    }
+  }
+  
+  async verifyToken() {
+    if (!this.token) {
+      return null;
+    }
+    
+    const response = await fetch(`${this.apiUrl}/auth/verify`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.token}`
+      }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      return data.user;
+    } else {
+      // Token is invalid or expired
+      this.logout();
+      return null;
+    }
+  }
+  
+  logout() {
+    localStorage.removeItem('authToken');
+    this.token = null;
+  }
+  
+  getToken() {
+    return this.token;
+  }
+}
+
+export default AuthService;
+
+useEffect(() => {
+  async function fetchUserPlan() {
+    const response = await fetch(`${API_URL}/user/plan`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      setUserPlan(data.planType);
+      setPlanFeatures(data.features);
+    }
+  }
+  
+  if (authToken) {
+    fetchUserPlan();
+  }
+}, [authToken]);
+
+// Later, when rendering navigation
+{planFeatures?.maxClients > 0 && (
+  <NavigationLink to="/clients">
+    Client Portal
+  </NavigationLink>
+)}
+
+
+
+
 const InsightHunterApp = () => {
 const [activeTab, setActiveTab] = useState(‘dashboard’);
 const [uploadedFile, setUploadedFile] = useState(null);
@@ -530,111 +641,3 @@ Export Report
 
 export default InsightHunterApp;
 
-
-class AuthService {
-  constructor(apiUrl) {
-    this.apiUrl = apiUrl;
-    this.token = localStorage.getItem('authToken');
-  }
-  
-  async register(email, password, name) {
-    const response = await fetch(`${this.apiUrl}/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password, name })
-    });
-    
-    const data = await response.json();
-    
-    if (response.ok) {
-      // Store the token in localStorage so it persists across page reloads
-      localStorage.setItem('authToken', data.token);
-      this.token = data.token;
-      return data.user;
-    } else {
-      throw new Error(data.error);
-    }
-  }
-  
-  async login(email, password) {
-    const response = await fetch(`${this.apiUrl}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    });
-    
-    const data = await response.json();
-    
-    if (response.ok) {
-      localStorage.setItem('authToken', data.token);
-      this.token = data.token;
-      return data.user;
-    } else {
-      throw new Error(data.error);
-    }
-  }
-  
-  async verifyToken() {
-    if (!this.token) {
-      return null;
-    }
-    
-    const response = await fetch(`${this.apiUrl}/auth/verify`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${this.token}`
-      }
-    });
-    
-    if (response.ok) {
-      const data = await response.json();
-      return data.user;
-    } else {
-      // Token is invalid or expired
-      this.logout();
-      return null;
-    }
-  }
-  
-  logout() {
-    localStorage.removeItem('authToken');
-    this.token = null;
-  }
-  
-  getToken() {
-    return this.token;
-  }
-}
-
-export default AuthService;
-
-useEffect(() => {
-  async function fetchUserPlan() {
-    const response = await fetch(`${API_URL}/user/plan`, {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-    
-    if (response.ok) {
-      const data = await response.json();
-      setUserPlan(data.planType);
-      setPlanFeatures(data.features);
-    }
-  }
-  
-  if (authToken) {
-    fetchUserPlan();
-  }
-}, [authToken]);
-
-// Later, when rendering navigation
-{planFeatures?.maxClients > 0 && (
-  <NavigationLink to="/clients">
-    Client Portal
-  </NavigationLink>
-)}
