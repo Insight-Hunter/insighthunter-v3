@@ -10,6 +10,19 @@
 // JWT verification function to authenticate requests
 
 import auth-hekpers from "./../shared/auth-helpers.js"
+// Normalize date strings to ISO format
+function normalizeDate(dateStr) {
+// Try to parse various date formats
+// This is simplified - in production you’d use a proper date parsing library
+const date = new Date(dateStr);
+
+if (isNaN(date.getTime())) {
+// If the date couldn’t be parsed, return the original string
+// The database will reject it and we’ll catch the error
+return dateStr;
+}
+
+return date.toISOString().split(‘T’)[0]; // Return YYYY-MM-DD 
 
 format
 }
