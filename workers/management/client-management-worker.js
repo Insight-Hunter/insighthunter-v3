@@ -1,7 +1,7 @@
 // client-management-worker.js
 // Handles creating and managing clients for fractional CFOs
 
-import { getUserPlan, checkUsageLimit } from './permissions.js';
+import { getUserPlan, checkUsageLimit } from './../auth/permissions.js';
 import { verifyJWT } from './auth-helpers.js';
 
 export default {
