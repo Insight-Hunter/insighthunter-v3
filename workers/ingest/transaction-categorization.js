@@ -1,6 +1,159 @@
 // workers/ingest/transaction-categorization.js
 // Intelligent transaction categorization using Vectorize
 
+// ============================================================================
+// TRANSACTION CATEGORIZATION
+// Use Workers AI and Vectorize for intelligent categorization
+// ============================================================================
+
+// Convert text to embedding vector using Workers AI
+async function getEmbedding(text, ai) {
+try {
+const response = await ai.run(’@cf/baai/bge-base-en-v1.5’, {
+text: text
+});
+
+```
+// The model returns embeddings in the data array
+return response.data[0];
+```
+
+} catch (error) {
+console.error(‘Error generating embedding:’, error);
+return null;
+}
+}
+
+// Suggest category based on similar transactions in Vectorize
+async function suggestCategory(description, vectorize, ai) {
+// Get the embedding for this transaction description
+const embedding = await getEmbedding(description, ai);
+
+if (!embedding) {
+return { category: null, confidence: 0, method: ‘failed’ };
+}
+
+try {
+// Query Vectorize for similar transactions
+const results = await vectorize.query(embedding, {
+topK: 10,
+returnMetadata: true
+});
+
+```
+if (!results.matches || results.matches.length === 0) {
+  // No similar transactions found, fall back to rule-based categorization
+  return categorizeByrules(description);
+}
+
+// Count category occurrences in the results
+const categoryCounts = {};
+let totalScore = 0;
+
+for (const match of results.matches) {
+  const category = match.metadata.category;
+  const score = match.score;
+  
+  categoryCounts[category] = (categoryCounts[category] || 0) + score;
+  totalScore += score;
+}
+
+// Find the category with the highest total score
+let bestCategory = null;
+let bestScore = 0;
+
+for (const [category, score] of Object.entries(categoryCounts)) {
+  if (score > bestScore) {
+    bestScore = score;
+    bestCategory = category;
+  }
+}
+
+// Calculate confidence as the proportion of the total score
+const confidence = totalScore > 0 ? bestScore / totalScore : 0;
+
+return {
+  category: bestCategory,
+  confidence: confidence,
+  method: 'vectorize',
+  similarCount: results.matches.length
+};
+```
+
+} catch (error) {
+console.error(‘Error querying Vectorize:’, error);
+// Fall back to rule-based categorization
+return categorizeByRules(description);
+}
+}
+
+// Fallback rule-based categorization when Vectorize isn’t available
+function categorizeByRules(description) {
+const desc = description.toLowerCase();
+
+// Define keyword patterns for common categories
+const patterns = {
+‘Payroll’: [‘payroll’, ‘salary’, ‘wages’, ‘employee payment’],
+‘Software’: [‘software’, ‘saas’, ‘subscription’, ‘aws’, ‘azure’, ‘google cloud’, ‘github’, ‘zoom’],
+‘Marketing’: [‘advertising’, ‘marketing’, ‘facebook ads’, ‘google ads’, ‘social media’],
+‘Office Supplies’: [‘office supplies’, ‘stationery’, ‘printer’, ‘paper’],
+‘Rent’: [‘rent’, ‘lease’, ‘office space’],
+‘Utilities’: [‘electricity’, ‘water’, ‘gas’, ‘internet’, ‘phone’],
+‘Travel’: [‘hotel’, ‘flight’, ‘airfare’, ‘uber’, ‘lyft’, ‘rental car’],
+‘Professional Services’: [‘consulting’, ‘legal’, ‘accounting’, ‘contractor’],
+‘Equipment’: [‘computer’, ‘laptop’, ‘monitor’, ‘furniture’, ‘equipment’]
+};
+
+// Check each pattern
+for (const [category, keywords] of Object.entries(patterns)) {
+for (const keyword of keywords) {
+if (desc.includes(keyword)) {
+return {
+category: category,
+confidence: 0.7, // Rule-based has moderate confidence
+method: ‘rules’
+};
+}
+}
+}
+
+// Default category if nothing matches
+return {
+category: ‘Uncategorized’,
+confidence: 0.3,
+method: ‘default’
+};
+}
+
+// Store transaction embedding in Vectorize for future learning
+async function storeTransactionVector(vectorize, ai, transactionId, description, category) {
+try {
+const embedding = await getEmbedding(description, ai);
+
+```
+if (!embedding) {
+  console.error('Failed to generate embedding for storage');
+  return false;
+}
+
+await vectorize.insert([{
+  id: transactionId.toString(),
+  values: embedding,
+  metadata: {
+    category: category,
+    description: description.substring(0, 200) // Truncate long descriptions
+  }
+}]);
+
+return true;
+```
+
+} catch (error) {
+console.error(‘Error storing vector:’, error);
+return false;
+}
+}
+
 // Convert transaction description to a vector using Workers AI
 async function getTransactionEmbedding(description, aiBinding) {
   // We use a text embedding model to convert the description into a vector
