@@ -6,7 +6,52 @@
 // SHARED UTILITIES AND HELPERS
 // These would normally be imported from your shared directory
 // ============================================================================
+// workers/ingest/index.js
+// Updated to use Papaparse for CSV parsing
 
+import Papa from 'papaparse';
+
+// Replace the simple parseCSV function with this robust version
+function parseCSV(csvText) {
+  const parseResult = Papa.parse(csvText, {
+    header: true,  // First row contains column names
+    skipEmptyLines: true,  // Ignore blank lines
+    dynamicTyping: true,  // Convert numbers to actual number types
+    transformHeader: (header) => header.trim().toLowerCase()  // Normalize headers
+  });
+  
+  if (parseResult.errors.length > 0) {
+    console.error('CSV parsing errors:', parseResult.errors);
+    // You might want to collect these errors and return them to the user
+  }
+  
+  const transactions = [];
+  
+  for (const row of parseResult.data) {
+    // Look for date column with flexible matching
+    const date = row.date || row['transaction date'] || row['transaction_date'];
+    
+    // Look for amount column
+    const amount = row.amount || row['transaction amount'] || row['transaction_amount'];
+    
+    // Look for description column
+    const description = row.description || row.memo || row.details || row.narrative;
+    
+    if (!date || amount === undefined || !description) {
+      continue;  // Skip rows missing required fields
+    }
+    
+    transactions.push({
+      date: normalizeDate(date),
+      amount: typeof amount === 'number' ? amount : parseFloat(amount),
+      description: description.toString().trim()
+    });
+  }
+  
+  return transactions;
+}
+
+// Rest of your Worker code continues as before
 // JWT verification function to authenticate requests
 
 import auth-hekpers from "./../shared/auth-helpers.js"

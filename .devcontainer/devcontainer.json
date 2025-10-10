@@ -3,7 +3,14 @@
 // This ensures all developers have the same environment
 
 {
-  "name": "Insight Hunter Development Environment",
+   "name": "Insight Hunter Development Environment",
+  
+  // Use the custom Dockerfile instead of a pre-built image
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  
   
   // Use the official Microsoft Node.js dev container image
   // This gives you Node.js pre-installed with all the tools you need
