@@ -1,1 +1,20 @@
-
+// workers/ingest/package.json
+// Dependencies for the CSV ingestion Worker
+{
+  "name": "insighthunter-ingest-worker",
+  "version": "1.0.0",
+  "description": "CSV upload and transaction processing Worker for Insight Hunter",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --name insighthunter-ingest"
+  },
+  "dependencies": {
+    "papaparse": "^5.4.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0"
+  }
+}
