@@ -1,0 +1,14 @@
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+ccc/__init__.py
+ccc/__main__.py
+ccc/ccc.c
+ccc/main_view.py
+ccc/main_view.pytoui
+ccc.egg-info/PKG-INFO
+ccc.egg-info/SOURCES.txt
+ccc.egg-info/dependency_links.txt
+ccc.egg-info/entry_points.txt
+ccc.egg-info/top_level.txt
