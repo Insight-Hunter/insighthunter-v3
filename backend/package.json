@@ -1,0 +1,23 @@
+{
+  "name": "insighthunter-v3-backend",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "wrangler build && tsc -p tsconfig.backend.json",
+    "deploy": "wrangler publish",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "itty-router": "^4.0.23",
+    "jsonwebtoken": "^9.0.2",
+    "vite": "7.1.7"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/express": "^4.17.13",
+    "wrangler": "^4.40.3"
+  }
+}

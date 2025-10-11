@@ -1,29 +1,82 @@
-<!-- tap Markdown in the upper right corner and switch to Preview -->
 
-Working Copy
-============
+# 🚀 Insight Hunter v3  
 
-Welcome to Working Copy, a full-featured Git client for iOS. :birthday:
+**AI-Powered Auto-CFO Platform for Freelancers, Small Firms, and Fractional CFOs**  
 
-Git is a powerful system and can take some time to master. The same is true for this application and even though you will not need 
-to work with the command-line, some understanding of Git is needed. If you are not confident with the core concepts of Git you should 
-read the first few chapters of [Pro Git](http://git-scm.com/book) by Scott Chacon. 
+Insight Hunter is building the **next generation of financial intelligence**—a platform that automates CFO tasks such as reporting, forecasting, and cash flow management.  Insight Hunter is an **Auto-CFO SaaS platform** that automates core financial management tasks for freelancers, small firms, and fractional CFOs. It delivers **AI-powered dashboards, reports, and forecasting tools** that make enterprise-grade insights accessible and affordable.
 
-The goal has been to make a interface that is suitable for touch, works well with other applications on your device and 
-can take part in workflows where development happens on traditional computers. 
+---
 
-I have made things a little more convenient for [GitHub](https://github.com), [BitBucket](https://bitbucket.org), [GitLab](https://gitlab.com) and [Gitea](https://gitea.io/) users but you can use any modern Git hosting service or your own Git server.
+## 🚀 Features
 
-You will be able to access files inside Working Copy from other apps if they support the system document picker or document browser
-and [many other](https://workingcopy.app/manual.html#extending-ios) integration points are supported as well. 
+- **AI-Generated Financial Reports**  
+  Upload CSVs (bank transactions, P&L, balance sheets) and generate automated insights.
 
-If you like Working Copy and want it to prosper and improve, you should tell people about it. Praise it in a App Store review, on Mastodon or over lunch with friends and co-workers. 
-Development is self-financed. Most of the time Working Copy is bringing in enough revenue to pay my bills allowing me to work full time at
-full speed. Unfortunately I sometimes need to spend time doing contracting work slowing down Working Copy development.
+- **Forecasting Engine**  
+  Predict cash flow, revenues, and expenses with machine learning models.
 
-You can delete this repository from the *Status and Configuration* screen or from the context menu.
+- **Dashboard & Visualization**  
+  Real-time KPIs, charts, and graphs powered by Chart.js.
 
-If you have questions you can check out the [Users’ guide](working-copy://manual) and if the app is
-misbehaving or missing critical features write me at [anders@workingcopy.app](mailto:anders@workingcopy.app).
+- **Client Portal**  
+  Simple P&L visualization and reporting for end clients.
 
-![Anders Borum](/examples/anders.png)
+- **Alerts & Notifications**  
+  Automated reminders for cash flow risks, expense spikes, and revenue changesny 
+
+
+## We provide solutions for common small business needs
+
+<p align="center">
+  <img src="./docs/images/solution.png" alt="Solution Graphic" width="600"/>
+</p>  
+
+Insight Hunter delivers **Auto-CFO capabilities** through an intuitive dashboard:  
+- Upload CSVs or connect accounts → get **instant AI-powered reports**  
+- Real-time **forecasting & cash flow predictions**  
+- Automated **alerts for risks and opportunities**  
+- A **client portal** for CFOs to deliver reports effortlessly  
+
+---
+
+## 🌟 Key Features  
+
+<p align="center">
+  <img src="./docs/images/dashboard_mockup.png" alt="Dashboard Mockup" width="700"/>
+</p>  
+
+✅ **AI-Generated Financial Reports** – P&L, balance sheets, expense summaries  
+✅ **Forecasting Engine** – Predict revenue, expenses, and cash flow trends  
+✅ **KPI Dashboard** – Interactive charts and performance metrics  
+✅ **Client Portal** – Simple financial reporting for end clients  
+✅ **PDF & Export Tools** – Professional, shareable reports  
+
+---
+
+## 🛠️ Tech Architecture  
+
+<p align="center">
+  <img src="./docs/images/architecture.png" alt="System Architecture Diagram" width="750"/>
+</p>  
+
+- **Frontend:** Vite + React + Chart.js + Noodl  
+- **Backend:** FastAPI (Python)  
+- **Database & Storage:** Supabase + Cloudflare R2  
+- **Exporting:** jsPDF (report automation)  
+- **Deployment:** Cloudflare Workers & Pages  
+
+---
+
+## 📂 Project Structure  
+
+```bash
+insighthunter_v3/
+│── frontend/           # React + Vite client (dashboard, charts, reports)
+│── backend/            # FastAPI server (AI insights, forecasting, APIs)
+│── shared/             # Shared code (types, utils, constants)
+│── scripts/            # Automation and deployment scripts
+│── docs/images/        # Visuals (mockups, diagrams, pitch graphics)
+│── .env.example        # Example environment variables
+│── wrangler.toml       # Cloudflare configuration
+│── README.md           # Project documentatio
+>>>>>>> main

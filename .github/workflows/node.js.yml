@@ -1,0 +1,43 @@
+name: Build and Deploy Insight Hunter
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies (root)
+        run: npm install
+
+      - name: Build Frontend
+        run: npm run build --workspace frontend
+
+      - name: Deploy Backend Worker
+        run: |
+          cd backend
+          npm install
+          npm run deploy
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+
+      - name: Deploy Frontend to Cloudflare Pages
+        uses: cloudflare/wrangler-pages-action@v1
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          directory: ./frontend/dist
+          projectName: insight-hunter-frontend # Change to your Pages project name
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          branch: main

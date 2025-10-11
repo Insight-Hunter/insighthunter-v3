@@ -1,0 +1,38 @@
+
+# .github/workflows/deploy.yml
+# GitHub Actions workflow that automatically deploys your Workers
+
+name: Deploy to Cloudflare
+
+# Trigger this workflow when code is pushed to main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Workers to Cloudflare
+    steps:
+      # Check out the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Install Node.js and dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      # Deploy all Workers using Wrangler
+      # The CLOUDFLARE_API_TOKEN is stored as a GitHub secret
+      - name: Deploy to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # This deploys all Workers defined in wrangler.toml
+          command: deploy
