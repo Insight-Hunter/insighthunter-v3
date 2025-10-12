@@ -7,7 +7,8 @@ import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import { Upload, TrendingUp, DollarSign, AlertTriangle, FileText, Users, Download, Bell, Calendar, Activity } from ‘lucide-react’;
 import InitialPrototype from './components/InitialPrototype';
 
-
+function App() {
+  return <InitialPrototype />;
 
 }
 // Sample data for demonstration
