@@ -5,7 +5,11 @@ const [planFeatures, setPlanFeatures] = useState(null);
 import React, { useState } from ‘react’;
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from ‘recharts’;
 import { Upload, TrendingUp, DollarSign, AlertTriangle, FileText, Users, Download, Bell, Calendar, Activity } from ‘lucide-react’;
+import InitialPrototype from './components/InitialPrototype';
 
+
+
+}
 // Sample data for demonstration
 const generateMonthlyData = () => {
 const months = [‘Jan’, ‘Feb’, ‘Mar’, ‘Apr’, ‘May’, ‘Jun’, ‘Jul’, ‘Aug’, ‘Sep’, ‘Oct’, ‘Nov’, ‘Dec’];
@@ -219,7 +223,7 @@ trend="down"
 />
 </div>
 
-```
+
   {/* Revenue vs Expenses Chart */}
   <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
     <h3 className="text-lg font-semibold text-gray-900 mb-4">Revenue & Expenses Trend</h3>
@@ -302,7 +306,7 @@ trend="down"
     </div>
   </div>
 </div>
-```
+
 
 );
 
@@ -324,7 +328,7 @@ const renderForecasting = () => (
 </ResponsiveContainer>
 </div>
 
-```
+
   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
     <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md p-6 border border-blue-200">
       <h4 className="text-blue-900 font-semibold mb-2">30-Day Forecast</h4>
@@ -370,7 +374,7 @@ const renderForecasting = () => (
     </div>
   </div>
 </div>
-```
+
 
 );
 
@@ -381,7 +385,7 @@ const renderUpload = () => (
 <h3 className="text-xl font-semibold text-gray-900 mb-2">Upload Financial Data</h3>
 <p className="text-gray-600 mb-6">Upload CSV files containing bank transactions, P&L statements, or balance sheets for AI-powered analysis.</p>
 
-```
+
     <label className="inline-block">
       <input
         type="file"
@@ -410,16 +414,19 @@ const renderUpload = () => (
         <h4 className="font-medium text-gray-900 mb-1">Bank Transactions</h4>
         <p className="text-sm text-gray-600">CSV exports from your bank or accounting software</p>
       </div>
+    
       <div className="p-4 border border-gray-200 rounded-lg">
         <FileText className="w-8 h-8 text-green-600 mb-2" />
         <h4 className="font-medium text-gray-900 mb-1">P&L Statements</h4>
         <p className="text-sm text-gray-600">Profit and loss statements in CSV or Excel format</p>
       </div>
+    
       <div className="p-4 border border-gray-200 rounded-lg">
         <FileText className="w-8 h-8 text-purple-600 mb-2" />
         <h4 className="font-medium text-gray-900 mb-1">Balance Sheets</h4>
         <p className="text-sm text-gray-600">Financial position statements and reports</p>
       </div>
+    
       <div className="p-4 border border-gray-200 rounded-lg">
         <FileText className="w-8 h-8 text-orange-600 mb-2" />
         <h4 className="font-medium text-gray-900 mb-1">Expense Reports</h4>
@@ -428,7 +435,7 @@ const renderUpload = () => (
     </div>
   </div>
 </div>
-```
+
 
 );
 
@@ -439,6 +446,7 @@ const renderAlerts = () => (
 <h3 className="text-lg font-semibold text-gray-900">Active Alerts & Notifications</h3>
 <Bell className="w-5 h-5 text-gray-400" />
 </div>
+  
 <div className="space-y-3">
 {alerts.map((alert) => (
 <div
@@ -459,7 +467,7 @@ className={`w-5 h-5 mr-3 mt-0.5 ${ alert.type === 'warning' ? 'text-yellow-600' 
 </div>
 </div>
 
-```
+
   <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
     <h3 className="text-lg font-semibold text-gray-900 mb-4">Notification Settings</h3>
     <div className="space-y-3">
@@ -482,7 +490,7 @@ className={`w-5 h-5 mr-3 mt-0.5 ${ alert.type === 'warning' ? 'text-yellow-600' 
     </div>
   </div>
 </div>
-```
+
 
 );
 
@@ -493,7 +501,7 @@ const renderClientPortal = () => (
 <p className="text-blue-100">Share professional financial reports with your clients effortlessly</p>
 </div>
 
-```
+
   <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
     <h3 className="text-lg font-semibold text-gray-900 mb-4">Active Clients</h3>
     <div className="space-y-3">
@@ -557,7 +565,7 @@ const renderClientPortal = () => (
     </div>
   </div>
 </div>
-```
+
 
 );
 
@@ -585,9 +593,8 @@ Export Report
 </div>
 </div>
 </div>
-</header>
+</
 
-```
   {/* Navigation Tabs */}
   <nav className="bg-white border-b border-gray-200">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -634,7 +641,7 @@ Export Report
     </div>
   </footer>
 </div>
-```
+
 
 );
 };
