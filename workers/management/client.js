@@ -169,4 +169,4 @@ return true;
   const result = await db.prepare(`SELECT  id,  company_name,  contact_email,  status, created_at FROM clients WHERE user_id = ?  AND status != 'archived' AND company_name LIKE ? ORDER BY company_name ASC LIMIT 50  `).bind(userId, `%${searchQuery}%`).all();
 
 return result.results;
-}. 
+}
