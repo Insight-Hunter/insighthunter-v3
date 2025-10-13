@@ -93,29 +93,29 @@ BALANCE_SHEET: [‘account’, ‘balance’]
 };
 
 export const HTTP_STATUS = {
-OK: '200',
-CREATED: '201',
-NO_CONTENT: '204',
-BAD_REQUEST: '400',
-UNAUTHORIZED: '401',
-FORBIDDEN: '403',
-NOT_FOUND: '404',
-CONFLICT: '409',
-TOO_MANY_REQUESTS: '429',
-INTERNAL_ERROR: '500'
+OK: 200,
+CREATED: 201,
+NO_CONTENT: 204,
+BAD_REQUEST: 400,
+UNAUTHORIZED: 401,
+FORBIDDEN: 403,
+NOT_FOUND: 404,
+CONFLICT: 409,
+TOO_MANY_REQUESTS: 429,
+INTERNAL_ERROR: 500
 };
 
 export const ERROR_MESSAGES = {
-INVALID_TOKEN: 'Invaided or expired token’,
-FORBIDDEN: 'You do not have permission to perform this action’,
-NOT_FOUND: 'Resource not found’,
-INVALID_INPUT: 'Invalid input data’,
-PLAN_LIMIT_REACHED: 'Plan limit reached. Please upgrade your plan.’,
-FILE_TOO_LARGE: 'File size exceeds maximum allowed size’,
-INVALID_FILE_FORMAT: 'Invalid file format’,
-DATABASE_ERROR: 'Database operation failed’,
-RATE_LIMIT_EXCEEDED: 'Too many requests. Please try again',
-UNAUTHORIZED: 'Authentication required’
+UNAUTHORIZED: ‘Authentication required’,
+INVALID_TOKEN: ‘Invalid or expired token’,
+FORBIDDEN: ‘You do not have permission to perform this action’,
+NOT_FOUND: ‘Resource not found’,
+INVALID_INPUT: ‘Invalid input data’,
+PLAN_LIMIT_REACHED: ‘Plan limit reached. Please upgrade your plan.’,
+FILE_TOO_LARGE: ‘File size exceeds maximum allowed size’,
+INVALID_FILE_FORMAT: ‘Invalid file format’,
+DATABASE_ERROR: ‘Database operation failed’,
+RATE_LIMIT_EXCEEDED: ‘Too many requests. Please try again later.’
 };
 
 export const SUCCESS_MESSAGES = {
@@ -139,4 +139,87 @@ SETTINGS_UPDATED: ‘Settings updated successfully’
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-switch (range)
+switch (range) {
+case DATE_RANGES.LAST_7_DAYS:
+return {
+start: new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000),
+end: today
+};
+
+```
+case DATE_RANGES.LAST_30_DAYS:
+  return {
+    start: new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000),
+    end: today
+  };
+
+case DATE_RANGES.LAST_90_DAYS:
+  return {
+    start: new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000),
+    end: today
+  };
+
+case DATE_RANGES.THIS_MONTH:
+  return {
+    start: new Date(now.getFullYear(), now.getMonth(), 1),
+    end: today
+  };
+
+case DATE_RANGES.LAST_MONTH:
+  const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+  return { start: lastMonthStart, end: lastMonthEnd };
+
+case DATE_RANGES.THIS_QUARTER:
+  const quarterStart = new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1);
+  return { start: quarterStart, end: today };
+
+case DATE_RANGES.LAST_QUARTER:
+  const lastQuarterMonth = Math.floor(now.getMonth() / 3) * 3 - 3;
+  const lastQuarterStart = new Date(now.getFullYear(), lastQuarterMonth, 1);
+  const lastQuarterEnd = new Date(now.getFullYear(), lastQuarterMonth + 3, 0);
+  return { start: lastQuarterStart, end: lastQuarterEnd };
+
+case DATE_RANGES.THIS_YEAR:
+  return {
+    start: new Date(now.getFullYear(), 0, 1),
+    end: today
+  };
+
+case DATE_RANGES.LAST_YEAR:
+  return {
+    start: new Date(now.getFullYear() - 1, 0, 1),
+    end: new Date(now.getFullYear() - 1, 11, 31)
+  };
+
+default:
+  return { start: today, end: today };
+```
+
+}
+}
+
+/**
+
+- Format currency value
+- @param {number} amount - Amount to format
+- @param {string} currency - Currency code (default: USD)
+- @returns {string} - Formatted currency string
+  */
+  export function formatCurrency(amount, currency = ‘USD’) {
+  return new Intl.NumberFormat(‘en-US’, {
+  style: ‘currency’,
+  currency: currency
+  }).format(amount);
+  }
+
+/**
+
+- Format percentage value
+- @param {number} value - Value to format
+- @param {number} decimals - Number of decimal places
+- @returns {string} - Formatted percentage string
+  */
+  export function formatPercentage(value, decimals = 1) {
+  return `${(value * 100).toFixed(decimals)}%`;
+  }
