@@ -8,19 +8,25 @@
   "type": "module",
   "scripts": {
     "deploy": "wrangler deploy",
-    "deploy:auth": "wrangler deploy --name insighthunter-auth",
-    "deploy:ingest": "wrangler deploy --name insighthunter-ingest",
-    "deploy:analytics": "wrangler deploy --name insighthunter-analytics",
-    "deploy:management": "wrangler deploy --name insighthunter-management",
+    "deploy:auth": "cd workers/auth && wrangler deploy --name insighthunter-auth",
+    "deploy:ingest": "cd workers/ingest && wrangler deploy --name insighthunter-ingest",
+    "deploy:analytics": "cd workers/analytics && wrangler deploy --name insighthunter-analytics",
+    "deploy:management": "cd workers/management && wrangler deploy --name insighthunter-management",
+
     "dev:auth": "cd workers/auth && wrangler dev",
     "dev:ingest": "cd workers/ingest && wrangler dev",
     "dev:analytics": "cd workers/analytics && wrangler dev",
     "dev:management": "cd workers/management && wrangler dev",
+
     "db:create": "wrangler d1 create insighthunter-production",
     "db:migrate": "wrangler d1 execute insighthunter-production --file=database/schema.sql",
+
     "vectorize:create": "wrangler vectorize create transaction-categories --dimensions=384 --metric=cosine",
     "r2:create": "wrangler r2 bucket create insighthunter-uploads",
-    "kv:create": "wrangler kv:namespace create CACHE"
+    "kv:create": "wrangler kv:namespace create CACHE",
+
+    "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
+    "format": "prettier --write ."
   },
   "workspaces": [
     "workers/*",
