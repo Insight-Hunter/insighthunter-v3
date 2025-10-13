@@ -146,7 +146,7 @@ start: new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000),
 end: today
 };
 
-```
+
 case DATE_RANGES.LAST_30_DAYS:
   return {
     start: new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000),
@@ -194,8 +194,7 @@ case DATE_RANGES.LAST_YEAR:
 
 default:
   return { start: today, end: today };
-```
-
+  
 }
 }
 
