@@ -95,7 +95,7 @@ Verify a JWT token and get current user info.
 **Headers:**
 
 ```
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Authorization: Bearer {}
 ```
 
 **Success Response (200):**
