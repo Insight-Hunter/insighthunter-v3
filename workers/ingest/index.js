@@ -14,7 +14,7 @@ if (request.method === ‘OPTIONS’) {
 return new Response(null, { headers: CORS_HEADERS });
 }
 
-```
+
 const url = new URL(request.url);
 const path = url.pathname;
 
@@ -49,7 +49,7 @@ try {
     HTTP_STATUS.INTERNAL_ERROR
   );
 }
-```
+
 
 }
 };
