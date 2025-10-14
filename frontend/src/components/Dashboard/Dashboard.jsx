@@ -33,7 +33,7 @@ const loadDashboardData = async () => {
 try {
 setLoading(true);
 
-```
+
   // Load clients
   const clientsResponse = await clientsAPI.getAll();
   setClients(clientsResponse.data.clients);
@@ -52,7 +52,7 @@ setLoading(true);
 } finally {
   setLoading(false);
 }
-```
+
 
 };
 
@@ -112,7 +112,7 @@ return (
 <p className="text-gray-600 mt-1">Financial overview and key metrics</p>
 </div>
 
-```
+
     {/* Client Selector */}
     <select
       value={selectedClient || ''}
@@ -163,4 +163,159 @@ return (
       icon={<TrendingDown className="w-6 h-6" />}
       color="red"
     />
-```
+    
+    <KPICard
+      title="Net Income"
+      value={`$${(kpis.netIncome || 0).toLocaleString()}`}
+      change={kpis.netIncomeChange}
+      icon={<TrendingUp className="w-6 h-6" />}
+      color={kpis.netIncome >= 0 ? 'green' : 'red'}
+    />
+    
+    <KPICard
+      title="Profit Margin"
+      value={`${(kpis.profitMargin || 0).toFixed(1)}%`}
+      change={kpis.marginChange}
+      icon={<BarChart3 className="w-6 h-6" />}
+      color={kpis.profitMargin >= 20 ? 'green' : 'yellow'}
+    />
+  </div>
+
+  {/* Charts and Data */}
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    {/* Cash Flow Chart */}
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Cash Flow Trend</h3>
+      {dashboardData?.recentTransactions && (
+        <Chart 
+          type="line"
+          data={prepareCashFlowData(dashboardData.recentTransactions)}
+        />
+      )}
+    </div>
+
+    {/* Income vs Expenses */}
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Income vs Expenses</h3>
+      {dashboardData?.recentTransactions && (
+        <Chart 
+          type="bar"
+          data={prepareIncomeExpenseData(dashboardData.recentTransactions)}
+        />
+      )}
+    </div>
+  </div>
+
+  {/* Recent Transactions */}
+  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="flex items-center justify-between mb-4">
+      <h3 className="text-lg font-semibold text-gray-900">Recent Transactions</h3>
+      <Link 
+        to={`/clients/${selectedClient}`}
+        className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+      >
+        View all →
+      </Link>
+    </div>
+    <RecentTransactions 
+      transactions={dashboardData?.recentTransactions || []} 
+    />
+  </div>
+
+  {/* Quick Actions */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <Link
+      to="/upload"
+      className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+    >
+      <Upload className="w-8 h-8 text-blue-600 mb-3" />
+      <h3 className="font-semibold text-gray-900 mb-1">Upload Data</h3>
+      <p className="text-sm text-gray-600">Import CSV files with financial transactions</p>
+    </Link>
+
+    <Link
+      to="/reports"
+      className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+    >
+      <FileText className="w-8 h-8 text-green-600 mb-3" />
+      <h3 className="font-semibold text-gray-900 mb-1">Generate Report</h3>
+      <p className="text-sm text-gray-600">Create P&L, balance sheets, and more</p>
+    </Link>
+
+    <Link
+      to="/forecasting"
+      className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+    >
+      <BarChart3 className="w-8 h-8 text-purple-600 mb-3" />
+      <h3 className="font-semibold text-gray-900 mb-1">View Forecasts</h3>
+      <p className="text-sm text-gray-600">AI-powered financial predictions</p>
+    </Link>
+  </div>
+</div>
+
+);
+}
+
+// Helper functions to prepare chart data
+function prepareCashFlowData(transactions) {
+const dailyData = {};
+
+transactions.forEach(t => {
+const date = new Date(t.date).toISOString().split(‘T’)[0];
+if (!dailyData[date]) {
+dailyData[date] = 0;
+}
+dailyData[date] += t.type === ‘income’ ? t.amount : -t.amount;
+});
+
+const dates = Object.keys(dailyData).sort();
+let runningBalance = 0;
+
+return {
+labels: dates.map(d => new Date(d).toLocaleDateString(‘en-US’, { month: ‘short’, day: ‘numeric’ })),
+datasets: [{
+label: ‘Cash Flow’,
+data: dates.map(date => {
+runningBalance += dailyData[date];
+return runningBalance;
+}),
+borderColor: ‘rgb(59, 130, 246)’,
+backgroundColor: ‘rgba(59, 130, 246, 0.1)’,
+tension: 0.4
+}]
+};
+}
+
+function prepareIncomeExpenseData(transactions) {
+const monthlyData = {};
+
+transactions.forEach(t => {
+const month = new Date(t.date).toISOString().slice(0, 7);
+if (!monthlyData[month]) {
+monthlyData[month] = { income: 0, expenses: 0 };
+}
+if (t.type === ‘income’) {
+monthlyData[month].income += t.amount;
+} else {
+monthlyData[month].expenses += t.amount;
+}
+});
+
+const months = Object.keys(monthlyData).sort();
+
+return {
+labels: months.map(m => new Date(m + ‘-01’).toLocaleDateString(‘en-US’, { month: ‘short’, year: ‘numeric’ })),
+datasets: [
+{
+label: ‘Income’,
+data: months.map(m => monthlyData[m].income),
+backgroundColor: ‘rgba(34, 197, 94, 0.8)’
+},
+{
+label: ‘Expenses’,
+data: months.map(m => monthlyData[m].expenses),
+backgroundColor: ‘rgba(239, 68, 68, 0.8)’
+}
+]
+};
+}
