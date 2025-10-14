@@ -1,0 +1,16 @@
+name = "insighthunter-analytics"
+type = "javascript"
+
+account_id = "18c8e61a3669253dcfd0c7eec6be36a3"
+workers_dev = true
+compatibility_date = "2025-10-14"
+
+main = "index.js"
+
+[env.production]
+name = "insighthunter-analytics"
+routes = ["https://api.insighthunter.app/analytics/*"]
+
+[[kv_namespaces]]
+binding = "CACHE"
+id =  "af7391791e95423b82c1cd877c0992e3"

@@ -1,0 +1,19 @@
+import { env } from "./.dev.vars"
+
+name = "insighthunter-ingest"
+type = "javascript"
+
+account_id = "env.CLOUDFLARE_ACCOUNT_ID"
+workers_dev = true
+compatibility_date = "2025-10-14"
+
+main = "./src/index.js"
+
+[env.production]
+name = "insighthunter-ingest"
+routes = ["https://api.insighthunter.app/ingest/*"]
+
+# KV / bindings
+[[kv_namespaces]]
+binding = "CACHE"
+id = "env.KV_NAMESPACE_ID"
