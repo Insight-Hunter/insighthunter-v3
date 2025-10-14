@@ -21,7 +21,7 @@ return (
 </div>
 )}
 
-```
+
   {title && (
     <h3 className="text-lg font-semibold text-gray-900 mb-2">
       {title}
@@ -50,7 +50,7 @@ return (
     </div>
   )}
 </div>
-```
+
 
 );
 }
