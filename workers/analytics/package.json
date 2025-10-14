@@ -1,5 +1,5 @@
 { 
-    "name”: “insighthunter-analytics-worker”,
+“name”: “insighthunter-analytics-worker”,
     “version”: “1.0.0”,
     “description”: “Financial analytics and forecasting Worker for Insight Hunter”,
     “main”: “index.js”,
@@ -8,7 +8,7 @@
     
     “scripts”: {
         “dev”: “wrangler dev”,
-        “deploy”: “wrangler deploy -name insighthunter-analytics”,
+“deploy”: “wrangler deploy –name insighthunter-analytics”,
         “test”: “echo "Tests not yet implemented" && exit 0”
     },
 
