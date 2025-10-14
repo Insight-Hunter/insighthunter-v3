@@ -77,7 +77,9 @@ headers: {
   status,
   headers: {
   "Content-Type": "application/json",
-  …CORS_HEADERS
+…CORS_HEADERS
+}
+}
   }
   });
   }
