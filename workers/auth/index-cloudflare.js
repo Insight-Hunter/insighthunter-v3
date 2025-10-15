@@ -1,3 +1,6 @@
+// workers/auth/index-cloudflare.js
+// Authentication Worker with D1 + KV
+
 export default {
 async fetch(request, env, ctx) {
 // CORS headers
@@ -230,4 +233,80 @@ expiresAt
 await env.KV.put(
 `session:${sessionId}`,
 JSON.stringify(sessionData),
-{ expirationTtl: 7 * 24
+{ expirationTtl: 7 * 24 * 60 * 60 } // 7 days in seconds
+);
+
+// Track active sessions count for rate limiting
+await env.KV.put(`user_sessions:${user.id}`, Date.now().toString(), {
+expirationTtl: 7 * 24 * 60 * 60
+});
+
+return { id: sessionId, expiresAt };
+}
+
+/**
+
+- Hash password using Web Crypto API
+  */
+  async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest(‘SHA-256’, data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, ‘0’)).join(’’);
+  }
+
+/**
+
+- Verify password
+  */
+  async function verifyPassword(password, hash) {
+  const passwordHash = await hashPassword(password);
+  return passwordHash === hash;
+  }
+
+/**
+
+- Validate email format
+  */
+  function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
+  return emailRegex.test(email);
+  }
+
+/**
+
+- Validate password strength
+  */
+  function validatePassword(password) {
+  const errors = [];
+
+if (password.length < 8) {
+errors.push(‘Password must be at least 8 characters long’);
+}
+if (!/[A-Z]/.test(password)) {
+errors.push(‘Password must contain at least one uppercase letter’);
+}
+if (!/[a-z]/.test(password)) {
+errors.push(‘Password must contain at least one lowercase letter’);
+}
+if (!/[0-9]/.test(password)) {
+errors.push(‘Password must contain at least one number’);
+}
+
+return { valid: errors.length === 0, errors };
+}
+
+/**
+
+- JSON response helper
+  */
+  function jsonResponse(data, status = 200, headers = {}) {
+  return new Response(JSON.stringify(data), {
+  status,
+  headers: {
+  ‘Content-Type’: ‘application/json’,
+  …headers
+  }
+  });
+  }
