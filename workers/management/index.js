@@ -1,7 +1,5 @@
-// workers/management/index.js
-// Main entry point for the management Worker
+import { authenticateRequest } from "./auth.js";
 
-import { authenticateRequest } from ‘./auth.js’;
 import {
 getClients,
 getClient,
@@ -9,7 +7,8 @@ createClient,
 updateClient,
 deleteClient,
 searchClients
-} from ‘./clients.js’;
+} from "./clients.js";
+
 import {
 getAlerts,
 createAlert,
@@ -17,26 +16,28 @@ markAlertRead,
 markAllAlertsRead,
 dismissAlert,
 getAlertStats
-} from ‘./alerts.js’;
+} from "./alerts.js";
+
 import {
 getUserProfile,
 updateUserProfile,
 getUserActivity
-} from ‘./users.js’;
+} from "./users.js";
+
 import {
 getUserPlan,
 checkUsageLimit,
 hasFeatureAccess
-} from ‘./permissions.js’;
+} from "./permissions.js";
 
 /**
 
 - CORS headers for cross-origin requests
   */
   const CORS_HEADERS = {
-  ‘Access-Control-Allow-Origin’: ’*’,
-  ‘Access-Control-Allow-Methods’: ‘GET, POST, PUT, DELETE, OPTIONS’,
-  ‘Access-Control-Allow-Headers’: ‘Content-Type, Authorization’
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization"
   };
 
 /**
@@ -61,7 +62,7 @@ hasFeatureAccess
 return new Response(JSON.stringify(body), {
 status,
 headers: {
-‘Content-Type’: ‘application/json’,
+"Content-Type": "application/json",
 …CORS_HEADERS
 }
 });
@@ -75,8 +76,10 @@ headers: {
   return new Response(JSON.stringify({ success: true, …data }), {
   status,
   headers: {
-  ‘Content-Type’: ‘application/json’,
-  …CORS_HEADERS
+  "Content-Type": "application/json",
+…CORS_HEADERS
+}
+}
   }
   });
   }
@@ -89,7 +92,7 @@ headers: {
   const url = new URL(request.url);
 
 // GET /api/clients - List all clients
-if (pathname === ‘/api/clients’ && request.method === ‘GET’) {
+if (pathname === "/api/clients" && request.method === "GET") {
 // Check if user has access to client portal
 const userPlan = await getUserPlan(env.DB, userId);
 
@@ -114,7 +117,7 @@ return successResponse({ clients });
 }
 
 // POST /api/clients - Create new client
-if (pathname === ‘/api/clients’ && request.method === ‘POST’) {
+if (pathname === "/api/clients" && request.method === "POST") {
 const userPlan = await getUserPlan(env.DB, userId);
 
 ```
@@ -144,7 +147,7 @@ return successResponse({ client }, 201);
 
 // GET /api/clients/:id - Get specific client
 const clientIdMatch = pathname.match(/^/api/clients/(\d+)$/);
-if (clientIdMatch && request.method === ‘GET’) {
+if (clientIdMatch && request.method === "GET") {
 const clientId = parseInt(clientIdMatch[1]);
 const client = await getClient(env.DB, clientId, userId);
 
@@ -159,7 +162,7 @@ return successResponse({ client });
 }
 
 // PUT /api/clients/:id - Update client
-if (clientIdMatch && request.method === ‘PUT’) {
+if (clientIdMatch && request.method === "PUT") {
 const clientId = parseInt(clientIdMatch[1]);
 const updates = await request.json();
 
@@ -171,7 +174,7 @@ return successResponse({ client });
 }
 
 // DELETE /api/clients/:id - Delete client
-if (clientIdMatch && request.method === ‘DELETE’) {
+if (clientIdMatch && request.method === "DELETE") {
 const clientId = parseInt(clientIdMatch[1]);
 await deleteClient(env.DB, clientId, userId);
 
@@ -181,7 +184,7 @@ return successResponse({ message: 'Client archived successfully' });
 
 }
 
-return errorResponse(‘Not found’, 404);
+return errorResponse("Not found", 404);
 }
 
 /**
@@ -192,10 +195,10 @@ return errorResponse(‘Not found’, 404);
   const url = new URL(request.url);
 
 // GET /api/alerts - List alerts
-if (pathname === ‘/api/alerts’ && request.method === ‘GET’) {
-const clientId = url.searchParams.get(‘client_id’);
-const includeRead = url.searchParams.get(‘include_read’) === ‘true’;
-const severity = url.searchParams.get(‘severity’);
+if (pathname === "/api/alerts" && request.method === "GET") {
+const clientId = url.searchParams.get("client_id");
+const includeRead = url.searchParams.get("include_read") === "true";
+const severity = url.searchParams.get("severity");
 
 ```
 const alerts = await getAlerts(env.DB, userId, clientId, {
@@ -210,8 +213,8 @@ return successResponse({ alerts });
 }
 
 // GET /api/alerts/stats - Get alert statistics
-if (pathname === ‘/api/alerts/stats’ && request.method === ‘GET’) {
-const clientId = url.searchParams.get(‘client_id’);
+if (pathname === "/api/alerts/stats" && request.method === "GET") {
+const clientId = url.searchParams.get("client_id");
 const stats = await getAlertStats(env.DB, userId, clientId);
 
 ```
@@ -221,7 +224,7 @@ return successResponse({ stats });
 }
 
 // POST /api/alerts - Create new alert (for system-generated alerts)
-if (pathname === ‘/api/alerts’ && request.method === ‘POST’) {
+if (pathname === "/api/alerts" && request.method === "POST") {
 const alertData = await request.json();
 const alert = await createAlert(env.DB, userId, alertData);
 
@@ -233,7 +236,7 @@ return successResponse({ alert }, 201);
 
 // POST /api/alerts/:id/read - Mark alert as read
 const readMatch = pathname.match(/^/api/alerts/(\d+)/read$/);
-if (readMatch && request.method === ‘POST’) {
+if (readMatch && request.method === "POST") {
 const alertId = parseInt(readMatch[1]);
 await markAlertRead(env.DB, alertId, userId);
 
@@ -244,7 +247,7 @@ return successResponse({ message: 'Alert marked as read' });
 }
 
 // POST /api/alerts/read-all - Mark all alerts as read
-if (pathname === ‘/api/alerts/read-all’ && request.method === ‘POST’) {
+if (pathname === "/api/alerts/read-all" && request.method === "POST") {
 const { client_id } = await request.json().catch(() => ({}));
 const count = await markAllAlertsRead(env.DB, userId, client_id);
 
@@ -256,7 +259,7 @@ return successResponse({ message: `${count} alerts marked as read`, count });
 
 // POST /api/alerts/:id/dismiss - Dismiss alert
 const dismissMatch = pathname.match(/^/api/alerts/(\d+)/dismiss$/);
-if (dismissMatch && request.method === ‘POST’) {
+if (dismissMatch && request.method === "POST") {
 const alertId = parseInt(dismissMatch[1]);
 await dismissAlert(env.DB, alertId, userId);
 
@@ -266,7 +269,7 @@ return successResponse({ message: 'Alert dismissed' });
 
 }
 
-return errorResponse(‘Not found’, 404);
+return errorResponse("Not found", 404);
 }
 
 /**
@@ -275,18 +278,18 @@ return errorResponse(‘Not found’, 404);
   */
   async function handleUser(request, env, userId, pathname) {
   // GET /api/user/profile - Get user profile
-  if (pathname === ‘/api/user/profile’ && request.method === ‘GET’) {
+  if (pathname === "/api/user/profile" && request.method === "GET") {
   const profile = await getUserProfile(env.DB, userId);
   
   if (!profile) {
-  return errorResponse(‘User not found’, 404);
+  return errorResponse("User not found", 404);
   }
   
   return successResponse({ profile });
   }
 
 // PUT /api/user/profile - Update user profile
-if (pathname === ‘/api/user/profile’ && request.method === ‘PUT’) {
+if (pathname === "/api/user/profile" && request.method === "PUT") {
 const updates = await request.json();
 const profile = await updateUserProfile(env.DB, userId, updates);
 
@@ -297,7 +300,7 @@ return successResponse({ profile });
 }
 
 // GET /api/user/plan - Get user plan details
-if (pathname === ‘/api/user/plan’ && request.method === ‘GET’) {
+if (pathname === "/api/user/plan" && request.method === "GET") {
 const plan = await getUserPlan(env.DB, userId);
 
 ```
@@ -316,9 +319,9 @@ return successResponse({
 }
 
 // GET /api/user/activity - Get user activity history
-if (pathname === ‘/api/user/activity’ && request.method === ‘GET’) {
+if (pathname === "/api/user/activity" && request.method === "GET") {
 const url = new URL(request.url);
-const limit = parseInt(url.searchParams.get(‘limit’) || ‘20’);
+const limit = parseInt(url.searchParams.get("limit") || "20");
 
 ```
 const activity = await getUserActivity(env.DB, userId, limit);
@@ -328,7 +331,7 @@ return successResponse({ activity });
 
 }
 
-return errorResponse(‘Not found’, 404);
+return errorResponse("Not found", 404);
 }
 
 /**
@@ -341,7 +344,7 @@ return errorResponse(‘Not found’, 404);
   const pathname = url.pathname;
   
   // Handle CORS preflight
-  if (request.method === ‘OPTIONS’) {
+  if (request.method === "OPTIONS") {
   return handleOptions();
   }
   
@@ -349,31 +352,31 @@ return errorResponse(‘Not found’, 404);
   const payload = await authenticateRequest(request, env.JWT_SECRET);
   
   if (!payload) {
-  return errorResponse(‘Authentication required’, 401);
+  return errorResponse("Authentication required", 401);
   }
   
   const userId = payload.userId;
   
   try {
   // Route to appropriate handler based on path
-  if (pathname.startsWith(’/api/clients’)) {
+  if (pathname.startsWith("/api/clients")) {
   return await handleClients(request, env, userId, pathname);
   }
   
-  if (pathname.startsWith(’/api/alerts’)) {
+  if (pathname.startsWith("/api/alerts")) {
   return await handleAlerts(request, env, userId, pathname);
   }
   
-  if (pathname.startsWith(’/api/user’)) {
+  if (pathname.startsWith("/api/user")) {
   return await handleUser(request, env, userId, pathname);
   }
   
   // No matching route
-  return errorResponse(‘Not found’, 404);
+  return errorResponse("Not found", 404);
   
   } catch (error) {
-  console.error(‘Worker error:’, error);
-  return errorResponse(’Internal server error: ’ + error.message, 500);
+  console.error("Worker error:", error);
+  return errorResponse("Internal server error: " + error.message, 500);
   }
   }
   };

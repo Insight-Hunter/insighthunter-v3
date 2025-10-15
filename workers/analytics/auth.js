@@ -8,10 +8,9 @@
 - @param {string} secret - The secret key used to sign the token
 - @returns {Promise<Object|null>} The token payload if valid, null otherwise
   */
-  export async function verifyJWT(token, secret) {
-  try {
+  export async function verifyJWT(token, secret) {  try {
   // Split the JWT into its three parts
-  const [headerB64, payloadB64, signatureB64] = token.split(’.’);
+  const [headerB64, payloadB64, signatureB64] = token.split(".");
   
   if (!headerB64 || !payloadB64 || !signatureB64) {
   return null;
@@ -22,21 +21,21 @@
   const data = encoder.encode(`${headerB64}.${payloadB64}`);
   
   const secretKey = await crypto.subtle.importKey(
-  ‘raw’,
+  "raw",
   encoder.encode(secret),
-  { name: ‘HMAC’, hash: ‘SHA-256’ },
+  { name: "HMAC", hash: "SHA-256" },
   false,
-  [‘verify’]
+  ["verify"]
   );
   
   // Decode the signature from base64url
   const signatureBytes = Uint8Array.from(
-  atob(signatureB64.replace(/-/g, ‘+’).replace(/_/g, ‘/’)),
+  atob(signatureB64.replace(/-/g, "+").replace(/_/g, "/")),
   c => c.charCodeAt(0)
   );
   
   const isValid = await crypto.subtle.verify(
-  ‘HMAC’,
+  "HMAC",
   secretKey,
   signatureBytes,
   data
@@ -48,7 +47,7 @@
   
   // Decode and parse the payload
   const payload = JSON.parse(
-  atob(payloadB64.replace(/-/g, ‘+’).replace(/_/g, ‘/’))
+  atob(payloadB64.replace(/-/g, "+").replace(/_/g, "/"))
   );
   
   // Check if the token has expired
@@ -59,7 +58,7 @@
   return payload;
 
 } catch (error) {
-console.error(‘JWT verification error:’, error);
+console.error("JWT verification error:", error);
 return null;
 }
 }
@@ -72,9 +71,9 @@ return null;
 - @returns {Promise<Object|null>} The verified payload or null
   */
   export async function authenticateRequest(request, secret) {
-  const authHeader = request.headers.get(‘Authorization’);
+  const authHeader = request.headers.get("Authorization");
 
-if (!authHeader || !authHeader.startsWith(’Bearer ’)) {
+if (!authHeader || !authHeader.startsWith("Bearer ")) {
 return null;
 }
 

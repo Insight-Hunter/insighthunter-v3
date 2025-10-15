@@ -1,32 +1,30 @@
-{ 
-“name”: “insighthunter-analytics-worker”,
-    “version”: “1.0.0”,
-    “description”: “Financial analytics and forecasting Worker for Insight Hunter”,
-    “main”: “index.js”,
-    “type”: “module”,
-    “private”: true,
-    
-    “scripts”: {
-        “dev”: “wrangler dev”,
-“deploy”: “wrangler deploy –name insighthunter-analytics”,
-        “test”: “echo "Tests not yet implemented" && exit 0”
-    },
+{
+  "name": "insighthunter-analytics",
+  "version": "1.0.0",
+  "description": "Financial analytics and forecasting Worker for Insight Hunter",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
 
-    “dependencies”: {
-        “simple-statistics”: “^7.8.3”
-    },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --name insighthunter-analytics",
+    "test": "echo \"Tests not yet implemented\" && exit 0"
+  },
 
-    “devDependencies”: {
-        “@cloudflare/workers-types”: “^4.20231218.0”
-    },
+  "dependencies": {
+    "simple-statistics": "^7.8.3"
+  },
 
-    {
-    “keywords”: [
-        “cloudflare”,
-        “workers”,
-        “analytics”,
-        “forecasting”,
-        “financial”
-    ]
-   }
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0"
+  },
+
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "analytics",
+    "forecasting",
+    "financial"
+  ]
 }

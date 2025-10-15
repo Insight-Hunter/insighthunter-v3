@@ -1,5 +1,3 @@
-// package.json at repository root
-// This manages shared tools and dependencies for the entire project
 {
   "name": "insighthunter-v3",
   "version": "1.0.0",

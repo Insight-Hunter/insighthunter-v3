@@ -13,13 +13,13 @@
   export async function getCachedOrCompute(cache, key, computeFn, ttl = 3600) {
   try {
   // Try to get from cache first
-  const cached = await cache.get(key, ‘json’);
+  const cached = await cache.get(key, "json");
   
   if (cached) {
-  return { …cached, fromCache: true };
+  return { ...cached, fromCache: true };
   }
   } catch (error) {
-  console.error(‘Cache read error:’, error);
+  console.error("Cache read error:", error);
   // Continue to compute if cache read fails
   }
 
@@ -32,18 +32,18 @@ await cache.put(key, JSON.stringify(result), {
 expirationTtl: ttl
 });
 } catch (error) {
-console.error(‘Cache write error:’, error);
+console.error("Cache write error:", error);
 // Continue even if cache write fails
 }
 
-return { …result, fromCache: false };
+return { ...result, fromCache: false };
 }
 
 /**
 
 - Invalidate cache entries matching a pattern
-- Note: KV doesn’t support pattern-based deletion natively,
-- so you’d need to track keys separately for bulk invalidation
+- Note: KV doesn"t support pattern-based deletion natively,
+- so you"d need to track keys separately for bulk invalidation
 - @param {KVNamespace} cache - The KV namespace binding
 - @param {string} key - Exact key to delete
   */
@@ -51,7 +51,7 @@ return { …result, fromCache: false };
   try {
   await cache.delete(key);
   } catch (error) {
-  console.error(‘Cache invalidation error:’, error);
+  console.error("Cache invalidation error:", error);
   }
   }
 
@@ -101,10 +101,10 @@ return { …result, fromCache: false };
   const keysToInvalidate = [
   getDashboardCacheKey(userId, clientId),
   getInsightsCacheKey(userId, clientId),
-  getForecastCacheKey(userId, clientId, ‘30days’),
-  getForecastCacheKey(userId, clientId, ‘90days’),
-  getForecastCacheKey(userId, clientId, ‘180days’),
-  getForecastCacheKey(userId, clientId, ‘1year’)
+  getForecastCacheKey(userId, clientId, "30days"),
+  getForecastCacheKey(userId, clientId, "90days"),
+  getForecastCacheKey(userId, clientId, "180days"),
+  getForecastCacheKey(userId, clientId, "1year")
   ];
 
 await Promise.all(
