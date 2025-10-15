@@ -1,7 +1,7 @@
 // workers/analytics/seasonality.js
 // Detect seasonal patterns in financial data
 
-import { mean } from ‘simple-statistics’;
+import { mean } from "simple-statistics";
 
 /**
 
@@ -10,7 +10,7 @@ import { mean } from ‘simple-statistics’;
 - @param {string} metric - The metric to analyze for seasonality
 - @returns {Array|null} Array of seasonal patterns or null if none detected
   */
-  export function detectSeasonality(monthlyData, metric = ‘revenue’) {
+  export function detectSeasonality(monthlyData, metric = "revenue") {
   // Need at least 12 months of data to detect seasonality
   if (monthlyData.length < 12) {
   return null;
@@ -20,7 +20,7 @@ import { mean } from ‘simple-statistics’;
 const monthlyPatterns = {};
 
 for (const data of monthlyData) {
-const month = parseInt(data.month.split(’-’)[1]); // Extract month number
+const month = parseInt(data.month.split("-")[1]); // Extract month number
 if (!monthlyPatterns[month]) {
 monthlyPatterns[month] = [];
 }
@@ -40,7 +40,7 @@ monthlyAverages[month] = mean(values);
 const overallAverage = mean(Object.values(monthlyAverages));
 
 if (overallAverage === 0) {
-return null; // Can’t calculate meaningful seasonality with zero average
+return null; // Can"t calculate meaningful seasonality with zero average
 }
 
 // Identify months that significantly deviate from average
@@ -50,7 +50,7 @@ const SIGNIFICANCE_THRESHOLD = 15; // 15% deviation threshold
 for (const [month, avg] of Object.entries(monthlyAverages)) {
 const deviation = ((avg - overallAverage) / overallAverage) * 100;
 
-```
+
 if (Math.abs(deviation) > SIGNIFICANCE_THRESHOLD) {
   seasonalMonths.push({
     month: parseInt(month),
@@ -61,7 +61,7 @@ if (Math.abs(deviation) > SIGNIFICANCE_THRESHOLD) {
     occurrences: monthlyPatterns[month].length
   });
 }
-```
+
 
 }
 
@@ -79,7 +79,7 @@ return seasonalMonths.length > 0 ? seasonalMonths : null;
   */
   function getMonthName(monthNumber) {
   const date = new Date(2024, monthNumber - 1, 1);
-  return date.toLocaleString(‘default’, { month: ‘long’ });
+  return date.toLocaleString("default", { month: "long" });
   }
 
 /**
@@ -97,9 +97,9 @@ return seasonalMonths.length > 0 ? seasonalMonths : null;
 
 return forecasts.map(forecast => {
 // Extract month from period label
-const forecastMonth = parseInt(forecast.periodLabel.split(’-’)[1]);
+const forecastMonth = parseInt(forecast.periodLabel.split("-")[1]);
 
-```
+
 // Find if this month has a seasonal pattern
 const seasonalPattern = seasonalPatterns.find(p => p.month === forecastMonth);
 
@@ -117,7 +117,7 @@ if (seasonalPattern) {
 }
 
 return forecast;
-```
+
 
 });
 }
