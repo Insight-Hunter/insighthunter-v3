@@ -1,17 +1,17 @@
 // workers/analytics/forecasting.js
 // Statistical forecasting algorithms for financial predictions
 
-import { linearRegression, mean, standardDeviation } from ‘simple-statistics’;
+import { linearRegression, mean, standardDeviation } from "simple-statistics";
 
 /**
 
 - Generate forecast for a given metric using linear regression
 - @param {Array} historicalData - Array of monthly data objects
 - @param {number} periodsAhead - Number of periods to forecast
-- @param {string} metric - The metric to forecast (‘revenue’, ‘expenses’, ‘profit’)
+- @param {string} metric - The metric to forecast ("revenue", "expenses", "profit")
 - @returns {Object} Forecast result with predictions and confidence
   */
-  export function generateForecast(historicalData, periodsAhead = 3, metric = ‘revenue’) {
+  export function generateForecast(historicalData, periodsAhead = 3, metric = "revenue") {
   // Extract the values we want to forecast
   const values = historicalData.map(d => d[metric]);
 
@@ -20,8 +20,8 @@ if (values.length < 3) {
 return {
 forecasts: [],
 confidence: 0,
-method: ‘insufficient_data’,
-message: ‘Not enough historical data for accurate forecasting’
+method: "insufficient_data",
+message: "Not enough historical data for accurate forecasting"
 };
 }
 
@@ -90,11 +90,11 @@ return {
 };
 
 } catch (error) {
-console.error(‘Forecasting error:’, error);
+console.error("Forecasting error:", error);
 return {
 forecasts: [],
 confidence: 0,
-method: ‘error’,
+method: "error",
 message: error.message
 };
 }
@@ -108,7 +108,7 @@ message: error.message
 - @returns {string} Future month in YYYY-MM format
   */
   function getFuturePeriodLabel(lastMonth, periodsAhead) {
-  const date = new Date(lastMonth + ‘-01’);
+  const date = new Date(lastMonth + "-01");
   date.setMonth(date.getMonth() + periodsAhead);
   return date.toISOString().substring(0, 7);
   }
@@ -122,8 +122,8 @@ message: error.message
   */
   export function generateAllForecasts(monthlyData, periodsAhead = 3) {
   return {
-  revenue: generateForecast(monthlyData, periodsAhead, ‘revenue’),
-  expenses: generateForecast(monthlyData, periodsAhead, ‘expenses’),
-  profit: generateForecast(monthlyData, periodsAhead, ‘profit’)
+  revenue: generateForecast(monthlyData, periodsAhead, "revenue"),
+  expenses: generateForecast(monthlyData, periodsAhead, "expenses"),
+  profit: generateForecast(monthlyData, periodsAhead, "profit")
   };
   }

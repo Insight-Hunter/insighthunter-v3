@@ -14,13 +14,14 @@ const avgExpenses = mean(recentExpenses);
 const avgProfit = avgRevenue - avgExpenses;
 
 // Calculate trends
-const revenueTrend = recentRevenue[2] > recentRevenue[0] ? ‘increasing’ : ‘decreasing’;
-const expenseTrend = recentExpenses[2] > recentExpenses[0] ? ‘increasing’ : ‘decreasing’;
+const revenueTrend = recentRevenue[2] > recentRevenue[0] ? 
+'increasing' : 'decreasing';
+const expenseTrend = recentExpenses[2] > recentExpenses[0] ? 'increasing' : 'decreasing';
 
 // Top expense categories
 const topCategories = categoryBreakdown.slice(0, 3)
-.map(c => `${c.category} ($${c.total.toFixed(0)})`)
-.join(’, ’);
+.map(c => '${c.category} ($${c.total.toFixed(0)})')
+.join(', ');
 
 // Create a prompt for the AI
 const prompt = `As a financial advisor, provide 3-4 concise insights about this business:
@@ -42,7 +43,7 @@ Forecast:
 Provide specific, actionable insights in bullet point format. Focus on what’s working well, what needs attention, and what actions to consider.`;
 
 try {
-const response = await ai.run(’@cf/meta/llama-3-8b-instruct’, {
+const response = await ai.run('@cf/meta/llama-3-8b-instruct', {
 prompt: prompt,
 max_tokens: 500
 });
@@ -66,7 +67,7 @@ return insights.length > 0 ? insights : [
 
 
 } catch (error) {
-console.error(‘AI insight generation error:’, error);
+console.error('AI insight generation error', error);
 // Return basic insights if AI fails
 return [
 `Revenue is ${revenueTrend} with an average of $${avgRevenue.toFixed(0)} per month`,

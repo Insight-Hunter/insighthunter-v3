@@ -20,10 +20,10 @@
 const query = `SELECT  strftime('%Y-%m', date) as month, SUM(CASE WHEN amount >= 0 THEN amount ELSE 0 END) as revenue, SUM(CASE WHEN amount < 0 THEN ABS(amount) ELSE 0 END) as expenses, COUNT(*) as transaction_count FROM transactions WHERE user_id = ? ${clientId ? 'AND client_id = ?' : ''} AND date >= ? AND date <= ? GROUP BY strftime('%Y-%m', date) ORDER BY month ASC`;
 
 const bindings = clientId
-? [userId, clientId, startDate.toISOString().split(‘T’)[0], endDate.toISOString().split(‘T’)[0]]
-: [userId, startDate.toISOString().split(‘T’)[0], endDate.toISOString().split(‘T’)[0]];
+? [userId, clientId, startDate.toISOString().split("T")[0], endDate.toISOString().split("T")[0]]
+: [userId, startDate.toISOString().split("T")[0], endDate.toISOString().split("T")[0]];
 
-const result = await db.prepare(query).bind(…bindings).all();
+const result = await db.prepare(query).bind(...bindings).all();
 
 // Fill in missing months with zero values to ensure continuous time series
 const monthlyData = [];
@@ -33,7 +33,7 @@ while (current <= endDate) {
 const monthKey = current.toISOString().substring(0, 7);
 const existingData = result.results.find(r => r.month === monthKey);
 
-```
+
 monthlyData.push({
   month: monthKey,
   revenue: existingData ? existingData.revenue : 0,
@@ -43,7 +43,7 @@ monthlyData.push({
 });
 
 current.setMonth(current.getMonth() + 1);
-```
+
 
 }
 
@@ -66,10 +66,10 @@ return monthlyData;
 const query = `SELECT  category, SUM(ABS(amount)) as total, COUNT(*) as count, AVG(ABS(amount)) as average FROM transactions WHERE user_id = ? ${clientId ? 'AND client_id = ?' : ''} AND date >= ? AND amount < 0 AND category IS NOT NULL AND category != 'Uncategorized' GROUP BY category ORDER BY total DESC LIMIT 15`;
 
 const bindings = clientId
-? [userId, clientId, startDate.toISOString().split(‘T’)[0]]
-: [userId, startDate.toISOString().split(‘T’)[0]];
+? [userId, clientId, startDate.toISOString().split("T")[0]]
+: [userId, startDate.toISOString().split("T")[0]];
 
-const result = await db.prepare(query).bind(…bindings).all();
+const result = await db.prepare(query).bind(...bindings).all();
 return result.results;
 }
 
@@ -90,9 +90,9 @@ return result.results;
 const query = `SELECT * FROM transactions WHERE user_id = ? ${clientId ? 'AND client_id = ?' : ''} AND date >= ? ORDER BY date DESC LIMIT ?`;
 
 const bindings = clientId
-? [userId, clientId, startDate.toISOString().split(‘T’)[0], limit]
-: [userId, startDate.toISOString().split(‘T’)[0], limit];
+? [userId, clientId, startDate.toISOString().split("T")[0], limit]
+: [userId, startDate.toISOString().split("T")[0], limit];
 
-const result = await db.prepare(query).bind(…bindings).all();
+const result = await db.prepare(query).bind(...bindings).all();
 return result.results;
 }
