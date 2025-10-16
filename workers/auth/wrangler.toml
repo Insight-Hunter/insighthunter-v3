@@ -1,25 +1,30 @@
-import { env } from "./.dev.vars"
-
 name = "insighthunter-auth"
 type = "javascript"
 
-account_id = "env.CLOUDFLARE_ACCOUNT_ID"
+account_id = "./../../.dev.vars.CLOUDFLARE_ACCOUNT_ID"
 workers_dev = true
 compatibility_date = "2025-10-14"
 
-main = "./src/index.js"
+main = "index-cloudflare.js"
 
 [env.production]
 name = "insighthunter-auth"
 routes = ["https://api.insighthunter.app/auth/*"]
 
-# e.g. KV
 [[kv_namespaces]]
 binding = "CACHE"
-id = "env.KV_NAMESPACE_ID"
-
+id = "./../../.dev.vars.KV_NAMESPACE_ID"
 
 [[services.d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-database_id = "env.D1DATABASE_ID"
+database_id = "./../../.dev.vars.D1DATABASE_ID"
+
+routes = [
+  { pattern = "api.insighthunter.app/auth/*", zone_name = "insighthunter.app" }
+]
+
+[vars]
+NODE_ENV = "production"
+API_VERSION = "v3"
+JWT_SECRET = "./../../.dev.vars.JWT_SECRET"
