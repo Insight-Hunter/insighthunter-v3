@@ -58,8 +58,6 @@ binding = "AI"
 binding = "VECTORIZE"
 index_name = "transaction-categories"
 
-[services.vars]
-JWT_SECRET = "env.JWT_SECRET"
 MAX_FILE_SIZE = "10485760"
 
 # Analytics Worker
@@ -90,9 +88,6 @@ id = "env.KV_NAMESPACE_ID"
 [[services.ai]]
 binding = "AI"
 
-[services.vars]
-JWT_SECRET = "8cb92eb311e1a8106f160b01da419580707c8e5b225917dccdc5b211595f76cfe6c12c26ae9aa3859d358ea7a18183b6209673c9bbc90596d516e0a55b575f79"
-
 # Management Worker  
 # Handles clients, user settings, alerts, and general CRUD operations
 # This is the catch-all for operations that don't fit other specialized Workers
@@ -118,13 +113,7 @@ database_id = "env.D1DATABASE_ID"
 binding = "CACHE"
 id = "env.KV_NAMESPACE_ID"
 
-[services.vars]
-JWT_SECRET = "8cb92eb311e1a8106f160b01da419580707c8e5b225917dccdc5b211595f76cfe6c12c26ae9aa3859d358ea7a18183b6209673c9bbc90596d516e0a55b575f79"
-
 # Vectorize binding for semantic search and pattern matching
 [[services.vectorize]]
 binding = "VECTORIZE"
 index_name = "transaction-categories"
-
-[services.vars]
-JWT_SECRET = "8cb92eb311e1a8106f160b01da419580707c8e5b225917dccdc5b211595f76cfe6c12c26ae9aa3859d358ea7a18183b6209673c9bbc90596d516e0a55b575f79"
