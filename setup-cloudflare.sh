@@ -103,23 +103,34 @@ else
 fi
 echo ""
 
-# Update wrangler.toml
-echo -e "${BLUE}Updating wrangler.toml...${NC}"
+# Update all worker wrangler.toml files
+echo -e "${BLUE}Updating worker configurations...${NC}"
 
-if [ -f "wrangler-cloudflare.toml" ]; then
-    # Create backup
-    cp wrangler-cloudflare.toml wrangler-cloudflare.toml.backup
+WORKERS=("auth" "ingest" "analytics" "management")
+
+for worker in "${WORKERS[@]}"; do
+    WRANGLER_FILE="workers/${worker}/wrangler.toml"
     
-    # Replace IDs (simple sed approach)
-    sed -i.tmp "s/database_id = \".*\"/database_id = \"${D1_ID}\"/" wrangler-cloudflare.toml
-    sed -i.tmp "s/id = \"your-kv-namespace-id\"/id = \"${KV_ID}\"/" wrangler-cloudflare.toml
-    rm -f wrangler-cloudflare.toml.tmp
-    
-    echo -e "${GREEN}SUCCESS: wrangler.toml updated${NC}"
-    echo -e "${YELLOW}Backup saved as: wrangler-cloudflare.toml.backup${NC}"
-else
-    echo -e "${YELLOW}WARNING: wrangler-cloudflare.toml not found${NC}"
-fi
+    if [ -f "$WRANGLER_FILE" ]; then
+        # Create backup
+        cp "$WRANGLER_FILE" "${WRANGLER_FILE}.backup"
+        
+        # Update D1 database ID
+        sed -i.tmp "s/database_id = \"your-d1-database-id\"/database_id = \"${D1_ID}\"/" "$WRANGLER_FILE"
+        
+        # Update KV namespace ID
+        sed -i.tmp "s/id = \"your-kv-namespace-id\"/id = \"${KV_ID}\"/" "$WRANGLER_FILE"
+        
+        # Clean up temp files
+        rm -f "${WRANGLER_FILE}.tmp"
+        
+        echo -e "${GREEN}  ✓ Updated: ${WRANGLER_FILE}${NC}"
+    else
+        echo -e "${YELLOW}  ⚠ Not found: ${WRANGLER_FILE}${NC}"
+    fi
+done
+
+echo -e "${GREEN}SUCCESS: All wrangler.toml files updated${NC}"
 echo ""
 
 # Summary
