@@ -1,9 +1,6 @@
 name = "insighthunter-ingest"
 main = "index-ai.js"
 compatibility_date = "2024-01-15"
-type = "javascript"
-account_id = "env.CLOUDFLARE_ACCOUNT_ID"
-workers_dev = true
 
 routes = [
   { pattern = "api.insighthunter.app/api/upload", zone_name = "insighthunter.app" },
@@ -13,11 +10,11 @@ routes = [
 [[d1_databases]]
 binding = "DB"
 database_name = "insighthunter"
-database_id = "env.D1DATABASE_ID"
+database_id = "your-d1-database-id"
 
 [[kv_namespaces]]
-binding = "CACHE"
-id = "env.KV_NAMESPACE_ID"
+binding = "KV"
+id = "your-kv-namespace-id"
 
 [[r2_buckets]]
 binding = "BUCKET"
@@ -33,8 +30,3 @@ binding = "AI"
 [vars]
 NODE_ENV = "production"
 API_VERSION = "v3"
-
-
-
-
-
