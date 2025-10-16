@@ -11,17 +11,12 @@ routes = [
 [[d1_databases]]
 binding = "DB"
 database_name = "insighthunter"
-database_id = "env.D1DATABASE_ID"
+database_id = "your-d1-database-id"
 
 [[kv_namespaces]]
-binding = "CACHE"
-id = "env.KV_NAMESPACE_ID"
+binding = "KV"
+id = "your-kv-namespace-id"
 
 [vars]
 NODE_ENV = "production"
 API_VERSION = "v3"
-
-account_id = "env.CLOUDFLARE_ACCOUNT_ID"
-workers_dev = true
-
-
