@@ -1,4 +1,3 @@
-import { env } from /src/dev.vars
 # wrangler.toml
 # Complete Cloudflare Workers configuration for Insight Hunter
 
