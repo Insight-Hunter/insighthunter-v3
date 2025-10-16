@@ -8,17 +8,14 @@ routes = [
   { pattern = "api.insighthunter.app/api/dashboard/*", zone_name = "insighthunter.app" }
 ]
 
-account_id = "18c8e61a3669253dcfd0c7eec6be36a3"
-workers_dev = true
-
-[[kv_namespaces]]
-binding = "CACHE"
-id =  "af7391791e95423b82c1cd877c0992e3"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "insighthunter"
-database_id = "env.D1DATABASE_D1"
+database_id = "your-d1-database-id"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "your-kv-namespace-id"
 
 [[vectorize]]
 binding = "VECTORIZE"
@@ -29,4 +26,4 @@ binding = "AI"
 
 [vars]
 NODE_ENV = "production"
-API_VERSION = "v1"
+API_VERSION = "v3"
