@@ -1,16 +1,32 @@
 name = "insighthunter-analytics"
-type = "javascript"
+main = "index-ai.js"
+compatibility_date = "2024-01-15"
+
+routes = [
+  { pattern = "api.insighthunter.app/api/forecast/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/insights/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/dashboard/*", zone_name = "insighthunter.app" }
+]
 
 account_id = "18c8e61a3669253dcfd0c7eec6be36a3"
 workers_dev = true
-compatibility_date = "2025-10-14"
-
-main = "index.js"
-
-[env.production]
-name = "insighthunter-analytics"
-routes = ["https://api.insighthunter.app/analytics/*"]
 
 [[kv_namespaces]]
 binding = "CACHE"
 id =  "af7391791e95423b82c1cd877c0992e3"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "insighthunter"
+database_id = "env.D1DATABASE_D1"
+
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "transaction-search"
+
+[ai]
+binding = "AI"
+
+[vars]
+NODE_ENV = "production"
+API_VERSION = "v1"
