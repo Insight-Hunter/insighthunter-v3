@@ -1,8 +1,8 @@
 {
-  "name": "insighthunter-management-worker",
+  "name": "insighthunter-management",
   "version": "1.0.0",
   "description": "Client and user management Worker for Insight Hunter",
-  "main": "index.js",
+  "main": "index-cloudflare.js",
   "type": "module",
   "private": true,
   "scripts": {

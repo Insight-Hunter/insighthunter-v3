@@ -2,7 +2,7 @@
   "name": "insighthunter-auth",
   "version": "1.0.0",
   "description": "Authentication Worker for Insight Hunter",
-  "main": "index.js",
+  "main": "index-cloudflare.js",
   "type": "module",
   "private": true,
   "scripts": {

@@ -27,6 +27,7 @@ export default {
 
       const routeKey = `${request.method}:${path}`;
       if (routes[routeKey]) {
+        
         return await routes[routeKey](request, env, user, corsHeaders);
       }
 
