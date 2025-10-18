@@ -2,9 +2,9 @@ name = "insighthunter-auth"
 main = "index-cloudflare.js"
 compatibility_date = "2024-01-15"
 
-routes = [
-  { pattern = "api.insighthunter.app/auth/*", zone_name = "insighthunter.app" }
-]
+#routes = [
+ # { pattern = "api.insighthunter.app/auth/*", zone_name = "insighthunter.app" }
+#]
 
 [[d1_databases]]
 binding = "DB"
