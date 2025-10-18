@@ -1,5 +1,5 @@
 {
-  "name": "insighthunter-frontend",
+  "name": "frontend",
   "version": "1.0.0",
   "description": "React frontend for Insight Hunter Auto-CFO platform",
   "private": true,
@@ -31,6 +31,7 @@
     "autoprefixer": "^10.4.16"
   }
 }
+
 
 
 
