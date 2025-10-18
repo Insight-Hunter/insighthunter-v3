@@ -1,36 +1,56 @@
-// frontend/src/components/UI/LoadingSpinner.jsx
-// Loading indicator component
+// frontend/src/components/UI/EmptyState.jsx
+// Empty state placeholder component
 
-import React from ‘react’;
+import React from 'react';
+import Button from './Button';
 
-export default function LoadingSpinner({
-size = ‘md’,
-text = ‘’,
-fullScreen = false
+export default function EmptyState({
+icon: Icon,
+title,
+description,
+action,
+actionLabel,
+secondaryAction,
+secondaryActionLabel
 }) {
-const sizes = {
-sm: ‘w-4 h-4’,
-md: ‘w-8 h-8’,
-lg: ‘w-12 h-12’,
-xl: ‘w-16 h-16’
-};
-
-const spinner = (
-<div className="flex flex-col items-center justify-center gap-3">
-<div className={`animate-spin rounded-full border-b-2 border-blue-600 ${sizes[size]}`} />
-{text && (
-<p className="text-sm text-gray-600">{text}</p>
-)}
-</div>
-);
-
-if (fullScreen) {
 return (
-<div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
-{spinner}
+<div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+{Icon && (
+<div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+<Icon className="w-8 h-8 text-gray-400" />
 </div>
-);
-}
+)}
 
-return spinner;
+
+  {title && (
+    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+      {title}
+    </h3>
+  )}
+  
+  {description && (
+    <p className="text-sm text-gray-600 max-w-md mb-6">
+      {description}
+    </p>
+  )}
+  
+  {(action || secondaryAction) && (
+    <div className="flex gap-3">
+      {action && (
+        <Button onClick={action} variant="primary">
+          {actionLabel || 'Get Started'}
+        </Button>
+      )}
+      
+      {secondaryAction && (
+        <Button onClick={secondaryAction} variant="outline">
+          {secondaryActionLabel || 'Learn More'}
+        </Button>
+      )}
+    </div>
+  )}
+</div>
+
+
+);
 }

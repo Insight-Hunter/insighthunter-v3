@@ -1,8 +1,8 @@
 // frontend/src/components/UI/EmptyState.jsx
 // Empty state placeholder component
 
-import React from ‘react’;
-import Button from ‘./Button’;
+import React from 'react';
+import Button from './Button';
 
 export default function EmptyState({
 icon: Icon,
