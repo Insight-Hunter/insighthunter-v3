@@ -5,9 +5,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vitejs",
-    "build": "vitejs build",
-    "preview": "vitejs preview",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint . --ext js,jsx"
   },
 
@@ -31,3 +31,4 @@
     "autoprefixer": "^10.4.16"
   }
 }
+
