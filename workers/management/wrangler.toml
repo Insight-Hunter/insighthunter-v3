@@ -11,10 +11,12 @@ routes = [
 [[d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
+service = "insighthunter-ingest"
 database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
 
 [[kv_namespaces]]
 binding = "CACHE"
+service = "insighthunter-ingest"
 id = "af7391791e95423b82c1cd877c0992e3"
 
 [[vars]]
