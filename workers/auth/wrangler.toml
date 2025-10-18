@@ -22,6 +22,15 @@ NODE_ENV = "production"
 API_VERSION = "v3"
 JWT_SECRET = "8cb92eb311e1a8106f160b01da419580707c8e5b225917dccdc5b211595f76cfe6c12c26ae9aa3859d358ea7a18183b6209673c9bbc90596d516e0a55b575f79"
 
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
 
 
 
