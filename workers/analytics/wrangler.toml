@@ -3,19 +3,21 @@ main = "index-ai.js"
 compatibility_date = "2024-01-15"
 
 routes = [
-  { pattern = "api.insighthunter.app/api/forecast/*", zone_name = "insighthunter.app" },
-  { pattern = "api.insighthunter.app/api/insights/*", zone_name = "insighthunter.app" },
-  { pattern = "api.insighthunter.app/api/dashboard/*", zone_name = "insighthunter.app" }
+   { pattern = "api.insighthunter.app/api/forecast/*", zone_name = "insighthunter.app" },
+   { pattern = "api.insighthunter.app/api/insights/*", zone_name = "insighthunter.app" },
+   { pattern = "api.insighthunter.app/api/dashboard/*", zone_name = "insighthunter.app" },
+   { pattern = "api.insighthunter.app/api/search/*", zone_name = "insighthunter.app" }
+y
 ]
 
 [[d1_databases]]
 binding = "DB"
-database_name = "insighthunter"
-database_id = "your-d1-database-id"
+database_name = "insighthunte-productionr"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
 
 [[kv_namespaces]]
-binding = "KV"
-id = "your-kv-namespace-id"
+binding = "CACHE"
+id = "af7391791e95423b82c1cd877c0992e3"
 
 [[vectorize]]
 binding = "VECTORIZE"

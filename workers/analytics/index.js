@@ -199,6 +199,6 @@ export default {
     } catch (error) {
       console.error("Worker error:", error);
       return errorResponse("Internal server error: " + error.message, 500);
-    }
+    }rtyyytr66()
   }
 };
