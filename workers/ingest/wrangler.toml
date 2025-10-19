@@ -35,3 +35,13 @@ service = "insighthunter-ingest"
 [vars]
 NODE_ENV = "production"
 API_VERSION = "v3"
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
