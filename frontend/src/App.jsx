@@ -80,19 +80,19 @@ element={isAuthenticated ? <Navigate to="/dashboard" /> : <Signup />}
     }
   >
     <Route path="/" element={<Navigate to="/dashboard" />} />
-    <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="/dashboard" element={<DashboardPage />} />
     
-    <Route path="/clients" element={<Clients />} />
+    <Route path="/clients" element={<ClientsPage />} />
     <Route path="/clients/:clientId" element={<ClientDetail />} />
     
-    <Route path="/upload" element={<Upload />} />
+    <Route path="/upload" element={<UploadPage />} />
     
-    <Route path="/reports" element={<Reports />} />
+    <Route path="/reports" element={<ReportsPage />} />
     <Route path="/reports/:reportId" element={<ReportDetail />} />
     
     <Route path="/forecasting" element={<Forecasting />} />
     
-    <Route path="/alerts" element={<Alerts />} />
+    <Route path="/alerts" element={<AlertsPage/>} />
     
     <Route path="/profile" element={<Profile />} />
     <Route path="/settings" element={<Settings />} />
