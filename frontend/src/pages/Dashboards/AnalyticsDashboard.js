@@ -1,4 +1,4 @@
-// frontend/src/pages/AnalyticsDashboard.js
+// frontend/src/pages/AnalyticsDashboard.jsx
 // Complete dashboard that uses the analytics Worker
 
 import React, { useState, useEffect } from 'react';
