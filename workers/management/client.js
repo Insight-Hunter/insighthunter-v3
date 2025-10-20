@@ -131,4 +131,36 @@ export async function updateClient(db, clientId, userId, updates) {
 
 /**
  * Delete a client (soft delete by setting status to archived)
- * @param {D1Database} db -
+ * @param {D1Database} db - Database binding
+ * @param {number} clientId - Client ID
+ * @param {number} userId - User ID (for authorization)
+ * @returns {Promise<boolean>} Success status
+ */
+export async function deleteClient(db, clientId, userId) {
+  // Verify client belongs to user
+  const existing = await db.prepare(
+    'SELECT id FROM clients WHERE id = ? AND user_id = ?'
+  ).bind(clientId, userId).first();
+
+  if (!existing) {
+    throw new Error('Client not found or access denied');
+  }
+
+  // Soft delete by setting status to archived
+  await db.prepare(`UPDATE clients SET status = ?, updated_at = ? WHERE id = ? AND user_id = ?`).bind('archived', new Date().toISOString(), clientId, userId).run();
+
+  return true;
+}
+
+/**
+ * Search clients by company name
+ * @param {D1Database} db - Database binding
+ * @param {number} userId - User ID
+ * @param {string} searchQuery - Search term
+ * @returns {Promise<Array>} Matching clients
+ */
+export async function searchClients(db, userId, searchQuery) {
+  const result = await db.prepare(`SELECT id, company_name, contact_email, status, created_at FROM clients WHERE user_id = ? AND status != 'archived' AND company_name LIKE ? ORDER BY company_name ASC LIMIT 50`).bind(userId, `%${searchQuery}%`).all();
+
+  return result.results;
+}
