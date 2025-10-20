@@ -15,7 +15,7 @@ import Login from './pages/Auth/Login';
 import Signup from './pages/Auth/Signup';
 
 // Main Pages
-import Dashboard from './pages/Dashboard/Dashboard';
+import Dashboard from './pages/Dashboard/DashboardPage';
 import Clients from './pages/Clients/Clients';
 import ClientDetail from './pages/Clients/ClientDetail';
 import Upload from './pages/Upload/Upload';
