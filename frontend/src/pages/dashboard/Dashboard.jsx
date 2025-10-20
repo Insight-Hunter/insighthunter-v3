@@ -1,4 +1,4 @@
-// frontend/src/pages/Dashboard.js
+// frontend/src/pages/dashboard/Dashboard.jsx
 // Main dashboard that incorporates CSV upload
 
 import React, { useState, useEffect } from 'react';
