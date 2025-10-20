@@ -1,97 +1,185 @@
-// frontend/src/pages/AnalyticsDashboard.jsx
-// Complete dashboard that uses the analytics Worker
+import React, { useState, useEffect } from ‘react’;
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from ‘recharts’;
+import { TrendingUp, TrendingDown, DollarSign, AlertTriangle, Lightbulb, Upload } from ‘lucide-react’;
 
-import React, { useState, useEffect } from 'react';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { TrendingUp, TrendingDown, DollarSign, AlertTriangle, Lightbulb } from 'lucide-react';
+// Mock CSV Upload Component (simplified)
+function CSVUpload({ clientId, onUploadComplete }) {
+const handleFileUpload = (e) => {
+const file = e.target.files[0];
+if (file) {
+// Simulate upload
+setTimeout(() => {
+onUploadComplete({ success: true, fileName: file.name });
+}, 1000);
+}
+};
+
+return (
+<div className="bg-white rounded-lg shadow-md p-6 border-2 border-dashed border-gray-300">
+<div className="flex items-center justify-center">
+<label className="cursor-pointer flex flex-col items-center">
+<Upload className="w-8 h-8 text-blue-600 mb-2" />
+<span className="text-sm text-gray-600 mb-2">Upload CSV File</span>
+<input
+type="file"
+accept=".csv"
+onChange={handleFileUpload}
+className="hidden"
+/>
+<span className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+Choose File
+</span>
+</label>
+</div>
+</div>
+);
+}
 
 function AnalyticsDashboard({ clientId = null }) {
-  const [dashboardData, setDashboardData] = useState(null);
-  const [insights, setInsights] = useState(null);
-  const [forecast, setForecast] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const [dashboardData, setDashboardData] = useState(null);
+const [insights, setInsights] = useState(null);
+const [forecast, setForecast] = useState(null);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState(null);
+const [selectedClient, setSelectedClient] = useState(null);
 
-  useEffect(() => {
-    loadDashboardData();
-  }, [clientId]);
+useEffect(() => {
+loadDashboardData();
+}, [clientId]);
 
-  async function loadDashboardData() {
-    setLoading(true);
-    setError(null);
+async function loadDashboardData() {
+setLoading(true);
+setError(null);
 
-    try {
-      const token = localStorage.getItem('authToken');
-      
-      // Build query parameters
-      const params = new URLSearchParams();
-      if (clientId) {
-        params.append('client_id', clientId);
+```
+try {
+  // Mock data instead of actual API calls
+  // In production, replace with actual fetch calls
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  const mockDashboardData = {
+    kpis: {
+      monthlyRevenue: 125000,
+      revenueChange: 12.5,
+      monthlyExpenses: 78000,
+      netProfit: 47000,
+      profitMargin: 37.6
+    },
+    monthlyTrend: [
+      { month: 'Jan', revenue: 98000, expenses: 65000 },
+      { month: 'Feb', revenue: 105000, expenses: 68000 },
+      { month: 'Mar', revenue: 112000, expenses: 72000 },
+      { month: 'Apr', revenue: 118000, expenses: 75000 },
+      { month: 'May', revenue: 125000, expenses: 78000 }
+    ],
+    categoryBreakdown: [
+      { category: 'Payroll', total: 35000, count: 45 },
+      { category: 'Marketing', total: 15000, count: 28 },
+      { category: 'Office Supplies', total: 8000, count: 67 },
+      { category: 'Software', total: 12000, count: 15 },
+      { category: 'Travel', total: 5000, count: 12 },
+      { category: 'Utilities', total: 3000, count: 8 }
+    ],
+    generatedAt: new Date().toISOString(),
+    fromCache: false
+  };
+
+  const mockInsights = {
+    insights: [
+      'Revenue growth is accelerating with a 12.5% increase compared to last month',
+      'Marketing expenses have decreased by 8% while revenue increased, showing improved ROI',
+      'Your profit margin of 37.6% is above industry average of 32%'
+    ],
+    anomalies: [
+      {
+        type: 'expense_spike',
+        severity: 'medium',
+        message: 'Software expenses increased by 45% this month',
+        historical: 8200,
+        current: 12000
       }
+    ]
+  };
 
-      // Fetch all data in parallel for fast loading
-      const [dashboardRes, insightsRes, forecastRes] = await Promise.all([
-        fetch(`https://api.insighthunter.app/api/dashboard?${params}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch(`https://api.insighthunter.app/api/insights?${params}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch(`https://api.insighthunter.app/api/forecast?${params}&time_range=90days`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-      ]);
-
-      if (!dashboardRes.ok || !insightsRes.ok || !forecastRes.ok) {
-        throw new Error('Failed to load dashboard data');
+  const mockForecast = {
+    forecasts: {
+      revenue: {
+        forecasts: [
+          { periodLabel: 'Jun', value: 131000 },
+          { periodLabel: 'Jul', value: 138000 },
+          { periodLabel: 'Aug', value: 145000 }
+        ],
+        trend: 'increasing',
+        confidence: 0.87
       }
+    },
+    seasonality: [
+      { monthName: 'December', pattern: 'high', deviation: 25 },
+      { monthName: 'July', pattern: 'low', deviation: 15 }
+    ]
+  };
 
-      const [dashboardData, insightsData, forecastData] = await Promise.all([
-        dashboardRes.json(),
-        insightsRes.json(),
-        forecastRes.json()
-      ]);
+  setDashboardData(mockDashboardData);
+  setInsights(mockInsights);
+  setForecast(mockForecast);
 
-      setDashboardData(dashboardData);
-      setInsights(insightsData);
-      setForecast(forecastData);
+} catch (err) {
+  setError(err.message);
+} finally {
+  setLoading(false);
+}
+```
 
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
+}
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your financial intelligence...</p>
-        </div>
-      </div>
-    );
-  }
+const handleUploadComplete = (uploadResult) => {
+console.log(‘Upload completed:’, uploadResult);
+loadDashboardData();
+};
 
-  if (error) {
-    return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-        <p className="text-red-800">Error loading dashboard: {error}</p>
-        <button 
-          onClick={loadDashboardData}
-          className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
+if (loading) {
+return (
+<div className="flex items-center justify-center h-64">
+<div className="text-center">
+<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+<p className="text-gray-600">Loading your financial intelligence…</p>
+</div>
+</div>
+);
+}
 
-  const kpis = dashboardData.kpis;
-  const revenueChangePositive = parseFloat(kpis.revenueChange) >= 0;
+if (error) {
+return (
+<div className="bg-red-50 border border-red-200 rounded-lg p-6">
+<p className="text-red-800">Error loading dashboard: {error}</p>
+<button 
+onClick={loadDashboardData}
+className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+>
+Retry
+</button>
+</div>
+);
+}
 
-  return (
+const kpis = dashboardData.kpis;
+const revenueChangePositive = parseFloat(kpis.revenueChange) >= 0;
+
+return (
+<div className="min-h-screen bg-gray-50">
+<div className="max-w-7xl mx-auto px-4 py-8">
+<h1 className="text-3xl font-bold text-gray-900 mb-8">
+Financial Dashboard
+</h1>
+
+```
+    <div className="mb-8">
+      <CSVUpload 
+        clientId={selectedClient?.id}
+        onUploadComplete={handleUploadComplete}
+      />
+    </div>
+
     <div className="space-y-6">
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -247,7 +335,7 @@ function AnalyticsDashboard({ clientId = null }) {
           </ResponsiveContainer>
 
           <div className="space-y-2">
-            {dashboardData.categoryBreakdown.slice(0, 8).map((cat, idx) => (
+            {dashboardData.categoryBreakdown.map((cat, idx) => (
               <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded">
                 <div className="flex items-center">
                   <div 
@@ -273,7 +361,7 @@ function AnalyticsDashboard({ clientId = null }) {
           <p className="text-gray-700 mb-3">
             Your business shows seasonal patterns. Plan accordingly for these months:
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {forecast.seasonality.map((season, idx) => (
               <div key={idx} className={`p-4 rounded-lg border ${
                 season.pattern === 'high' ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'
@@ -294,7 +382,11 @@ function AnalyticsDashboard({ clientId = null }) {
         {dashboardData.fromCache && <span className="ml-2">(cached)</span>}
       </div>
     </div>
-  );
+  </div>
+</div>
+```
+
+);
 }
 
 export default AnalyticsDashboard;
