@@ -16,13 +16,13 @@ import Signup from './pages/Auth/Signup';
 
 // Main Pages
 import Dashboard from './pages/Dashboard/DashboardPage';
-import Clients from './pages/Clients/Clients';
+import Clients from './pages/Clients/ClientsPage';
 import ClientDetail from './pages/Clients/ClientDetail';
-import Upload from './pages/Upload/Upload';
-import Reports from './pages/Reports/Reports';
+import Upload from './pages/Upload/UploadPage';
+import Reports from './pages/Reports/ReportsPage';
 import ReportDetail from './pages/Reports/ReportDetail';
 import Forecasting from './pages/Forecasting/Forecasting';
-import Alerts from './pages/Alerts/Alerts';
+import Alerts from './pages/Alerts/AlertsPage';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 
