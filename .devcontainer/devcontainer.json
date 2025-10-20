@@ -1,5 +1,5 @@
 // .devcontainer/devcontainer.json
-// Development container configuration for Insight Hunter
+// Development container configuration for Insight Huntern
 // This ensures all developers have the same environment
 
 {
@@ -13,7 +13,8 @@
   
   
   // Use the official Microsoft Node.js dev container image
-  // This gives you Node.js pre-installed with all the tools you need
+  // This gives you Node.js pre-installed with all the tools you neednpx install vite
+  
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
   
   // Features to add to the container
