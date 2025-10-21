@@ -2,115 +2,48 @@ export class UserSession {
   constructor(state, env) {
     this.state = state;
     this.env = env;
-    this.sqlite = state.storage.sqlite;
-    this.userId = null; // Assign on first interaction
   }
 
   async fetch(request) {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    if (path === "/init") {
+    if (path.endsWith("/init")) {
       return this.handleInit(request);
-    } else if (path === "/upload") {
+    } else if (path.endsWith("/upload")) {
       return this.handleUpload(request);
-    } else if (path === "/forecast") {
+    } else if (path.endsWith("/forecast")) {
       return this.handleForecast(request);
-    } else {
-      return new Response("Not Found", { status: 404 });
     }
+
+    return new Response("Not Found", { status: 404 });
   }
 
   async handleInit(request) {
     const data = await request.json();
-    this.userId = data.userId;
-    // Initialize any session state if needed
-    this.state.storage.put("userId", this.userId);
+    await this.state.storage.put("userId", data.userId);
     return new Response(JSON.stringify({ ok: true }), { status: 200 });
   }
 
   async handleUpload(request) {
-    if (!this.userId) {
-      this.userId = await this.state.storage.get("userId");
-    }
-    if (!this.userId) {
-      return new Response("User ID not initialized", { status: 400 });
-    }
+    const userId = await this.state.storage.get("userId");
+    if (!userId) return new Response("User ID not initialized", { status: 400 });
 
-    const body = await request.json();
-    const transactions = body.transactions; // Expecting array of {date, amount, category}
+    const { transactions } = await request.json();
 
-    // Basic validation and insert into Durable Object SQLite
-    await this.sqlite.exec(`
-      CREATE TABLE IF NOT EXISTS staging_transactions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        date TEXT,
-        amount REAL,
-        category TEXT
-      )
-    `);
+    await this.state.storage.put("transactions", transactions);
 
-    const insertStmt = await this.sqlite.prepare(
-      `INSERT INTO staging_transactions (date, amount, category) VALUES (?, ?, ?)`
-    );
+    // Example: batch persist to D1 here if needed
 
-    for (const tx of transactions) {
-      await insertStmt.bind(tx.date, tx.amount, tx.category).run();
-    }
-
-    await insertStmt.finalize();
-
-    // Process transactions and persist to Cloudflare D1
-    const allTx = await this.sqlite.all(`SELECT * FROM staging_transactions`);
-
-    const d1Db = this.env.DB;
-
-    const batch = allTx.map(row =>
-      d1Db
-        .prepare(
-          `INSERT INTO transactions (user_id, date, amount, category) VALUES (?, ?, ?, ?)`
-        )
-        .bind(this.userId, row.date, row.amount, row.category)
-    );
-
-    for (const statement of batch) {
-      await statement.run();
-    }
-
-    // Clear staging
-    await this.sqlite.exec(`DELETE FROM staging_transactions`);
-
-    return new Response(JSON.stringify({ imported: allTx.length }), {
-      status: 200,
-    });
+    return new Response(JSON.stringify({ imported: transactions.length }), { status: 200 });
   }
 
   async handleForecast(request) {
-    if (!this.userId) {
-      this.userId = await this.state.storage.get("userId");
-    }
-    if (!this.userId) {
-      return new Response("User ID not initialized", { status: 400 });
-    }
+    const userId = await this.state.storage.get("userId");
+    if (!userId) return new Response("User ID not initialized", { status: 400 });
 
-    // Query Cloudflare D1 for user's transactions and compute simple forecast
-    const d1Db = this.env.DB;
-
-    const rows = await d1Db
-      .prepare(
-        `SELECT date, SUM(amount) as total_amount FROM transactions 
-         WHERE user_id = ? 
-         GROUP BY date ORDER BY date`
-      )
-      .bind(this.userId)
-      .all();
-
-    // Example: simple cumulative sum forecast
-    let cumulative = 0;
-    const forecast = rows.results.map((r) => {
-      cumulative += r.total_amount;
-      return { date: r.date, cumulativeAmount: cumulative };
-    });
+    // Dummy forecast data example
+    const forecast = [{ date: "2025-01-01", value: 1000 }, { date: "2025-02-01", value: 1200 }];
 
     return new Response(JSON.stringify({ forecast }), { status: 200 });
   }
