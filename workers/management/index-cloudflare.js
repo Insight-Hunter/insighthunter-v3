@@ -1,73 +1,107 @@
-import { UserSession } from "./durable-objects/user-session.js";
-
-export { UserSession };
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
-
-export async function fetch(request, env) {
-  const url = new URL(request.url);
-  const path = url.pathname;
-
-  // Handle CORS preflight
-  if (request.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+export class UserSession {
+  constructor(state, env) {
+    this.state = state;
+    this.env = env;
+    this.sqlite = state.storage.sqlite;
+    this.userId = null;
   }
 
-  // Route session-related Durable Object API calls
-  if (path.startsWith("/api/session")) {
-    const userSessionId = extractUserIdFromRequest(request);
-    if (!userSessionId) {
-      return jsonResponse({ error: "Unauthorized: No user session ID" }, 401);
-    }
+  async fetch(request) {
+    const url = new URL(request.url);
+    const path = url.pathname;
 
-    const durableId = env.USER_SESSION.idFromName(userSessionId);
-    const durableObject = env.USER_SESSION.get(durableId);
-    return durableObject.fetch(request);
-  }
-
-  try {
-    // Other API route handlers
-    if (path.startsWith('/api/clients')) {
-      return handleClients(request, env, corsHeaders);
-    } else if (path.startsWith('/api/alerts')) {
-      return handleAlerts(request, env, corsHeaders);
-    } else if (path.startsWith('/api/user')) {
-      return handleUser(request, env, corsHeaders);
-    } else if (path === '/health') {
-      return jsonResponse({ status: 'ok', service: 'management' }, 200);
+    if (path.endsWith("/init")) {
+      return this.handleInit(request);
+    } else if (path.endsWith("/upload")) {
+      return this.handleUpload(request);
+    } else if (path.endsWith("/forecast")) {
+      return this.handleForecast(request);
     } else {
-      return jsonResponse({ error: 'Not found' }, 404);
+      return new Response("Not Found", { status: 404 });
     }
-  } catch (error) {
-    console.error('Management worker error:', error);
-    return jsonResponse({ error: error.message }, 500);
   }
-}
 
-// Extract userId from Authorization header JWT
-function extractUserIdFromRequest(request) {
-  const authHeader = request.headers.get("Authorization");
-  if (!authHeader || !authHeader.startsWith("Bearer ")) return null;
-
-  const token = authHeader.substring(7);
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload.userId || null;
-  } catch {
-    return null;
+  async handleInit(request) {
+    const data = await request.json();
+    this.userId = data.userId;
+    await this.state.storage.put("userId", this.userId);
+    return new Response(JSON.stringify({ ok: true }), { status: 200 });
   }
-}
 
-function jsonResponse(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      'Content-Type': 'application/json',
-      ...corsHeaders,
-    },
-  });
+  async handleUpload(request) {
+    if (!this.userId) {
+      this.userId = await this.state.storage.get("userId");
+    }
+    if (!this.userId) {
+      return new Response("User ID not initialized", { status: 400 });
+    }
+
+    const body = await request.json();
+    const transactions = body.transactions;
+
+    await this.sqlite.exec(`
+      CREATE TABLE IF NOT EXISTS staging_transactions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        date TEXT,
+        amount REAL,
+        category TEXT
+      )
+    `);
+
+    const insertStmt = await this.sqlite.prepare(
+      `INSERT INTO staging_transactions (date, amount, category) VALUES (?, ?, ?)`
+    );
+
+    for (const tx of transactions) {
+      await insertStmt.bind(tx.date, tx.amount, tx.category).run();
+    }
+
+    await insertStmt.finalize();
+
+    const allTx = await this.sqlite.all(`SELECT * FROM staging_transactions`);
+    const d1Db = this.env.INSIGHT_HUNTER_DB;
+
+    for (const row of allTx) {
+      await d1Db
+        .prepare(
+          `INSERT INTO transactions (user_id, date, amount, category) VALUES (?, ?, ?, ?)`
+        )
+        .bind(this.userId, row.date, row.amount, row.category)
+        .run();
+    }
+
+    await this.sqlite.exec(`DELETE FROM staging_transactions`);
+
+    return new Response(JSON.stringify({ imported: allTx.length }), {
+      status: 200,
+    });
+  }
+
+  async handleForecast(request) {
+    if (!this.userId) {
+      this.userId = await this.state.storage.get("userId");
+    }
+    if (!this.userId) {
+      return new Response("User ID not initialized", { status: 400 });
+    }
+
+    const d1Db = this.env.INSIGHT_HUNTER_DB;
+
+    const rows = await d1Db
+      .prepare(
+        `SELECT date, SUM(amount) as total_amount FROM transactions 
+         WHERE user_id = ? 
+         GROUP BY date ORDER BY date`
+      )
+      .bind(this.userId)
+      .all();
+
+    let cumulative = 0;
+    const forecast = rows.results.map((r) => {
+      cumulative += r.total_amount;
+      return { date: r.date, cumulativeAmount: cumulative };
+    });
+
+    return new Response(JSON.stringify({ forecast }), { status: 200 });
+  }
 }
