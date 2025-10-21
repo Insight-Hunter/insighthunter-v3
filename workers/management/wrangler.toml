@@ -14,6 +14,10 @@ database_name = "insighthunter-production"
 service = "insighthunter-ingest"
 database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
 
+[[durable_objects.bindings]]
+name = "USER_SESSION"
+class_name = "UserSession"
+
 [[kv_namespaces]]
 binding = "CACHE"
 service = "insighthunter-ingest"
