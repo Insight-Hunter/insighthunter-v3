@@ -63,7 +63,7 @@ export class UserSession {
     // Process transactions and persist to Cloudflare D1
     const allTx = await this.sqlite.all(`SELECT * FROM staging_transactions`);
 
-    const d1Db = this.env.INSIGHT_HUNTER_DB;
+    const d1Db = this.env.DB;
 
     const batch = allTx.map(row =>
       d1Db
@@ -94,7 +94,7 @@ export class UserSession {
     }
 
     // Query Cloudflare D1 for user's transactions and compute simple forecast
-    const d1Db = this.env.INSIGHT_HUNTER_DB;
+    const d1Db = this.env.DB;
 
     const rows = await d1Db
       .prepare(
