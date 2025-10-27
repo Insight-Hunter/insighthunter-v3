@@ -1,10 +1,8 @@
-// workers/ingest/package.json
-// Dependencies for the CSV ingestion Worker
 {
-  "name": "insighthunter-ingest-worker",
+  "name": "insighthunter-ingest",
   "version": "1.0.0",
   "description": "CSV upload and transaction processing Worker for Insight Hunter",
-  "main": "index.js",
+  "main": "index-ai.js",
   "type": "module",
   "private": true,
   "scripts": {

@@ -79,4 +79,4 @@ insighthunter_v3/
 │── .env.example        # Example environment variables
 │── wrangler.toml       # Cloudflare configuration
 │── README.md           # Project documentatio
->>>>>>> 7ae18bcac6c9bf41fc0ad1517a62aea32cf53afa
+>>>>>>> main

@@ -1,0 +1,32 @@
+name = "insighthunter-management"
+main = "index-cloudflare.js"
+compatibility_date = "2024-01-15"
+
+routes = [
+  { pattern = "api.insighthunter.app/api/clients/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/alerts/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/user/*", zone_name = "insighthunter.app" }
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "insighthunter-production"
+service = "insighthunter-management"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
+
+[[durable_objects.bindings]]
+name = "USER_SESSION"
+class_name = "UserSession"
+durable_object_storage = { binding = "DO_KV", type = "do_kv" }
+
+[[kv_namespaces]]
+binding = "CACHE"
+service = "insighthunter-management"
+id = "af7391791e95423b82c1cd877c0992e3"
+
+binding = "DO_KV"
+service = "insighthunter-management"
+id = "9c00d87a817c45579e6c69af5215ddc5"
+[[vars]]
+NODE_ENV = "production"
+API_VERSION = "v3"

@@ -1,20 +1,30 @@
-// workers/analytics/package.json
-// Dependencies for the analytics and forecasting Worker
 {
-  "name": "insighthunter-analytics-worker",
+  "name": "insighthunter-analytics",
   "version": "1.0.0",
   "description": "Financial analytics and forecasting Worker for Insight Hunter",
-  "main": "index.js",
+  "main": "index-ai.js",
   "type": "module",
   "private": true,
+
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy --name insighthunter-analytics"
+    "deploy": "wrangler deploy --name insighthunter-analytics",
+    "test": "echo \"Tests not yet implemented\" && exit 0"
   },
+
   "dependencies": {
     "simple-statistics": "^7.8.3"
   },
+
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231218.0"
-  }
+  },
+
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "analytics",
+    "forecasting",
+    "financial"
+  ]
 }

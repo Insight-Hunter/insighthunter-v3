@@ -1,0 +1,34 @@
+name = "insighthunter-analytics"
+main = "index-ai.js"
+compatibility_date = "2024-01-15"
+
+routes = [
+   { pattern = "api.insighthunter.app/api/forecast/*", zone_name = "insighthunter.app" },
+   { pattern = "api.insighthunter.app/api/insights/*", zone_name = "insighthunter.app" },
+   { pattern = "api.insighthunter.app/api/dashboard/*", zone_name = "insighthunter.app" },
+   { pattern = "api.insighthunter.app/api/search/*", zone_name = "insighthunter.app" }
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "insighthunter-production"
+servive = "insighthunter-analytics"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
+
+[[kv_namespaces]]
+binding = "CACHE"
+servive = "insighthunter-analytics"
+id = "af7391791e95423b82c1cd877c0992e3"
+
+[[vectorize]]
+binding = "VECTORIZE"
+servive = "insighthunter-analytics"
+index_name = "transaction-search"
+
+[ai]
+binding = "AI"
+servive = "insighthunter-analytics"
+
+[vars]
+NODE_ENV = "production"
+API_VERSION = "v3"
