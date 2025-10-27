@@ -52,7 +52,7 @@
 
 ### **D1 Database (Relational Data)**
 
-- Users, clients, transactions
+- Users, clients, transactions9
 - Reports, forecasts, alerts
 - Audit logs
 - Fast SQL queries at the edge
