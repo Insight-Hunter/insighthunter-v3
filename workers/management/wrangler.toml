@@ -11,23 +11,23 @@ routes = [
 [[d1_databases]]
 binding = "DB"
 database_name = "insighthunter-production"
-service = "insighthunter-management"
 database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
 
 [[durable_objects.bindings]]
 name = "USER_SESSION"
 class_name = "UserSession"
-durable_object_storage = { binding = "DO_KV", type = "do_kv" }
 
 [[kv_namespaces]]
 binding = "CACHE"
-service = "insighthunter-management"
 id = "af7391791e95423b82c1cd877c0992e3"
 
 [[kv_namespaces]]
 binding = "DO_KV"
-service = "insighthunter-management"
 id = "9c00d87a817c45579e6c69af5215ddc5"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["UserSession"]
 
 [[vars]]
 NODE_ENV = "production"
