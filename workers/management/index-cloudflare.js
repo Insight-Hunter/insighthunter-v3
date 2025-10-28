@@ -8,7 +8,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-export async function fetch(request, env) {
+async function fetch(request, env) {
   const url = new URL(request.url);
   const path = url.pathname;
 
@@ -86,8 +86,8 @@ async function handleClients(request, env, corsHeaders) {
     const clients = await env.DB.prepare(
       "SELECT * FROM clients WHERE user_id = ? ORDER BY created_at DESC"
     )
-    .bind(userId)
-    .all();
+      .bind(userId)
+      .all();
     return jsonResponse({ clients: clients.results }, 200);
   }
 
@@ -99,17 +99,20 @@ async function handleClients(request, env, corsHeaders) {
       `INSERT INTO clients (user_id, name, email, phone, business_name, tags, created_at)
        VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`
     )
-    .bind(
-      userId,
-      name,
-      email || null,
-      phone || null,
-      business_name || null,
-      tags ? JSON.stringify(tags) : null
-    )
-    .run();
+      .bind(
+        userId,
+        name,
+        email || null,
+        phone || null,
+        business_name || null,
+        tags ? JSON.stringify(tags) : null
+      )
+      .run();
 
-    return jsonResponse({ success: true, client_id: result.meta.last_row_id }, 201);
+    return jsonResponse(
+      { success: true, client_id: result.meta.last_row_id },
+      201
+    );
   }
 
   const clientIdMatch = path.match(/^\/api\/clients\/(\d+)$/);
@@ -120,8 +123,8 @@ async function handleClients(request, env, corsHeaders) {
       const client = await env.DB.prepare(
         "SELECT * FROM clients WHERE id = ? AND user_id = ?"
       )
-      .bind(clientId, userId)
-      .first();
+        .bind(clientId, userId)
+        .first();
       if (!client) return jsonResponse({ error: "Client not found" }, 404);
       return jsonResponse({ client }, 200);
     }
@@ -135,22 +138,24 @@ async function handleClients(request, env, corsHeaders) {
          SET name = ?, email = ?, phone = ?, business_name = ?, tags = ?, status = ?
          WHERE id = ? AND user_id = ?`
       )
-      .bind(
-        name,
-        email || null,
-        phone || null,
-        business_name || null,
-        tags ? JSON.stringify(tags) : null,
-        status || "active",
-        clientId,
-        userId
-      )
-      .run();
+        .bind(
+          name,
+          email || null,
+          phone || null,
+          business_name || null,
+          tags ? JSON.stringify(tags) : null,
+          status || "active",
+          clientId,
+          userId
+        )
+        .run();
       return jsonResponse({ success: true }, 200);
     }
 
     if (method === "DELETE") {
-      await env.DB.prepare("DELETE FROM clients WHERE id = ? AND user_id = ?")
+      await env.DB.prepare(
+        "DELETE FROM clients WHERE id = ? AND user_id = ?"
+      )
         .bind(clientId, userId)
         .run();
       return jsonResponse({ success: true }, 200);
@@ -175,8 +180,8 @@ async function handleAlerts(request, env, corsHeaders) {
     const alerts = await env.DB.prepare(
       `SELECT * FROM alerts WHERE user_id = ? AND status = ? ORDER BY created_at DESC LIMIT 100`
     )
-    .bind(userId, status)
-    .all();
+      .bind(userId, status)
+      .all();
     return jsonResponse({ alerts: alerts.results }, 200);
   }
 
@@ -187,16 +192,19 @@ async function handleAlerts(request, env, corsHeaders) {
       `INSERT INTO alerts (user_id, type, title, message, severity, metadata, status, created_at)
        VALUES (?, ?, ?, ?, ?, ?, 'active', datetime('now'))`
     )
-    .bind(
-      userId,
-      type,
-      title,
-      message,
-      severity || "info",
-      metadata ? JSON.stringify(metadata) : null
-    )
-    .run();
-    return jsonResponse({ success: true, alert_id: result.meta.last_row_id }, 201);
+      .bind(
+        userId,
+        type,
+        title,
+        message,
+        severity || "info",
+        metadata ? JSON.stringify(metadata) : null
+      )
+      .run();
+    return jsonResponse(
+      { success: true, alert_id: result.meta.last_row_id },
+      201
+    );
   }
 
   const alertIdMatch = path.match(/^\/api\/alerts\/(\d+)$/);
@@ -206,14 +214,18 @@ async function handleAlerts(request, env, corsHeaders) {
     if (method === "PUT") {
       const data = await request.json();
       const { status } = data;
-      await env.DB.prepare("UPDATE alerts SET status = ? WHERE id = ? AND user_id = ?")
+      await env.DB.prepare(
+        "UPDATE alerts SET status = ? WHERE id = ? AND user_id = ?"
+      )
         .bind(status, alertId, userId)
         .run();
       return jsonResponse({ success: true }, 200);
     }
 
     if (method === "DELETE") {
-      await env.DB.prepare("DELETE FROM alerts WHERE id = ? AND user_id = ?")
+      await env.DB.prepare(
+        "DELETE FROM alerts WHERE id = ? AND user_id = ?"
+      )
         .bind(alertId, userId)
         .run();
       return jsonResponse({ success: true }, 200);
@@ -237,8 +249,8 @@ async function handleUser(request, env, corsHeaders) {
     const user = await env.DB.prepare(
       "SELECT id, email, name, created_at, settings FROM users WHERE id = ?"
     )
-    .bind(userId)
-    .first();
+      .bind(userId)
+      .first();
     if (!user) return jsonResponse({ error: "User not found" }, 404);
     return jsonResponse({ user }, 200);
   }
@@ -279,20 +291,26 @@ async function verifyAuth(request, env) {
 }
 
 async function getUserStats(env, userId) {
-  const txCount = await env.DB.prepare("SELECT COUNT(*) AS count FROM transactions WHERE user_id = ?")
+  const txCount = await env.DB.prepare(
+    "SELECT COUNT(*) AS count FROM transactions WHERE user_id = ?"
+  )
     .bind(userId)
     .first();
-  const clientCount = await env.DB.prepare("SELECT COUNT(*) AS count FROM clients WHERE user_id = ?")
+  const clientCount = await env.DB.prepare(
+    "SELECT COUNT(*) AS count FROM clients WHERE user_id = ?"
+  )
     .bind(userId)
     .first();
-  const alertCount = await env.DB.prepare("SELECT COUNT(*) AS count FROM alerts WHERE user_id = ? AND status = 'active'")
+  const alertCount = await env.DB.prepare(
+    "SELECT COUNT(*) AS count FROM alerts WHERE user_id = ? AND status = 'active'"
+  )
     .bind(userId)
     .first();
   const totalAmount = await env.DB.prepare(
     `SELECT SUM(amount) AS total FROM transactions WHERE user_id = ? AND date >= date('now', '-30 days')`
   )
-  .bind(userId)
-  .first();
+    .bind(userId)
+    .first();
 
   return {
     transactions: txCount?.count || 0,
@@ -301,3 +319,5 @@ async function getUserStats(env, userId) {
     total_amount_30d: totalAmount?.total || 0,
   };
 }
+
+export default { fetch };
