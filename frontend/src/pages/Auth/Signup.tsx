@@ -3,12 +3,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Mail, Lock, User, AlertCircle } from 'lucide-react';
 
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export default function Signup() {
   const navigate = useNavigate();
   const { signup } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     password: '',
@@ -45,10 +52,11 @@ export default function Signup() {
 
     try {
       setLoading(true);
-      await signup(formData.email, formData.password, formData.name); // Ensure signup accepts name parameter
-      navigate('/dashboard'); // Navigate on successful signup
+      // Assuming signup API accepts (email, password, name) parameters.
+      await signup(formData.email, formData.password, formData.name);
+      navigate('/dashboard');
     } catch (signupError: any) {
-      setError(signupError.message || 'Failed to create an account');
+      setError(signupError?.message || 'Failed to create an account');
       setLoading(false);
     }
   };
