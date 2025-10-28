@@ -1,4 +1,5 @@
-#!/bin/bash
+
+
 
 # InsightHunter v3 Repository Restructure Script
 
