@@ -1,0 +1,33 @@
+.onboarding-container {
+  max-width: 600px;
+  margin: 1rem auto;
+  font-family: Arial, sans-serif;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="file"] {
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  margin-top: 0.25rem;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.error-message,
+.plaid-error {
+  color: red;
+  margin-bottom: 1rem;
+}
