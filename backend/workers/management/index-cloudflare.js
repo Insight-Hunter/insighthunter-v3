@@ -1,4 +1,4 @@
-import { UserSession } from "./durable-objects/user-session.js";
+import { UserSession } from "./../durable-objects/user-session.js";
 
 export { UserSession };
 
