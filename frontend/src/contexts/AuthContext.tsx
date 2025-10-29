@@ -1,7 +1,16 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import api from '../services/api';
+
+import api from'../utils/api';
 
 const AuthContext = createContext(null);
+
+interface AuthContextType {
+  isAuthenticated: boolean;
+  loading: boolean;
+  onboardingComplete: boolean; // new field
+}
+
+// You may fetch this status from your backend on login
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
