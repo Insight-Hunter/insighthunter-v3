@@ -7,7 +7,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "workflows-starter",
-	"main": "src/index.ts",
+	"main": "src/index.tsx",
 	"compatibility_date": "2024-10-22",
 	"observability": {
 		"enabled": true
