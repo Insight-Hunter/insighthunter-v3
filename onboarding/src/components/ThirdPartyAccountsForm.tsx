@@ -25,7 +25,6 @@ export function ThirdPartyAccountsForm({ defaultValues, onChange }: ThirdPartyAc
   return (
     <div>
       <h2>Connect Other Accounts</h2>
-      {/* Replace these buttons with actual OAuth flows */}
       <button onClick={() => alert("Implement Stripe OAuth flow")}>Connect Stripe</button>
       <button onClick={() => alert("Implement QuickBooks OAuth flow")}>Connect QuickBooks</button>
       <button onClick={() => alert("Implement Xero OAuth flow")}>Connect Xero</button>

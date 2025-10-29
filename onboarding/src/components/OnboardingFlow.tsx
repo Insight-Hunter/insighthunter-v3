@@ -1,67 +1,49 @@
 import React, { useState } from "react";
-import { PersonalInfoForm, PersonalInfo } from "./PersonalInfoForm";
-import { BusinessSetupForm, BusinessSetup } from "./BusinessSetupForm";
-import { AccountConnectionForm, AccountConnectionData } from "./AccountConnectionForm";
-import { ThirdPartyAccountsForm, ThirdPartyTokens } from "./ThirdPartyAccountsForm";
-import { InvoiceInsightsForm, InvoiceSettings } from "./InvoiceInsightsForm";
-
-type OnboardingStep =
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5;
-
-interface OnboardingData
-  extends PersonalInfo,
-    BusinessSetup,
-    AccountConnectionData {
-  thirdPartyTokens: ThirdPartyTokens;
-  invoiceSettings: InvoiceSettings;
-}
+import { savePersonalInfo, saveBusinessSetup, uploadCsv, connectPlaid, connectThirdParty, saveInvoiceSettings, finalizeOnboarding } from "../api/onboarding";
+import { PersonalInfoForm } from "./PersonalInfoForm";
+import { BusinessSetupForm } from "./BusinessSetupForm";
+import { AccountConnectionForm } from "./AccountConnectionForm";
+import { ThirdPartyAccountsForm } from "./ThirdPartyAccountsForm";
+import { InvoiceInsightsForm } from "./InvoiceInsightsForm";
+import { useAuth } from "/workspaces/insighthunter-v3/frontend/src/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export function OnboardingFlow() {
-  const [step, setStep] = useState<OnboardingStep>(1);
-  const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({ name: "", email: "" });
-  const [businessSetup, setBusinessSetup] = useState<BusinessSetup>({ businessName: "" });
-  const [accountConnection, setAccountConnection] = useState<AccountConnectionData>({
+  const { setOnboardingComplete } = useAuth();
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+  const [personalInfo, setPersonalInfo] = useState({ name: "", email: "" });
+  const [businessSetup, setBusinessSetup] = useState({ businessName: "" });
+  const [accountConnection, setAccountConnection] = useState({
     connectionMethod: "csv",
     csvData: null,
     plaidToken: null,
   });
-  const [thirdPartyTokens, setThirdPartyTokens] = useState<ThirdPartyTokens>({});
-  const [invoiceSettings, setInvoiceSettings] = useState<InvoiceSettings>({ alertThreshold: 1000 });
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [thirdPartyTokens, setThirdPartyTokens] = useState({});
+  const [invoiceSettings, setInvoiceSettings] = useState({ alertThreshold: 1000 });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const next = () => {
-    if (step < 5) setStep((s) => (s + 1) as OnboardingStep);
-  };
-  const prev = () => {
-    if (step > 1) setStep((s) => (s - 1) as OnboardingStep);
-  };
+  const next = () => setStep((s) => Math.min(s + 1, 6));
+  const prev = () => setStep((s) => Math.max(s - 1, 1));
 
   const handleSubmit = async () => {
-    setLoading(true);
-    setError(null);
-    const payload: OnboardingData = {
-      ...personalInfo,
-      ...businessSetup,
-      ...accountConnection,
-      thirdPartyTokens,
-      invoiceSettings,
-    };
-
+    setLoading(true); setError(null);
     try {
-      const response = await fetch("https://your-cloudflare-worker/workflows/onboarding", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) throw new Error("Failed to start onboarding");
-      const result = await response.json();
-      console.log("Onboarding started:", result);
-      // Redirect or update UI to success
+      await savePersonalInfo(personalInfo);
+      await saveBusinessSetup(businessSetup);
+      if (accountConnection.connectionMethod === "csv" && accountConnection.csvData) {
+        await uploadCsv(accountConnection.csvData);
+      }
+      if (accountConnection.connectionMethod === "plaid" && accountConnection.plaidToken) {
+        await connectPlaid({ userId: "user1", plaidToken: accountConnection.plaidToken });
+      }
+      await connectThirdParty({ userId: "user1", tokens: thirdPartyTokens });
+      await saveInvoiceSettings({ userId: "user1", invoiceSettings });
+      await finalizeOnboarding({ userId: "user1" });
+			setOnboardingComplete(true);
+			navigate("/dashboard");
+      alert("Onboarding Complete!");
     } catch (e: any) {
       setError(e.message || "Unknown error");
     } finally {
@@ -73,17 +55,27 @@ export function OnboardingFlow() {
     <div className="onboarding-container">
       {error && <div className="error-message">{error}</div>}
 
-      {step === 1 && <PersonalInfoForm onChange={setPersonalInfo} defaultValues={personalInfo} />}
-      {step === 2 && <BusinessSetupForm onChange={setBusinessSetup} defaultValues={businessSetup} />}
-      {step === 3 && <AccountConnectionForm onChange={setAccountConnection} defaultValues={accountConnection} />}
-      {step === 4 && <ThirdPartyAccountsForm onChange={setThirdPartyTokens} defaultValues={thirdPartyTokens} />}
-      {step === 5 && <InvoiceInsightsForm onChange={setInvoiceSettings} defaultValues={invoiceSettings} />}
+      {step === 1 && (
+        <PersonalInfoForm onChange={setPersonalInfo} defaultValues={personalInfo} />
+      )}
+      {step === 2 && (
+        <BusinessSetupForm onChange={setBusinessSetup} defaultValues={businessSetup} />
+      )}
+      {step === 3 && (
+        <AccountConnectionForm onChange={setAccountConnection} defaultValues={accountConnection} />
+      )}
+      {step === 4 && (
+        <ThirdPartyAccountsForm onChange={setThirdPartyTokens} defaultValues={thirdPartyTokens} />
+      )}
+      {step === 5 && (
+        <InvoiceInsightsForm onChange={setInvoiceSettings} defaultValues={invoiceSettings} />
+      )}
 
       <div className="navigation-buttons">
-        {step > 1 && <button disabled={loading} onClick={prev}>Back</button>}
-        {step < 5 && <button disabled={loading} onClick={next}>Next</button>}
+        {step > 1 && <button type="button" onClick={prev} disabled={loading}>Back</button>}
+        {step < 5 && <button type="button" onClick={next} disabled={loading}>Next</button>}
         {step === 5 && (
-          <button disabled={loading} onClick={handleSubmit}>
+          <button type="button" onClick={handleSubmit} disabled={loading}>
             {loading ? "Submitting..." : "Submit"}
           </button>
         )}
