@@ -1,39 +1,75 @@
 import express from "express";
+import { validateSchema } from "../middlewares/validation";
+import * as schemas from "../schemas/onboarding";
+import * as services from "../services/onboardingservices";
+
 const router = express.Router();
 
-router.post("/personal-info", (req, res) => {
-  // Save req.body to database
-  res.json({ success: true });
+router.post("/personal-info", validateSchema(schemas.personalInfoSchema), async (req, res) => {
+  try {
+    await services.savePersonalInfo(req.body);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 });
 
-router.post("/business-setup", (req, res) => {
-  // Save req.body to database
-  res.json({ success: true });
+router.post("/business-setup", validateSchema(schemas.businessSetupSchema), async (req, res) => {
+  try {
+    await services.saveBusinessSetup(req.body);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 });
 
-router.post("/csv-upload", (req, res) => {
-  // Parse/process CSV from req.body or req.file
-  res.json({ success: true });
+router.post("/csv-upload", validateSchema(schemas.csvUploadSchema), async (req, res) => {
+  try {
+    await services.processCsvData(req.body);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 });
 
-router.post("/plaid-connect", (req, res) => {
-  // Save Plaid token from req.body
-  res.json({ success: true });
+router.post("/plaid-connect", validateSchema(schemas.plaidConnectSchema), async (req, res) => {
+  try {
+    const { userId, token } = req.body;
+    await services.linkPlaidAccount(userId, token);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 });
 
-router.post("/third-party-connect", (req, res) => {
-  // Save 3rd party tokens from req.body
-  res.json({ success: true });
+router.post("/third-party-connect", validateSchema(schemas.thirdPartyTokensSchema), async (req, res) => {
+  try {
+    const { userId, tokens } = req.body;
+    await services.saveThirdPartyTokens(userId, tokens);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 });
 
-router.post("/invoice-setup", (req, res) => {
-  // Save invoice settings from req.body
-  res.json({ success: true });
+router.post("/invoice-setup", validateSchema(schemas.invoiceSettingsSchema), async (req, res) => {
+  try {
+    const { userId, invoiceSettings } = req.body;
+    await services.saveInvoiceSettings(userId, invoiceSettings);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 });
 
-router.post("/finalize", (req, res) => {
-  // Final onboarding logic
-  res.json({ success: true });
+router.post("/finalize", validateSchema(schemas.finalizeSchema), async (req, res) => {
+  try {
+    const { userId } = req.body;
+    await services.markOnboardingComplete(userId);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 });
 
 export default router;
