@@ -1,44 +1,82 @@
-import Joi from "joi";
+import express from "express";
+import { validateSchema } from "../middlewares/validation";
+import * as schemas from "../schemas/onboarding";
+import * as services from "../services/onboardingServices";
 
-export const personalInfoSchema = Joi.object({
-  name: Joi.string().min(1).required(),
-  email: Joi.string().email().required(),
+const router = express.Router();
+
+router.post("/personal-info", validateSchema(schemas.personalInfoSchema), async (req, res) => {
+  try {
+    await services.savePersonalInfo(req.body);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 });
 
-export const businessSetupSchema = Joi.object({
-  userId: Joi.string().required(),
-  businessName: Joi.string().min(1).required(),
-  businessType: Joi.string().optional(),
-  industry: Joi.string().optional(),
+router.post("/business-setup", validateSchema(schemas.businessSetupSchema), async (req, res) => {
+  try {
+    await services.saveBusinessSetup(req.body);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 });
 
-export const csvUploadSchema = Joi.object({
-  userId: Joi.string().required(),
-  csvData: Joi.string().required(),
+router.post("/csv-upload", validateSchema(schemas.csvUploadSchema), async (req, res) => {
+  try {
+    await services.processCsvData(req.body);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "CSV processing failed" });
+  }
 });
 
-export const plaidConnectSchema = Joi.object({
-  userId: Joi.string().required(),
-  token: Joi.string().required(),
+router.post("/plaid-connect", validateSchema(schemas.plaidConnectSchema), async (req, res) => {
+  try {
+    const { userId, token } = req.body;
+    await services.linkPlaidAccount(userId, token);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Plaid connection failed" });
+  }
 });
 
-export const thirdPartyTokensSchema = Joi.object({
-  userId: Joi.string().required(),
-  tokens: Joi.object({
-    stripe: Joi.string().optional().allow(null),
-    quickbooks: Joi.string().optional().allow(null),
-    xero: Joi.string().optional().allow(null),
-    crypto: Joi.string().optional().allow(null),
-  }).required(),
+router.post("/third-party-connect", validateSchema(schemas.thirdPartyTokensSchema), async (req, res) => {
+  try {
+    const { userId, tokens } = req.body;
+    await services.saveThirdPartyTokens(userId, tokens);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Third-party token saving failed" });
+  }
 });
 
-export const invoiceSettingsSchema = Joi.object({
-  userId: Joi.string().required(),
-  invoiceSettings: Joi.object({
-    alertThreshold: Joi.number().required(),
-  }).required(),
+router.post("/invoice-setup", validateSchema(schemas.invoiceSettingsSchema), async (req, res) => {
+  try {
+    const { userId, invoiceSettings } = req.body;
+    await services.saveInvoiceSettings(userId, invoiceSettings);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Invoice setup failed" });
+  }
 });
 
-export const finalizeSchema = Joi.object({
-  userId: Joi.string().required(),
+router.post("/finalize", validateSchema(schemas.finalizeSchema), async (req, res) => {
+  try {
+    const { userId } = req.body;
+    await services.markOnboardingComplete(userId);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Finalization failed" });
+  }
 });
+
+export default router;
