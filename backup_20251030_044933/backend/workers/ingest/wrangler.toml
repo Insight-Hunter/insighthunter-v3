@@ -1,0 +1,47 @@
+name = "insighthunter-ingest"
+main = "index-ai.js"
+compatibility_date = "2024-01-15"
+
+routes = [
+  { pattern = "api.insighthunter.app/api/upload", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/transactions/*", zone_name = "insighthunter.app" }
+]
+
+[[d1_databases]]
+binding = "DB"
+service = "insighthunter-ingest"
+database_name = "insighthunter-production"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
+
+[[kv_namespaces]]
+binding = "CACHE"
+service = "insighthunter-ingest"
+id = "af7391791e95423b82c1cd877c0992e3"
+
+[[r2_buckets]]
+binding = "BUCKET"
+service = "insighthunter-ingest"
+bucket_name = "insight-hunter-files"
+
+[[vectorize]]
+binding = "VECTORIZE"
+service = "insighthunter-ingest"
+index_name = "transaction-search"
+
+[ai]
+binding = "AI"
+service = "insighthunter-ingest"
+
+[vars]
+NODE_ENV = "production"
+API_VERSION = "v3"
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true

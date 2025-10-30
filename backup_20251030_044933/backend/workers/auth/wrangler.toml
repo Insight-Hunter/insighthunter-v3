@@ -1,0 +1,37 @@
+name = "insighthunter-auth"
+main = "index-cloudflare.js"
+compatibility_date = "2024-01-15"
+
+routes = [
+  { pattern = "api.insighthunter.app/auth/*", zone_name = "insighthunter.app" }
+]
+
+[[d1_databases]]
+binding = "DB"
+service = "insighthunter-auth"
+database_name = "insighthunter-production"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
+
+[[kv_namespaces]]
+binding ="CACHE"
+service = "insighthunter-auth"
+id = "af7391791e95423b82c1cd877c0992e3"
+
+[vars]
+NODE_ENV = "production"
+API_VERSION = "v3"
+JWT_SECRET = "8cb92eb311e1a8106f160b01da419580707c8e5b225917dccdc5b211595f76cfe6c12c26ae9aa3859d358ea7a18183b6209673c9bbc90596d516e0a55b575f79"
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+
+
+

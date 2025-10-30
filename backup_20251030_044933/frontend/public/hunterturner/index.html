@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insight Hunter - AI-Powered CFO Assistant for Small Business</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #2a2a2a;
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff6b35;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '';
+            width: 32px;
+            height: 32px;
+            background: #ff6b35;
+            border-radius: 50%;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::after {
+            content: '📊';
+            position: absolute;
+            left: 8px;
+            font-size: 16px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: #2a2a2a;
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.1)"><polygon points="0,0 1000,100 1000,0"/></svg>');
+            background-size: 100% 100%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #ff6b35;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #40e0d0;
+            color: #2a2a2a;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(64, 224, 208, 0.3);
+            transform: translateY(0);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(64, 224, 208, 0.5);
+            background: #36d4c4;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2d3748;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: #ff6b35;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #40e0d0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #ff6b35;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .feature-card p {
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        /* App Showcase */
+        .app-showcase {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+        }
+
+        .app-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .app-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .app-text p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .app-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .app-features li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .app-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #40e0d0;
+            font-weight: bold;
+        }
+
+        .app-demo {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dashboard-preview {
+            background: #1a202c;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #4a5568;
+        }
+
+        .metric-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .metric-card {
+            background: #2d3748;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #40e0d0;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #40e0d0;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* Onboarding Section */
+        .onboarding {
+            padding: 80px 0;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .onboarding-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .onboarding-steps {
+            list-style: none;
+        }
+
+        .onboarding-step {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(64, 224, 208, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .onboarding-step:hover {
+            border-color: #40e0d0;
+            background: rgba(64, 224, 208, 0.1);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #40e0d0;
+            color: #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-icon {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .onboarding-preview {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(64, 224, 208, 0.3);
+        }
+
+        .phone-mockup {
+            background: #2a2a2a;
+            border-radius: 25px;
+            padding: 1.5rem;
+            max-width: 300px;
+            margin: 0 auto;
+            border: 3px solid #3a3a3a;
+        }
+
+        .setup-screen {
+            text-align: center;
+        }
+
+        .setup-icon {
+            width: 80px;
+            height: 80px;
+            background: #40e0d0;
+            border-radius: 50%;
+            margin: 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        /* About Section */
+        .about {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .about-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            color: #718096;
+            margin-bottom: 2rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #40e0d0;
+        }
+
+        .submit-btn {
+            background: #40e0d0;
+            color: #2a2a2a;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(64, 224, 208, 0.4);
+            background: #36d4c4;
+        }
+
+        .contact-info {
+            padding: 2rem;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .contact-item {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: #ff6b35;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .app-content,
+            .contact-content,
+            .onboarding-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Insight Hunter</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#app">Our App</a></li>
+                <li><a href="#onboarding">Get Started</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Insight Hunter</h1>
+                <p>Empowering small businesses with AI-powered financial intelligence</p>
+                <a href="#app" class="cta-button">Try Our CFO Assistant</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title scroll-reveal">Why Choose Insight Hunter?</h2>
+            <div class="features-grid">
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffb347;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dataGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5dd3d3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#40e0d0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- AI Brain outline -->
+
+<path d="M70 50 C90 45, 110 45, 130 50 C140 55, 145 65, 145 80 C145 90, 140 100, 135 110 C130 125, 120 135, 100 140 C80 135, 70 125, 65 110 C60 100, 55 90, 55 80 C55 65, 60 55, 70 50 Z" 
+fill="none" stroke="url(#aiGradient)" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Neural network nodes inside brain -->
+
+  <circle cx="80" cy="75" r="4" fill="url(#aiGradient)"/>
+  <circle cx="100" cy="65" r="4" fill="url(#aiGradient)"/>
+  <circle cx="120" cy="80" r="4" fill="url(#aiGradient)"/>
+  <circle cx="85" cy="100" r="4" fill="url(#aiGradient)"/>
+  <circle cx="115" cy="105" r="4" fill="url(#aiGradient)"/>
+
+  <!-- Neural connections -->
+
+  <line x1="80" y1="75" x2="100" y2="65" stroke="url(#aiGradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="100" y1="65" x2="120" y2="80" stroke="url(#aiGradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="80" y1="75" x2="85" y2="100" stroke="url(#aiGradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="120" y1="80" x2="115" y2="105" stroke="url(#aiGradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="85" y1="100" x2="115" y2="105" stroke="url(#aiGradient)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Data analysis chart bars emerging from brain -->
+
+  <rect x="40" y="140" width="8" height="25" rx="4" ry="4" fill="url(#dataGradient)"/>
+  <rect x="55" y="135" width="8" height="30" rx="4" ry="4" fill="url(#dataGradient)"/>
+  <rect x="70" y="145" width="8" height="20" rx="4" ry="4" fill="url(#dataGradient)"/>
+
+  <rect x="122" y="142" width="8" height="23" rx="4" ry="4" fill="url(#dataGradient)"/>
+  <rect x="137" y="138" width="8" height="27" rx="4" ry="4" fill="url(#dataGradient)"/>
+  <rect x="152" y="144" width="8" height="21" rx="4" ry="4" fill="url(#dataGradient)"/>
+
+  <!-- Analysis wave/pulse lines -->
+
+<path d="M25 95 Q35 90, 45 95 T65 95" 
+fill="none" stroke="url(#dataGradient)" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+
+<path d="M135 95 Q145 90, 155 95 T175 95" 
+fill="none" stroke="url(#dataGradient)" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- AI sparkles/insights -->
+
+  <circle cx="45" cy="70" r="2" fill="url(#aiGradient)" opacity="0.8"/>
+  <circle cx="155" cy="65" r="2" fill="url(#aiGradient)" opacity="0.8"/>
+  <circle cx="40" cy="110" r="2" fill="url(#dataGradient)" opacity="0.8"/>
+  <circle cx="160" cy="115" r="2" fill="url(#dataGradient)" opacity="0.8"/>
+
+  <!-- Subtle glow around brain -->
+
+<path d="M70 50 C90 45, 110 45, 130 50 C140 55, 145 65, 145 80 C145 90, 140 100, 135 110 C130 125, 120 135, 100 140 C80 135, 70 125, 65 110 C60 100, 55 90, 55 80 C55 65, 60 55, 70 50 Z" 
+fill="none" stroke="rgba(255, 107, 53, 0.2)" stroke-width="2"/>
+</svg></div>
+                    <h3>AI-Powered Analysis</h3>
+                    <p>Our advanced AI algorithms analyze your financial data to provide actionable insights and recommendations for business growth.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="enterpriseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5dd3d3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#40e0d0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffb347;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Main report document -->
+
+  <rect x="50" y="30" width="100" height="140" rx="8" ry="8" fill="white" stroke="url(#enterpriseGradient)" stroke-width="4"/>
+
+  <!-- Document header/title bar -->
+
+  <rect x="50" y="30" width="100" height="25" rx="8" ry="8" fill="url(#enterpriseGradient)"/>
+  <rect x="50" y="47" width="100" height="8" fill="url(#enterpriseGradient)"/>
+
+  <!-- Report title lines -->
+
+  <rect x="60" y="70" width="60" height="3" rx="1.5" ry="1.5" fill="url(#enterpriseGradient)" opacity="0.7"/>
+  <rect x="60" y="78" width="80" height="3" rx="1.5" ry="1.5" fill="url(#enterpriseGradient)" opacity="0.7"/>
+
+  <!-- Chart/graph section -->
+
+  <rect x="60" y="90" width="80" height="45" rx="4" ry="4" fill="rgba(64, 224, 208, 0.1)" stroke="url(#enterpriseGradient)" stroke-width="1"/>
+
+  <!-- Bar chart inside -->
+
+  <rect x="68" y="120" width="6" height="12" rx="3" ry="3" fill="url(#enterpriseGradient)"/>
+  <rect x="78" y="115" width="6" height="17" rx="3" ry="3" fill="url(#enterpriseGradient)"/>
+  <rect x="88" y="110" width="6" height="22" rx="3" ry="3" fill="url(#enterpriseGradient)"/>
+  <rect x="98" y="118" width="6" height="14" rx="3" ry="3" fill="url(#enterpriseGradient)"/>
+  <rect x="108" y="112" width="6" height="20" rx="3" ry="3" fill="url(#enterpriseGradient)"/>
+  <rect x="118" y="125" width="6" height="7" rx="3" ry="3" fill="url(#enterpriseGradient)"/>
+
+  <!-- Trend line -->
+
+<path d="M71 123 L81 118 L91 113 L101 121 L111 115 L121 128" 
+fill="none" stroke="url(#accentGradient)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Data points on trend line -->
+
+  <circle cx="71" cy="123" r="2" fill="url(#accentGradient)"/>
+  <circle cx="81" cy="118" r="2" fill="url(#accentGradient)"/>
+  <circle cx="91" cy="113" r="2" fill="url(#accentGradient)"/>
+  <circle cx="101" cy="121" r="2" fill="url(#accentGradient)"/>
+  <circle cx="111" cy="115" r="2" fill="url(#accentGradient)"/>
+  <circle cx="121" cy="128" r="2" fill="url(#accentGradient)"/>
+
+  <!-- Data table section -->
+
+  <rect x="60" y="145" width="80" height="20" rx="2" ry="2" fill="rgba(64, 224, 208, 0.05)" stroke="url(#enterpriseGradient)" stroke-width="1"/>
+
+  <!-- Table rows -->
+
+  <line x1="60" y1="150" x2="140" y2="150" stroke="url(#enterpriseGradient)" stroke-width="1" opacity="0.3"/>
+  <line x1="60" y1="155" x2="140" y2="155" stroke="url(#enterpriseGradient)" stroke-width="1" opacity="0.3"/>
+  <line x1="60" y1="160" x2="140" y2="160" stroke="url(#enterpriseGradient)" stroke-width="1" opacity="0.3"/>
+
+  <!-- Table columns -->
+
+  <line x1="85" y1="145" x2="85" y2="165" stroke="url(#enterpriseGradient)" stroke-width="1" opacity="0.3"/>
+  <line x1="115" y1="145" x2="115" y2="165" stroke="url(#enterpriseGradient)" stroke-width="1" opacity="0.3"/>
+
+  <!-- Enterprise building/structure in background -->
+
+  <rect x="20" y="120" width="15" height="50" rx="2" ry="2" fill="url(#enterpriseGradient)" opacity="0.3"/>
+  <rect x="165" y="110" width="15" height="60" rx="2" ry="2" fill="url(#enterpriseGradient)" opacity="0.3"/>
+
+  <!-- Building windows -->
+
+  <rect x="23" y="125" width="3" height="3" rx="0.5" ry="0.5" fill="white" opacity="0.8"/>
+  <rect x="29" y="125" width="3" height="3" rx="0.5" ry="0.5" fill="white" opacity="0.8"/>
+  <rect x="23" y="135" width="3" height="3" rx="0.5" ry="0.5" fill="white" opacity="0.8"/>
+  <rect x="29" y="135" width="3" height="3" rx="0.5" ry="0.5" fill="white" opacity="0.8"/>
+
+  <rect x="168" y="115" width="3" height="3" rx="0.5" ry="0.5" fill="white" opacity="0.8"/>
+  <rect x="174" y="115" width="3" height="3" rx="0.5" ry="0.5" fill="white" opacity="0.8"/>
+  <rect x="168" y="125" width="3" height="3" rx="0.5" ry="0.5" fill="white" opacity="0.8"/>
+  <rect x="174" y="125" width="3" height="3" rx="0.5" ry="0.5" fill="white" opacity="0.8"/>
+
+  <!-- Premium badge/seal -->
+
+  <circle cx="135" cy="45" r="8" fill="url(#accentGradient)"/>
+  <path d="M132 45 L134 47 L138 43" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Subtle document shadow -->
+
+  <rect x="52" y="32" width="100" height="140" rx="8" ry="8" fill="rgba(0,0,0,0.1)" opacity="0.3"/>
+</svg></div>
+                    <h3>Enterprise-Level Reporting</h3>
+                    <p>Get sophisticated financial reports and analytics typically available only to large corporations, tailored for small business needs.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bulbGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffb347;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="smartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5dd3d3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#40e0d0;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="glowGradient" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#ffeb3b;stop-opacity:0.6" />
+      <stop offset="70%" style="stop-color:#ff6b35;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Light bulb glow effect -->
+
+  <circle cx="100" cy="90" r="55" fill="url(#glowGradient)" opacity="0.4"/>
+
+  <!-- Main light bulb body -->
+
+<path d="M100 40 C85 40, 75 50, 75 65 C75 75, 78 85, 85 92 C88 95, 90 98, 90 102 L90 115 L110 115 L110 102 C110 98, 112 95, 115 92 C122 85, 125 75, 125 65 C125 50, 115 40, 100 40 Z" 
+fill="url(#bulbGradient)" stroke="none"/>
+
+  <!-- Light bulb base/screw threads -->
+
+  <rect x="88" y="115" width="24" height="8" rx="4" ry="4" fill="url(#bulbGradient)" opacity="0.8"/>
+  <rect x="86" y="123" width="28" height="8" rx="4" ry="4" fill="url(#bulbGradient)" opacity="0.6"/>
+  <rect x="84" y="131" width="32" height="8" rx="4" ry="4" fill="url(#bulbGradient)" opacity="0.4"/>
+
+  <!-- Smart circuit pattern inside bulb -->
+
+  <circle cx="95" cy="65" r="3" fill="url(#smartGradient)" opacity="0.7"/>
+  <circle cx="105" cy="70" r="3" fill="url(#smartGradient)" opacity="0.7"/>
+  <circle cx="100" cy="80" r="3" fill="url(#smartGradient)" opacity="0.7"/>
+
+  <!-- Circuit connections -->
+
+  <line x1="95" y1="65" x2="105" y2="70" stroke="url(#smartGradient)" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <line x1="105" y1="70" x2="100" y2="80" stroke="url(#smartGradient)" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <line x1="100" y1="80" x2="95" y2="65" stroke="url(#smartGradient)" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Insight rays/beams -->
+
+  <path d="M100 25 L100 35" stroke="url(#bulbGradient)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M130 40 L125 45" stroke="url(#bulbGradient)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M140 70 L130 70" stroke="url(#bulbGradient)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M70 40 L75 45" stroke="url(#bulbGradient)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M60 70 L70 70" stroke="url(#bulbGradient)" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Data visualization elements around bulb -->
+
+  <!-- Left side mini chart -->
+
+  <rect x="40" y="100" width="4" height="8" rx="2" ry="2" fill="url(#smartGradient)" opacity="0.8"/>
+  <rect x="47" y="95" width="4" height="13" rx="2" ry="2" fill="url(#smartGradient)" opacity="0.8"/>
+  <rect x="54" y="98" width="4" height="10" rx="2" ry="2" fill="url(#smartGradient)" opacity="0.8"/>
+
+  <!-- Right side mini chart -->
+
+  <rect x="142" y="102" width="4" height="6" rx="2" ry="2" fill="url(#smartGradient)" opacity="0.8"/>
+  <rect x="149" y="97" width="4" height="11" rx="2" ry="2" fill="url(#smartGradient)" opacity="0.8"/>
+  <rect x="156" y="100" width="4" height="8" rx="2" ry="2" fill="url(#smartGradient)" opacity="0.8"/>
+
+  <!-- Smart insight bubbles -->
+
+  <circle cx="60" cy="50" r="6" fill="url(#smartGradient)" opacity="0.3"/>
+  <circle cx="140" cy="45" r="6" fill="url(#smartGradient)" opacity="0.3"/>
+  <circle cx="45" cy="130" r="6" fill="url(#smartGradient)" opacity="0.3"/>
+  <circle cx="155" cy="125" r="6" fill="url(#smartGradient)" opacity="0.3"/>
+
+  <!-- Smart symbols in bubbles -->
+
+<text x="60" y="54" text-anchor="middle" fill="url(#smartGradient)" font-size="8" font-weight="bold">%</text>
+<text x="140" y="49" text-anchor="middle" fill="url(#smartGradient)" font-size="8" font-weight="bold">$</text>
+<text x="45" y="134" text-anchor="middle" fill="url(#smartGradient)" font-size="8" font-weight="bold">↑</text>
+<text x="155" y="129" text-anchor="middle" fill="url(#smartGradient)" font-size="8" font-weight="bold">★</text>
+
+  <!-- Connecting insight lines -->
+
+  <line x1="66" y1="50" x2="85" y2="60" stroke="url(#smartGradient)" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+  <line x1="134" y1="45" x2="115" y2="58" stroke="url(#smartGradient)" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+  <line x1="51" y1="130" x2="88" y2="105" stroke="url(#smartGradient)" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+  <line x1="149" y1="125" x2="112" y2="105" stroke="url(#smartGradient)" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+
+  <!-- Central insight spark -->
+
+  <circle cx="100" cy="60" r="2" fill="#ffeb3b" opacity="0.9"/>
+  <path d="M98 58 L102 62 M102 58 L98 62" stroke="#ffeb3b" stroke-width="1" opacity="0.9"/>
+</svg></div>
+                    <h3>Smart Insights</h3>
+                    <p>Discover hidden patterns in your business data and receive proactive recommendations to optimize performance and profitability.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Real-Time Monitoring</h3>
+                    <p>Stay on top of your business performance with real-time dashboards and alerts for critical financial metrics.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure & Compliant</h3>
+                    <p>Bank-level security ensures your financial data is protected while maintaining compliance with industry standards.</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Easy Integration</h3>
+                    <p>Seamlessly connect with your existing accounting software and business tools for a unified financial view.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="app" class="app-showcase">
+        <div class="container">
+            <div class="app-content">
+                <div class="app-text scroll-reveal">
+                    <h2>Meet Your AI CFO Assistant</h2>
+                    <p>Transform your small business with enterprise-grade financial analysis. Our AI-powered CFO assistant provides the strategic insights you need to make informed decisions and drive growth.</p>
+                    
+                    <ul class="app-features">
+                        <li>Cash flow forecasting and optimization</li>
+                        <li>Profitability analysis by product/service</li>
+                        <li>Budget variance reporting</li>
+                        <li>Key performance indicator tracking</li>
+                        <li>Financial health scoring</li>
+                        <li>Growth opportunity identification</li>
+                        <li>Risk assessment and mitigation</li>
+                        <li>Automated financial reporting</li>
+                    </ul>
+                    
+                    <a href="#contact" class="cta-button">Get Started Today</a>
+                </div>
+                
+                <div class="app-demo scroll-reveal">
+                    <div class="dashboard-preview">
+                        <h4 style="margin-bottom: 1rem; color: #e2e8f0;">Financial Dashboard</h4>
+                        <div class="metric-cards">
+                            <div class="metric-card">
+                                <div class="metric-value">$45.2K</div>
+                                <div class="metric-label">Monthly Revenue</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">23%</div>
+                                <div class="metric-label">Profit Margin</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">$12.8K</div>
+                                <div class="metric-label">Cash Flow</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">87</div>
+                                <div class="metric-label">Health Score</div>
+                            </div>
+                        </div>
+                        <div style="background: #4a5568; padding: 1rem; border-radius: 5px; text-align: center; font-size: 0.9rem;">
+                            🔍 <span style="color: #40e0d0; font-weight: bold;">AI Insight:</span> Revenue is up 15% vs last month. Consider increasing inventory for Product A.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="onboarding" class="onboarding">
+        <div class="container">
+            <div class="onboarding-content">
+                <div class="onboarding-text scroll-reveal">
+                    <h2 style="color: #ff6b35; margin-bottom: 2rem;">Get Started in Minutes</h2>
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem; opacity: 0.9;">Setting up your AI CFO assistant is simple and straightforward. Follow these easy steps to unlock powerful financial insights for your business.</p>
+                    
+                    <div class="onboarding-steps">
+                        <div class="onboarding-step">
+                            <div class="step-number">1</div>
+                            <div>
+                                <span class="step-icon">🔗</span>
+                                <strong>Connect your accounts</strong><br>
+                                <small style="opacity: 0.7;">Link your banking and accounting software securely</small>
+                            </div>
+                        </div>
+                        
+                        <div class="onboarding-step">
+                            <div class="step-number">2</div>
+                            <div>
+                                <span class="step-icon">📊</span>
+                                <strong>Set up invoice insights</strong><br>
+                                <small style="opacity: 0.7;">Configure automated invoice analysis and tracking</small>
+                            </div>
+                        </div>
+                        
+                        <div class="onboarding-step">
+                            <div class="step-number">3</div>
+                            <div>
+                                <span class="step-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="walletGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffb347;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main wallet body -->
+  <rect x="40" y="70" width="120" height="80" rx="12" ry="12" fill="url(#walletGradient)" stroke="none"/>
+  
+  <!-- Wallet fold/flap -->
+  <rect x="45" y="50" width="110" height="25" rx="8" ry="8" fill="url(#walletGradient)" stroke="none"/>
+  
+  <!-- Card slot line -->
+  <rect x="55" y="60" width="90" height="3" rx="1.5" ry="1.5" fill="rgba(0,0,0,0.3)"/>
+  
+  <!-- Wallet clasp/button -->
+  <circle cx="140" cy="110" r="8" fill="rgba(0,0,0,0.4)"/>
+  <circle cx="140" cy="110" r="5" fill="rgba(0,0,0,0.6)"/>
+  
+  <!-- Subtle highlight -->
+  <rect x="45" y="75" width="100" height="2" rx="1" ry="1" fill="rgba(255,255,255,0.3)"/>
+</svg></span>
+                                <strong>Enable wallet sync</strong><br>
+                                <small style="opacity: 0.7;">Sync all your financial accounts for complete visibility</small>
+                            </div>
+                        </div>
+                        
+                        <div class="onboarding-step">
+                            <div class="step-number">4</div>
+                            <div>
+                                <span class="step-icon">🚀</span>
+                                <strong>Start getting insights</strong><br>
+                                <small style="opacity: 0.7;">Your AI CFO begins analyzing and providing recommendations</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="onboarding-preview scroll-reveal">
+                    <div class="phone-mockup">
+                        <div class="setup-screen">
+                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                                <div style="color: #ff6b35; font-size: 1.2rem; font-weight: bold;">Insight Hunter</div>
+                            </div>
+                            
+                            <h3 style="margin-bottom: 1rem; color: white;">Welcome to<br>Insight Hunter</h3>
+                            <p style="margin-bottom: 2rem; opacity: 0.7; font-size: 0.9rem;">Get started in a few simple steps</p>
+                            
+                            <div class="setup-icon">💼</div>
+                            
+                            <div style="text-align: left; margin-bottom: 2rem;">
+                                <div style="background: rgba(64, 224, 208, 0.1); border: 1px solid rgba(64, 224, 208, 0.3); border-radius: 10px; padding: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                                    <div style="color: #40e0d0;">✓</div>
+                                    <div style="font-size: 0.9rem;">Connect your accounts</div>
+                                </div>
+                                <div style="background: rgba(64, 224, 208, 0.1); border: 1px solid rgba(64, 224, 208, 0.3); border-radius: 10px; padding: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                                    <div style="color: #40e0d0;">✓</div>
+                                    <div style="font-size: 0.9rem;">Set up invoice insights</div>
+                                </div>
+                                <div style="background: rgba(64, 224, 208, 0.1); border: 1px solid rgba(64, 224, 208, 0.3); border-radius: 10px; padding: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                                    <div style="color: #40e0d0;">✓</div>
+                                    <div style="font-size: 0.9rem;">Enable wallet sync</div>
+                                </div>
+                            </div>
+                            
+                            <div style="background: #40e0d0; color: #1a1a1a; padding: 0.75rem 1.5rem; border-radius: 25px; font-weight: bold; cursor: pointer;">
+                                Continue
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content scroll-reveal">
+                <h2 class="section-title">About Insight Hunter</h2>
+                <p>We believe every small business deserves access to enterprise-level financial intelligence. Our team of financial experts and AI specialists has created a revolutionary platform that democratizes advanced financial analysis.</p>
+                <p>By combining cutting-edge artificial intelligence with deep financial expertise, we're helping small businesses make data-driven decisions, optimize their operations, and accelerate their growth. Join thousands of businesses that have already transformed their financial management with Insight Hunter.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title scroll-reveal">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-form scroll-reveal">
+                    <h3>Ready to Transform Your Business?</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company Name</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Tell us about your business and how we can help..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info scroll-reveal">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <strong>Email</strong><br>
+                            hello@insighthunter.com
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div>
+                            <strong>Phone</strong><br>
+                            1-800-INSIGHTS
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🌐</div>
+                        <div>
+                            <strong>Website</strong><br>
+                            www.insighthunter.com
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🏢</div>
+                        <div>
+                            <strong>Office</strong><br>
+                            Available for virtual meetings
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Insight Hunter. All rights reserved. Empowering small businesses with AI-powered financial intelligence.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                const offsetTop = target.offsetTop - 80;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(42, 42, 42, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = '#2a2a2a';
+                header.style.backdropFilter = 'none';
+            }
+        });
+
+        // Form handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Simulate form submission
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+                this.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // Add some dynamic animations to the dashboard preview
+        setInterval(() => {
+            const metrics = document.querySelectorAll('.metric-value');
+            metrics.forEach(metric => {
+                const current = parseFloat(metric.textContent.replace(/[^0-9.]/g, ''));
+                if (!isNaN(current)) {
+                    const variation = (Math.random() - 0.5) * 0.1;
+                    const newValue = current * (1 + variation);
+                    
+                    if (metric.textContent.includes('$')) {
+                        metric.textContent = '$' + newValue.toFixed(1) + 'K';
+                    } else if (metric.textContent.includes('%')) {
+                        metric.textContent = newValue.toFixed(0) + '%';
+                    } else {
+                        metric.textContent = Math.round(newValue);
+                    }
+                }
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

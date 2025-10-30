@@ -1,0 +1,9 @@
+name = "insighthunter-scheduled"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+[triggers]
+crons = ["0 9 * * *"]  # Daily at 9 AM UTC
+
+[env.production]
+vars = { ENVIRONMENT = "production" }

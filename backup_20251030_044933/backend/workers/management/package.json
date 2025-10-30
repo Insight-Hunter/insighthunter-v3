@@ -1,0 +1,24 @@
+{
+  "name": "insighthunter-management",
+  "version": "1.0.0",
+  "description": "Client and user management Worker for Insight Hunter",
+  "main": "index-cloudflare.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --name insighthunter-management",
+    "test": "echo \"Tests not yet implemented\" && exit 0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "management",
+    "clients",
+    "users"
+  ]
+}

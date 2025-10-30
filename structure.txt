@@ -1,0 +1,237 @@
+.
+├── README.md
+├── backend
+│   ├── database.sql
+│   ├── database.sqlite
+│   ├── dist
+│   │   ├── app.js
+│   │   ├── middlewares
+│   │   │   └── validation.js
+│   │   ├── routes
+│   │   │   └── onboarding.js
+│   │   ├── schemas
+│   │   │   └── onboarding.js
+│   │   ├── services
+│   │   │   └── onboardingServices.js
+│   │   └── utils
+│   │       ├── db.js
+│   │       └── validation.js
+│   ├── durable_objects
+│   │   └── user-session.js
+│   ├── migrations
+│   │   ├── 001_add_plan_dates.sql
+│   │   ├── 001_initial.sql
+│   │   ├── 002_add_alerts_table.sql
+│   │   └── 002_add_indexes.sql
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── seeds
+│   │   └── dev-data.sql
+│   ├── src
+│   │   ├── app.ts
+│   │   ├── middlewares
+│   │   │   └── validation.ts
+│   │   ├── routes
+│   │   │   └── onboarding.ts
+│   │   ├── schemas
+│   │   │   └── onboarding.ts
+│   │   ├── services
+│   │   │   └── onboardingServices.ts
+│   │   └── utils
+│   │       ├── db.ts
+│   │       └── validation.ts
+│   ├── tsconfig.json
+│   ├── utils
+│   │   ├── ai-insights.js
+│   │   ├── database.ts
+│   │   ├── jwt.ts
+│   │   ├── ml-forecasting.js
+│   │   ├── password.ts
+│   │   ├── response.ts
+│   │   └── validators.ts
+│   └── workers
+│       ├── analytics
+│       │   ├── README.md
+│       │   ├── anomalies.js
+│       │   ├── auth.js
+│       │   ├── cache.js
+│       │   ├── data-aggregation.js
+│       │   ├── forecasting-test.js
+│       │   ├── forecasting.js
+│       │   ├── index-ai.js
+│       │   ├── insights.js
+│       │   ├── package.json
+│       │   ├── pattern-insights.js
+│       │   ├── seasonality.js
+│       │   ├── semantics-search.js
+│       │   └── wrangler.toml
+│       ├── auth
+│       │   ├── README.md
+│       │   ├── index-cloudflare.js
+│       │   ├── jwt.js
+│       │   ├── login.js
+│       │   ├── package.json
+│       │   ├── passwords.js
+│       │   ├── permissions.js
+│       │   ├── registration.js
+│       │   ├── validation.js
+│       │   └── wrangler.toml
+│       ├── ingest
+│       │   ├── README.md
+│       │   ├── csv-parser.js
+│       │   ├── index-ai.js
+│       │   ├── package.json
+│       │   ├── transaction-categorization.js
+│       │   └── wrangler.toml
+│       └── management
+│           ├── README.md
+│           ├── alerts.js
+│           ├── auth.js
+│           ├── client.js
+│           ├── index-cloudflare.js
+│           ├── package-lock.json
+│           ├── package.json
+│           ├── permissions.js
+│           ├── users.js
+│           └── wrangler.toml
+├── docs
+│   ├── API_QUICK_REFERENCE.md
+│   ├── API_SCHEMA.yaml
+│   ├── BUILD-SUMMARY.md
+│   ├── CLOUDFLARE_ARCHITECTURE.md
+│   ├── CLOUDFLARE_ARTIFACTS_LIST.md
+│   ├── CLOUDFLARE_UPGRADE_SUMMARY.md
+│   ├── DURABLE_OBJECTS_USEAGE.md
+│   ├── MOBILE_DESIGN_SYSTEM.md
+│   ├── PAGES_OVERVIEW.md
+│   └── TECHNICAL_SPECIFICATIONS_CF.md
+├── eslintrc.json
+├── frontend
+│   ├── README.md
+│   ├── index.html
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── public
+│   │   ├── _headers
+│   │   ├── _redirects
+│   │   ├── hunterturner
+│   │   │   ├── index.html
+│   │   │   └── vite.svg
+│   │   ├── icons
+│   │   │   └── X.
+│   │   ├── manifest.json
+│   │   ├── offline.html
+│   │   └── sw.ts
+│   ├── src
+│   │   ├── App.tsx
+│   │   ├── components
+│   │   │   ├── AuthForm.css
+│   │   │   ├── BottomNav.jsx
+│   │   │   ├── CSVUpload.jsx
+│   │   │   ├── Charts
+│   │   │   │   └── Chart.jsx
+│   │   │   ├── Dashboard
+│   │   │   │   ├── Dashboard.jsx
+│   │   │   │   ├── KPICard.jsx
+│   │   │   │   └── RecentTransactions.jsx
+│   │   │   ├── Layout
+│   │   │   │   ├── Header.jsx
+│   │   │   │   ├── Layout.jsx
+│   │   │   │   ├── PublicLayout.jsx
+│   │   │   │   └── Sidebar.jsx
+│   │   │   ├── Layout.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── UI
+│   │   │   │   ├── Badge.jsx
+│   │   │   │   ├── Button.jsx
+│   │   │   │   ├── EmptyState.jsx
+│   │   │   │   ├── LoadingSpinner.jsx
+│   │   │   │   ├── Modal.jsx
+│   │   │   │   └── editing.js
+│   │   │   └── components
+│   │   │       ├── AuthForm.css
+│   │   │       ├── AuthForm.tsx
+│   │   │       ├── CashFlowChart.tsx
+│   │   │       ├── PlaidLink.tsx
+│   │   │       ├── ProfitMarginChart.tsx
+│   │   │       └── RevenueExpensesChart.tsx
+│   │   ├── contexts
+│   │   │   ├── AuthContext.tsx
+│   │   │   └── ClientContext.tsx
+│   │   ├── hooks
+│   │   │   ├── useAuth.js
+│   │   │   ├── useNotifications.js
+│   │   │   └── useRealtimeCashFlow.js
+│   │   ├── index.css
+│   │   ├── main.tsx
+│   │   ├── pages
+│   │   │   ├── Analytics
+│   │   │   │   └── ForecastPage.tsx
+│   │   │   ├── Auth
+│   │   │   │   ├── AuthPages.tsx
+│   │   │   │   ├── Login.tsx
+│   │   │   │   └── Signup.tsx
+│   │   │   ├── Clients
+│   │   │   │   ├── ClientDetail.tsx
+│   │   │   │   └── ClientPage.tsx
+│   │   │   ├── Dashboard
+│   │   │   │   ├── CashFlowDashboard.tsx
+│   │   │   │   └── DashboardPage.tsx
+│   │   │   ├── InitialPrototype.jsx
+│   │   │   ├── NotFound.tsx
+│   │   │   ├── Profile
+│   │   │   │   └── Profile.tsx
+│   │   │   ├── Reports
+│   │   │   │   ├── ReportDetail.tsx
+│   │   │   │   └── ReportsPage.tsx
+│   │   │   ├── Settings
+│   │   │   │   └── Settings.tsx
+│   │   │   └── Upload
+│   │   │       └── Upload.tsx
+│   │   └── utils
+│   │       ├── api.ts
+│   │       ├── helpers.ts
+│   │       ├── notifications.ts
+│   │       ├── storage.ts
+│   │       └── validation.ts
+│   ├── tailwind.config.js
+│   └── vite.config.js
+├── onboarding
+│   ├── LICENSE
+│   ├── README.md
+│   ├── dist
+│   │   └── index.html
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── src
+│   │   ├── api
+│   │   │   └── onboarding.ts
+│   │   ├── components
+│   │   │   ├── AccountConnectionForm.tsx
+│   │   │   ├── BusinessSetupForm.tsx
+│   │   │   ├── InvoiceInsightsForm.tsx
+│   │   │   ├── OnboardingFlow.tsx
+│   │   │   ├── PersonalInfoForm.tsx
+│   │   │   ├── PlaidConnect.tsx
+│   │   │   ├── ThirdPartyAccountsForm.tsx
+│   │   │   └── ThirdPartyOAuthButtons.tsx
+│   │   ├── examples.ts
+│   │   ├── index.tsx
+│   │   └── styles.css
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   └── wrangler.jsonc
+├── package-lock.json
+├── package.json
+├── prettierrc.json
+├── shared
+│   ├── auth-helpers.js
+│   ├── constants.js
+│   ├── database-helpers.js
+│   ├── permissions.js
+│   └── types.ts
+├── structure.txth
+└── tsconfig.json
+
+53 directories, 182 files
