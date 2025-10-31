@@ -1,16 +1,45 @@
 {
-  "name": "insighthunter-v3",
+  "name": "insight-hunter-frontend",
   "version": "1.0.0",
-  "description": "AI-Powered Auto-CFO Platform",
+  "private": true,
+  "description": "Insight Hunter - AI-Powered CFO Platform for Small Businesses",
+  "type": "module",
   "scripts": {
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "wrangler dev",
-    "build": "cd frontend && npm run build",
-    "deploy:frontend": "cd frontend && npm run deploy",
-    "deploy:backend": "wrangler publish",
-    "deploy": "npm run deploy:frontend && npm run deploy:backend"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "type-check": "tsc --noEmit"
   },
-  "keywords": ["finance", "cfo", "ai", "cloudflare"],
-  "author": "InsightHunter Team",
-  "license": "MIT"
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.0",
+    "axios": "^1.7.5",
+    "recharts": "^2.12.7",
+    "date-fns": "^3.6.0",
+    "clsx": "^2.1.1",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.3",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.11",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.10",
+    "postcss": "^8.4.45",
+    "autoprefixer": "^10.4.20"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
 }

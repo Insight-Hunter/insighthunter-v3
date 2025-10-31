@@ -3,12 +3,28 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
+
 import onboardingRoutes from "./routes/onboarding";
+import ForecastRoutes from './routes/forecast';
+import authRoutes from './routes/auth';
+import dashboardRoutes from './routes/dashboard';
+import forecastRoutes from './routes/forecast';
+import reportsRoutes from './routes/reports';
+import analyticsRoutes from './routes/analytics';
+import transactionsRoutes from './routes/transactions';
 
 const app = express();
 
 // Security middlewares
 app.use(helmet());
+
+app.use('/api/forecast', forecastRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/onboarding', onboardingRoutes);
+app.use('/api/reports', reportsRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/transactions', transactionsRoutes);
+app.use('/api/auth', authRoutes);
 
 // Basic rate limiting - Prevent abuse
 const limiter = rateLimit({
