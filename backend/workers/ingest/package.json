@@ -2,10 +2,11 @@
   "name": "insighthunter-ingest",
   "version": "1.0.0",
   "description": "CSV upload and transaction processing Worker for Insight Hunter",
-  "main": "index-ai.js",
+  "main": "index-ai.ts",
   "type": "module",
   "private": true,
   "scripts": {
+    "build": "npm install && npm run build",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --name insighthunter-ingest"
   },
