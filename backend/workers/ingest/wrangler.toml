@@ -1,9 +1,9 @@
 name = "insighthunter-ingest"
-main = "index-ai.js"
+main = "index-ai.ts"
 compatibility_date = "2024-01-15"
 
 routes = [
-  { pattern = "api.insighthunter.app/api/upload", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/upload/*", zone_name = "insighthunter.app" },
   { pattern = "api.insighthunter.app/api/transactions/*", zone_name = "insighthunter.app" }
 ]
 
