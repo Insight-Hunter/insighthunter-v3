@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from ‘react’;
-import { LineChart, Line, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from ‘recharts’;
-import { TrendingUp, TrendingDown, DollarSign, AlertTriangle, Calendar, Clock, Zap, RefreshCw, Download, Target, ArrowUpRight, ArrowDownRight } from ‘lucide-react’;
+import React, { useState, useEffect } from "react";
+import { LineChart, Line, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { TrendingUp, TrendingDown, DollarSign, AlertTriangle, Calendar, Clock, Zap, RefreshCw, Download, Target, ArrowUpRight, ArrowDownRight } from "lucide-react";
 
 function CashFlowDashboard() {
 const [autoRefresh, setAutoRefresh] = useState(true);
@@ -165,10 +165,10 @@ upper: null
 ];
 
 const getRunwayStatus = (days) => {
-if (days > 180) return { color: ‘text-green-600 bg-green-100’, label: ‘Excellent’ };
-if (days > 90) return { color: ‘text-blue-600 bg-blue-100’, label: ‘Healthy’ };
-if (days > 60) return { color: ‘text-yellow-600 bg-yellow-100’, label: ‘Moderate’ };
-return { color: ‘text-red-600 bg-red-100’, label: ‘Critical’ };
+if (days > 180) return { color: "text-green-600 bg-green-100", label: "Excellent" };
+if (days > 90) return { color: "text-blue-600 bg-blue-100", label: "Healthy" };
+if (days > 60) return { color: "text-yellow-600 bg-yellow-100", label: "Moderate" };
+return { color: "text-red-600 bg-red-100", label: "Critical" };
 };
 
 const runwayStatus = getRunwayStatus(cashFlowData.runway.days);

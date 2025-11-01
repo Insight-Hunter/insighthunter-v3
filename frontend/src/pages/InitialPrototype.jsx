@@ -1,10 +1,10 @@
-import React, { useState } from ‘react’;
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from ‘recharts’;
-import { Upload, TrendingUp, DollarSign, AlertTriangle, FileText, Users, Download, Bell, Calendar, Activity } from ‘lucide-react’;
+import React, { useState } from "react";
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from "recharts";
+import { Upload, TrendingUp, DollarSign, AlertTriangle, FileText, Users, Download, Bell, Calendar, Activity } from "lucide-react";
 
 // Sample data for demonstration
 const generateMonthlyData = () => {
-const months = [‘Jan’, ‘Feb’, ‘Mar’, ‘Apr’, ‘May’, ‘Jun’, ‘Jul’, ‘Aug’, ‘Sep’, ‘Oct’, ‘Nov’, ‘Dec’];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 return months.map((month, idx) => ({
 month,
 revenue: 45000 + Math.random() * 15000 + idx * 2000,
@@ -15,7 +15,7 @@ forecast: idx > 8 ? 50000 + Math.random() * 10000 : null
 };
 
 const generateCashFlowData = () => {
-const weeks = [‘Week 1’, ‘Week 2’, ‘Week 3’, ‘Week 4’, ‘Week 5’, ‘Week 6’];
+const weeks = ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6"];
 return weeks.map((week, idx) => ({
 week,
 cashIn: 25000 + Math.random() * 10000,
@@ -25,20 +25,20 @@ balance: 80000 + idx * 5000 + Math.random() * 5000
 };
 
 const generateExpenseBreakdown = () => [
-{ category: ‘Payroll’, amount: 35000, color: ‘#3b82f6’ },
-{ category: ‘Marketing’, amount: 12000, color: ‘#8b5cf6’ },
-{ category: ‘Operations’, amount: 8500, color: ‘#06b6d4’ },
-{ category: ‘Technology’, amount: 6500, color: ‘#10b981’ },
-{ category: ‘Other’, amount: 4000, color: ‘#f59e0b’ }
+{ category: "Payroll", amount: 35000, color: "#3b82f6" },
+{ category: "Marketing", amount: 12000, color: "#8b5cf6" },
+{ category: "Operations", amount: 8500, color: "#06b6d4" },
+{ category: "Technology", amount: 6500, color: "#10b981" },
+{ category: "Other", amount: 4000, color: "#f59e0b" }
 ];
 
 const InsightHunterApp = () => {
-const [activeTab, setActiveTab] = useState(‘dashboard’);
+const [activeTab, setActiveTab] = useState("dashboard");
 const [uploadedFile, setUploadedFile] = useState(null);
 const [alerts, setAlerts] = useState([
-{ id: 1, type: ‘warning’, message: ‘Cash flow projection shows potential shortage in 45 days’, date: ‘2025-10-05’ },
-{ id: 2, type: ‘info’, message: ‘Revenue increased 12% compared to last month’, date: ‘2025-10-04’ },
-{ id: 3, type: ‘alert’, message: ‘Marketing expenses exceeded budget by 8%’, date: ‘2025-10-03’ }
+{ id: 1, type: "warning", message: "Cash flow projection shows potential shortage in 45 days", date: "2025-10-05" },
+{ id: 2, type: "info", message: "Revenue increased 12% compared to last month", date: "2025-10-04" },
+{ id: 3, type: "alert", message: "Marketing expenses exceeded budget by 8%", date: "2025-10-03" }
 ]);
 
 const monthlyData = generateMonthlyData();

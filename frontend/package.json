@@ -1,5 +1,5 @@
 {
-  "name": "insight-hunter-frontend",
+  "name": "frontend",
   "version": "1.0.0",
   "private": true,
   "description": "Insight Hunter - AI-Powered CFO Platform for Small Businesses",
@@ -10,17 +10,19 @@
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "postinstall": "echo 'Dependencies installed successfully'"
   },
   "dependencies": {
-    "axios": "^1.7.5",
-    "clsx": "^2.1.1",
-    "date-fns": "^3.6.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.0",
+    "axios": "^1.7.5",
     "recharts": "^2.12.7",
-    "zustand": "^4.5.5"
+    "date-fns": "^3.6.0",
+    "clsx": "^2.1.1",
+    "zustand": "^4.5.5",
+    "lucide-react": "^0.400.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.5",
@@ -28,15 +30,15 @@
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "autoprefixer": "^10.4.20",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.3",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.11",
-    "postcss": "^8.4.45",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.10",
-    "typescript": "^5.5.4",
-    "vite": "^7.1.12"
+    "postcss": "^8.4.45",
+    "autoprefixer": "^10.4.20"
   },
   "engines": {
     "node": ">=18.0.0",

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from ‘react’;
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from ‘recharts’;
-import { TrendingUp, TrendingDown, DollarSign, AlertTriangle, Lightbulb, Upload, Users, FileText, Calendar } from ‘lucide-react’;
+import React, { useState, useEffect } from "react";
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { TrendingUp, TrendingDown, DollarSign, AlertTriangle, Lightbulb, Upload, Users, FileText, Calendar } from "lucide-react";
 
 function DashboardPage() {
-const [selectedPeriod, setSelectedPeriod] = useState(‘30d’);
+const [selectedPeriod, setSelectedPeriod] = useState("30d");
 const [dashboardData, setDashboardData] = useState(null);
 const [loading, setLoading] = useState(true);
 
@@ -75,7 +75,7 @@ return (
 <div className="flex items-center justify-between">
 <div>
 <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-<p className="text-gray-600 mt-1">Welcome back! Here’s your financial overview.</p>
+<p className="text-gray-600 mt-1">Welcome back! Here"s your financial overview.</p>
 </div>
 <div className="flex gap-2">
 <select
