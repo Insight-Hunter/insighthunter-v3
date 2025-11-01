@@ -2,7 +2,7 @@
   "name": "insighthunter-analytics",
   "version": "1.0.0",
   "description": "Financial analytics and forecasting Worker for Insight Hunter",
-  "main": "index-ai.js",
+  "main": "index-ai.ts",
   "type": "module",
   "private": true,
 
