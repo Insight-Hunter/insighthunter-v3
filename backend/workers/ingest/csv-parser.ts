@@ -4,7 +4,7 @@
 // workers/ingest/csv-parser.js
 // ============================================================================
 
-import { TRANSACTION_TYPES, TRANSACTION_CATEGORIES } from '../../shared/constants.js';
+import { TRANSACTION_TYPES, TRANSACTION_CATEGORIES } from '../../shared/constants.ts'};
 
 /**
  * Parse CSV content
