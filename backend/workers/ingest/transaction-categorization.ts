@@ -13,10 +13,10 @@ const response = await ai.run(’@cf/baai/bge-base-en-v1.5’, {
 text: text
 });
 
-```
+...
 // The model returns embeddings in the data array
 return response.data[0];
-```
+...
 
 } catch (error) {
 console.error(‘Error generating embedding:’, error);
@@ -40,7 +40,7 @@ topK: 10,
 returnMetadata: true
 });
 
-```
+...
 if (!results.matches || results.matches.length === 0) {
   // No similar transactions found, fall back to rule-based categorization
   return categorizeByrules(description);
@@ -78,7 +78,7 @@ return {
   method: 'vectorize',
   similarCount: results.matches.length
 };
-```
+...
 
 } catch (error) {
 console.error(‘Error querying Vectorize:’, error);
@@ -130,7 +130,7 @@ async function storeTransactionVector(vectorize, ai, transactionId, description,
 try {
 const embedding = await getEmbedding(description, ai);
 
-```
+...
 if (!embedding) {
   console.error('Failed to generate embedding for storage');
   return false;
@@ -146,7 +146,7 @@ await vectorize.insert([{
 }]);
 
 return true;
-```
+...
 
 } catch (error) {
 console.error(‘Error storing vector:’, error);
