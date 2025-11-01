@@ -40,7 +40,7 @@ Forecast:
 - Next month revenue prediction: $${forecasts.revenue.forecasts[0]?.value || 0}
 - Forecast confidence: ${(forecasts.revenue.confidence * 100).toFixed(0)}%
 
-Provide specific, actionable insights in bullet point format. Focus on what’s working well, what needs attention, and what actions to consider.`;
+Provide specific, actionable insights in bullet point format. Focus on what"s working well, what needs attention, and what actions to consider.`;
 
 try {
 const response = await ai.run('@cf/meta/llama-3-8b-instruct', {
