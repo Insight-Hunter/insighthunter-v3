@@ -3,15 +3,15 @@ main = "index-ai.ts"
 compatibility_date = "2024-01-15"
 
 routes = [
-  { pattern = "api.insighthunter.app/routes/upload/*", zone_name = "insighthunter.app" },
-  { pattern = "api.insighthunter.app/routes/transactions/*", zone_name = "insighthunter.app" }
+  { pattern = "api.insighthunter.app/api/upload/*", zone_name = "insighthunter.app" },
+  { pattern = "api.insighthunter.app/api/transactions/*", zone_name = "insighthunter.app" }
 ]
 
 [[d1_databases]]
 binding = "DB"
 service = "insighthunter-ingest"
 database_name = "insighthunter-production"
-database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"
+database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"7
 
 [[kv_namespaces]]
 binding = "CACHE"
