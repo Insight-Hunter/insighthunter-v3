@@ -9,18 +9,15 @@ routes = [
 
 [[d1_databases]]
 binding = "DB"
-service = "insighthunter-ingest"
 database_name = "insighthunter-production"
 database_id = "ea2e0150-3471-4ce7-bd24-a51b103cb4ce"7
 
 [[kv_namespaces]]
 binding = "CACHE"
-service = "insighthunter-ingest"
 id = "af7391791e95423b82c1cd877c0992e3"
 
 [[r2_buckets]]
 binding = "BUCKET"
-service = "insighthunter-ingest"
 bucket_name = "insight-hunter-files"
 
 [[vectorize]]
