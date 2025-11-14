@@ -16,5 +16,9 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+  
   },
+  serverAllowedHosts: {
+    port: 4000,
+    hosr: 8bacf20d-2717-4194-b592-52c920813778-00-g6v0dnc3yt8w.janeway.replit.dev
 })
